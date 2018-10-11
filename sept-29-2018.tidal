@@ -1,0 +1,86 @@
+import Sound.Tidal.MIDI.Output
+import Sound.Tidal.SimpleSynth
+cps (140/60/4)
+devices <- midiDevices
+
+displayOutputDevices >>= putStrLn
+
+m1 <- midiStream devices "VirMIDI 0-0" 1 synthController
+m2 <- midiStream devices "VirMIDI 0-0" 2 synthController
+
+hush
+
+d1 $ sound "[[bd] [.]]"
+
+d1 $ sound " bd [[[sd:5 sd:4 [sd:3 [sd [sd [sd:2 sn sn]/[3 2 1 1]/6]]]] sd]/12 sn [ [[bd bd]*3 [. .]]/12 bd]]:[0 1 2 3]/4 [[[bd:2 bd]*[3 6 2 3 8]/3 [. .]]/12 [bd:3 . [bd:2 bd:4] . .]/5]"
+
+d2 $ sound "[ [[. hh:3]/[2 3 4]/[8 4 2]] hh:0 . [[. hh]/[2 3 4]/[8 4 2]] . hh . [[. hh]/[2 3 4]/[8 4 2]] . hh . [[. hh:0 . .]/4] . hh . . ]/[2 1 4]/[8 2 6 1]" # shape ((/1.25)<$>triwave1)
+
+d3 $ every 2 (slow 2) $ sound ". . . . . cp:[[5 4 3 2 1]/6] . . [[. . . cp:5]/[5 2 7 9]/8] ."
+
+d4 $ sound "[bass2:[1 2 3 4]/[2 3 4 7]/[7 2 8 1]]/[1 6 8 12] .  [[. . . . . bass2:5]/[6 3 11 13]/16] . . . . ."
+
+d5 $ slow 16 $ sound "[pad:[1 2 3 4]/[2 3 4 7]/[7 2 8 1] . . .]/[1 6 8 12]"
+
+
+d6 $ note " [[3 1 3 6]/8] . [. 3 . 8]/8] . . [[1 3 4 8]/8] . ." # s "supermandolin"
+
+
+hush
+
+
+d6 $ cat [
+  stack [
+    note " [[3 1 3 6]/8] . [. 3 . 8]/8] . . [[1 3 4 8]/8] . .",
+    note $ scramble 3 "-4 -9/2 -14/4 -4 -4"
+  ],
+  stack [
+    spin 3 $ note " [[8 6 3 12]/8] . [. 6 . 13]/8] . . [[1 3 6 8]/8] . .",
+    note "0 [-4 -2]/2"
+  ]
+] # s "supermandolin"
+
+d6 $ every 2 (|+| n "0 3 7") $ every "3 4/2" (spin "3 2 0") $ cat [
+  stack [
+    note " [[3 1 3 6]/8] . [. 3 . 8]/8] . . [[1 3 4 8]/8] . .",
+    note $ scramble 3 "-4 -9/2 -14/4 -4 -4"
+  ],
+  stack [
+    spin 3 $ note " [[8 6 3 12]/8] . [. 6 . 15]/8] . . [[1 3 6 8]/8] . .",
+    note "0 [-4 -2]/2"
+  ],
+  stack [
+    note " [[13 12 8]/8] . [. 15 . 12]/8] . . [6]/8] . .",
+    note $ scramble 3 "-4 -9/2 -14/4 -4 0"
+  ],
+  stack [
+    spin 3 $ note " [[3 1 0]/6] . [. 6 . 15]/8] . . [[8 3 6 1]/8] . .",
+    note "0 [-4 -7]/2"
+  ]
+] # s "supermandolin"
+
+
+
+
+d1 $ cat [
+  sound "[[bd:[[6 4 3]/4] [. bd:[[8 7 6 5 4 3 2 1]]]/4] [.]]",
+  sound "[bd:6 bd:6 bd:6] [.]",
+  sound "[[bd:[[6 4 3]/4] [. bd:[[8 7 6 5 4 3 2 1]]]/4] [.]]",
+  sound "bd bd bd"
+]
+
+-- d1 $ weave 16 (sound "arpy*8" # n (run 8))
+--   [vowel "a e i",
+--    vowel "i [i o] o u",
+--    vowel "[e o]/3 [i o u]/2",
+--    speed "1 2 3"
+--   ]
+
+
+
+
+
+
+
+
+-- d $ note " [[3 1 3 6]/8] . [. 3 . 8]/8] . . [[1 3 4 8]/8] . ." # s "supermandolin"

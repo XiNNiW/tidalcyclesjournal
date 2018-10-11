@@ -1,0 +1,86 @@
+
+getNow >>= \now ->
+d9 $ (pure getNow) ~> $ seqP [
+  (0,1, silence),
+  (1,2, midicmd "start" #sync),
+  (1,600, midicmd "midiClock*24" #sync)
+]
+
+d9 $ midicmd "stop" # s "sync"
+
+
+d9 $ midicmd "start" # s "sync"
+
+d9 $ midicmd "midiClock*24" # s "sync"
+
+
+
+getNow >>= \now ->
+d9 $ (pure getNow) ~> $ seqP [
+  (0,1, silence),
+  (1,2, midicmd "start" # s "sync"),
+  (1,600, midicmd "midiClock*24" # s "sync")
+]
+
+
+hush
+
+
+--- PATTERN ---
+
+d1 $ every 4 (const $
+  cat [
+    s "[909 909 909]",
+    s "909",
+    s "<~ [909 909 [909 909 909]?]*2 [909 909 909] ~>"
+  ]) $
+sound "909 [ [. 909?*3]? [909 909?]]" # gain 1.3
+
+d1 $ silence
+
+d2 $ sound "[[~ 808:1] [808:3 808:1 [808:4 rm?] 808:4]] [[sn:9 [[. sn:7*2]/2 sn:5]]/2]"
+
+d2 $ silence
+
+d3 $ (0.01 ~>) $ every 4 (const $ sound "[. [linnhats*3]]" # gain "[0.6 0.7 0.8]") $
+  sound "linnhats:13*4" # gain  ( slow 1 $ scale 0.6 0.8 tri)
+
+d4 $ cat [
+  sound "rs",
+  sound "hh:2",
+  sound "hh:3",
+  sound " [[ [hh:2*6 ]]hh:2]" # gain (slow 2 $ scale 0 1 $ saw1)
+]
+
+d5 $ slow 4 $
+  cat [
+    n "gs4 [~ . . gs5] [ .  . [es3 ds5]] .",
+    n "[es4 ds4 gs3 [ [ds3 ~ ~] es4]] [gs4 ds4 es3 cs4]",
+    n "es4 [~ . . cs5] [ .  . [es3 ds5]] .",
+    n "[es4 ds4 gs3 [ [ds3 ~ ~] es4]] [gs4 ds4 es3 cs4]"
+  ] # s "superhex"  # sustain 4 # gain 0.7
+
+
+
+d6 $ every 4 (const $ n "[gs3 es5 as4] , [ds4 ds3]") $ cat [
+  n "<[. [~? gs3]] [. [[. es5]] .] [. as4]>"
+] # s "supergong" # gain 0.9 # sustain 3
+
+d7 $ ("[0.02 0.01]" ~>) $ slow 4 $ cat [
+  n "[es5 [. as5]/2] [[. ds5.  .] . . es5 fs5 gs5 .]",
+  n "[es5 gs5] [. [fs5 es5]]",
+  n "[gs5 ds5] [[. ds5.  .] . . es5 fs5 gs5 .]",
+  n "as5 [ . [ds6 b5 [gs5 as5]]]"
+] # s "superpiano" #  sustain 8 # gain 0.9
+
+------------------------------------------------------------------
+
+d7 $ stack [
+  ("[0.02 0.01]" ~>) $ slow 4 $ cat [
+    n "[es5 [. as5]/2] [[. ds5.  .] . . es5 fs5 gs5 .]",
+    n "[es5 gs5] [. [fs5 es5]]",
+    n "[gs5 ds5] [[. ds5.  .] . . es5 fs5 gs5 .]",
+    n "as5 [ . [ds6 b5 [gs5 as5]]]"
+  ] # s "superpiano" #  sustain 8 # gain 0.9,
+  cat [n "es6", n "es6", n "es6", n "gs6 ds6",n "es6", n "es6", n "es6", n "fs6 ds6"] # s "superpiano" # sustain 12 # gain 0.7
+]

@@ -1,0 +1,5 @@
+d1 $ do x <- slow (12 * 12) $ run 12
+        jux (rotR $ x/12) $ sound "cp ! ! ~ cp ! ~ cp ~ cp ! ~"
+
+cps (-1)
+cps 0.5

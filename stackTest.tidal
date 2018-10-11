@@ -1,0 +1,32 @@
+d1 $ whenmod 5 3 (striate 3) $ stack[
+  (sound "[bd:0 hh]*2"),
+  (sound "~ cp:6"),
+  (sound ( samples "~ bass:0" (run 8))),
+  (slow 4 (sound "pad:8" |+| gain ".8" |+| delay "12" |+| delayfeedback ".48"))
+] # speed "[[1 0.8], [1.5 2]*2]/3"
+
+d1 $ whenmod 5 3 (striate 3) $ stack[
+  (sound "[bd:0 hh]*2"),
+  (sound "cp:6"),
+  (sound "bass:0"),
+  (slow 4 (sound "pad:11") # speed "[[1 0.8], [1.5 2]*2]/3")
+]
+
+d1 $ whenmod 5 3 (striate 3) $ stack[
+  (sound "[pluck:0 hh]*2"),
+  (chop 8 (sound "[toys:1]")),
+  (sound "cp:6"),
+  (sound "bass:0"),
+  (slow 4 (sound "pluck:8" |+| delay 12 |+| delayfeedback .33))
+] # speed "[[1 0.8], [1.5 2]*2]/3"
+
+d1 $ weave' 3 (sound "bd [sn drum:2*2] bd*2 [sn drum:1]") [density 2, (# speed "0.5"), chop 16]
+
+d1 $ wedge (1/4) (sound "bd*2 arpy*3 cp sn*2") (sound "odx [feel future]*2 hh hh")
+
+d1 $ sound "jvbass(3,8)"
+
+t1 (anticipateIn 4) $ sound "jvbass(5,8)"
+
+
+hush

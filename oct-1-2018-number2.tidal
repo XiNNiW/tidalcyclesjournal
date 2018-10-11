@@ -1,0 +1,21 @@
+-- oct-1-2018-number2oct
+
+import qualified Sound.Tidal.Scales as Scales
+import qualified Sound.Tidal.Chords as Chords
+
+-- d1 $ foldEvery [3, 7, 5] (rev . spin "[3 6 7]" . slow "[2 3 1 2]") $
+d1 $
+ cat [
+  n (toScale Scales.hexDorian "0 1 [2 3] 4 5 6"),
+  n (toScale Scales.hexDorian "0 . [~] 4 . 6"),
+  n (toScale Scales.hexDorian "0 1 [2 3] 4 5 ~"),
+  n (toScale Scales.hexDorian "0 1 [5 4] ~  7 5")
+ ]
+ # sound "superpiano"
+
+
+
+
+
+
+hush

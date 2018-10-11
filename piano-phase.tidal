@@ -1,0 +1,3 @@
+d1 $ superimpose (fast 1.005) $ note "<0 7 10> <2 9>" # s "superpiano"
+
+hush

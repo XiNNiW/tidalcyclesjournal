@@ -1,0 +1,121 @@
+d1 $ slowcat [
+    sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"),
+    sound "[[bd:128 hh:3 [sn bd:128] hh:2]]"
+    ]
+  # shape ((/1.5)<$>triwave1)
+
+d1 $ slowcat [
+    sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"),
+    sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4",
+    sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"),
+    sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]"
+    ]
+  # shape ((/1.5)<$>triwave1)
+
+
+d1 $ stack[
+  (slowcat [
+    sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"),
+    sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4",
+    sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"),
+    sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]"
+    ]),
+  (slowcat [
+    sound("hh:10*8"),
+    sound("[hh:10*4 hh:11]")
+  ]),
+  (slowcat [
+    sound("pad:10") #loop "1 0",
+    sound("~"),
+    sound("~") #delay ".99",
+    sound("~"),
+    sound("pad:10") #delay ".99",
+    sound("~"),
+    sound("~"),
+    sound("~")
+  ]),
+  (slowcat[
+    sound "808:BD:0"
+  ])
+
+]
+  # shape ((/1.5)<$>triwave1)
+
+d1 $ stack[
+      slowcat[
+        (every 4 (|+| speed sine1) (sound (samples "bass2:1 [bass:0 bass2:3 bass:5 bass2:7]" (run 3)) #speed "1 .777 .333 .5 1"))
+      ],
+      slowcat[
+        (sound (samples "[[~ bd] ~] bd" (run 16)))
+      ],
+      slowcat[
+        (sound "[~ hh:0  ~ hh:0]")
+      ],
+      slowcat[
+        (sound (samples "[[~ birds3] ~] birds3" (run 16)))
+      ],
+      slowcat[
+        (sound (samples "cp" (run 16)))
+      ]
+    ]
+
+d1 $ slowcat [
+    (interlace (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"))(sound "[jvbass:3 jvbass:2 jvbass:1 jvbass:2]")),
+    (sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4"),
+    (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
+    (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
+    ]
+  # shape ((/1.5)<$>triwave1)
+
+d1 $iter 4 $ slowcat [
+  (interlace (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"))(sound "[jvbass:3 jvbass:2 jvbass:1 jvbass:2]")),
+  (randcat [(sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4"),(sound "[hh:3 [sn:5 bd [sn:4]*3]] jvbass:4 [hh] [jvbass jvbass:3],[bd:2]*4")]),
+  (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
+  (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
+  ]
+  # shape ((/1.5)<$>triwave1)
+
+d1 $ slowcat [
+    (interlace (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"))(sound "[jvbass:3 jvbass:2 jvbass:1 jvbass:2]")),
+    (randcat [(sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4"),(sound "[hh:3 [sn:5 bd [sn:4]*3]] jvbass:4 [hh] [jvbass jvbass:3],[bd:2]*4")]),
+    (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
+    (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
+    ]
+    # shape ((/1.5)<$>triwave1)
+
+d1 $spin 2 $ slowcat [
+    (interlace (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"))(sound "[jvbass:3 jvbass:2 jvbass:1 jvbass:2]")),
+    (randcat [(sound "[bd cp] jvbass:0 [hh] [jvbass jvbass:1],[bd:2]*4"),(sound "[hh:3 [sn:5 bd [sn:4]*3]] jvbass:4 [hh] [jvbass jvbass:3],[bd:2]*4")]),
+    (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
+    (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
+    ]
+  # shape ((/1.5)<$>triwave1)
+
+d1 $ stack [
+  sound "bd bd*2",
+  sound "hh*2 [sn cp] cp future*4",
+  sound (samples "arpy*8" (run 16))
+]
+
+d1 $ sound "bd sn"
+
+
+d1 $ every 8 ((slow 3)) $ sound (every 2 (brak) "[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:1(4,8,1)] ]")
+    # shape ((/1.5)<$>triwave1)
+
+d1  $(every 8 ((slow 3))
+    $ stack [
+      (sound (every 2 (brak) "[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:1(4,8,1)] ]"),
+      (sound "jvbass")
+]
+  # shape ((/1.5)<$>triwave1))
+
+
+
+  --  $ stack [
+    --  (sound (every 2 (brak) "[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:1(4,8,1)] ]"),
+    --  (sound "jvbass")
+--]
+
+
+hush

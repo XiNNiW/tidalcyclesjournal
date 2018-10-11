@@ -1,0 +1,176 @@
+-- d1 $ sound "bd" # n "3"
+-- one
+-- d1 $ sound "bd sd:3"
+-- two
+d1 $ sound "bd sd:1"
+
+d2 $ sound "hh hh hh hh"
+
+d3 $ sound "arpy"
+
+--three
+
+d1 $ sound "bd sd hh cp mt arpy drum odx bd arpy bass2 feel future"
+
+--four
+d1 silence
+
+hush
+
+solo $ d1 $ sound "bd sn"
+
+--five
+
+d1 $ sound "[bd sd sd] cp"
+
+d1 $ sound "bd [sd sd]"
+
+d1 $ sound "bd [sd sd sd]"
+
+d1 $ sound "bd [sd sd sd sd]"
+
+d1 $ sound "[bd bd] [sd sd sd sd]"
+
+d1 $ sound "[bd bd bd] [sd sd]"
+
+d1 $ sound "[bd bd bd bd] [sd]"
+
+d1 $ sound "[bd bd] [bd [sd [sd sd] sd] sd]"
+
+d1 $ sound "bd bd . sd sd sd . bd sd"
+
+d1 $ sound "[bd bd] [sd sd sd] [bd sd]"
+
+d1 $ sound "[ [[bd bd] [. .]]/12 bd] [[[sd sd [sd [sd [sd [sd sn sn]]]]] sd]/12 sn]"
+
+--six
+d1 $ sound "[bd bd bd, sd cp sd cp]"
+d1 $ sound "[bd bd bd, sd cp sd cp, arpy arpy, odx]"
+d1 $ sound "[bd bd bd, [sd sd] cp, arpy [arpy [arpy arpy] arpy arpy], odx]"
+d1 $ sound "bd <[arpy:1 hh] arpy:2 arpy:3>"
+
+--seven
+d1 $ sound "bd*2"
+d1 $ sound "bd/2"
+d1 $ sound "bd*3" -- plays the bd sample three times each cycle
+d1 $ sound "bd/3" -- plays the bd samples only once each third cycle
+--eight
+d1 $ sound "[bd sn]*2 cp"
+d1 $ sound "[bd sn] cp/2"
+d1 $ sound "[bd sn]*2 cp/2"
+d1 $ sound "[[bd sn] cp]*2" -- speeds up the entire pattern by 2
+d1 $ sound "[[bd sn] cp]/2" -- slows down the entire pattern by 2
+
+d1 $ sound "[bd [sn sn]*2]/2 [bd [sn bd]/2]*2"
+d1 $ sound "[bd sn sn*3]/2 [bd sn*3 bd*4]/3"
+--nine
+
+d1 $ rev (sound "bd*2 [bd [sn sn*2 sn] sn]")
+
+d1 $ every 4 (rev) (sound "bd*2 [bd [sn sn*2 sn] sn]")
+
+d1 $ slow 4 $ sound "bd*2 [bd [sn sn*2 sn] sn]"
+
+d1 $ fast 4 $ sound "bd*2 [bd [sn sn*2 sn] sn]"
+
+d1 $ every 4 (fast 4) $ sound "bd*2 [bd [sn sn*2 sn] sn]"
+
+d1 $ sound (every 4 (fast 4) "bd*2 [bd [sn sn*2 sn] sn]")
+
+--ten
+
+d1 $ sound "bd*4" # crush "4"
+d1 $ sound "bd*4" # crush "4" # speed "2"
+d1 $ sound "bd*4" # gain "1 0.8 0.5 0.7"
+d1 $ sound "bd*4" # gain (every 3 (rev) $ "1 0.8 0.5 0.7")
+d1 $ gain "1 0.8 0.5 0.7" # sound "bd"
+
+ -- All you need to know right now is that |=| will set an effect’s value equal to a pattern.
+d1 $ (|=| speed "2") $ sound "arpy*4" |=| speed "1"
+
+hush
+
+-- |+|
+-- |-|
+-- |*|
+-- |/|
+d1 $ every 2 (|*| speed "1.5") $ sound "arpy*4" |=| speed "1"
+d1 $ every 3 (|-| up "3") $ every 2 (|+| up "5") $ sound "arpy*4" |=| up "0 2 4 5"
+
+d1 $ sound "arpy(3,8)" # n "2"
+d1 $ sound "arpy(3,8)" # n 2
+d1 $ sound "arpy(3,8)" # n "2 5"
+d1 $ sound "arpy(3,8)" # n ("0 2" * 2)
+d1 $ sound "arpy(3,8)" # n (every 4 (* 2) "0 2")
+
+--d1 $ n (off 0.125 (+12) $ off 0.25 (+7) $ slow 2 $ "0(3,8) [5 7]") # sound "supergong"
+d1 $ whenmod 8 6 (rev) $ sound "bd*2 arpy*2 cp hh*4"
+
+--fills
+d1 $ every 8 (rev) $ every 4 (density 2) $ sound "bd hh sn cp"
+d1 $ whenmod 16 14 (# speed "2") $ sound "bd arpy*2 cp bass2"
+
+--fills con st
+d1 $ const (sound "arpy*3") $ sound "bd sn cp hh"
+d1 $ whenmod 8 6 (const $ sound "arpy(3,8) bd*4") $ sound "bd sn bass2 sn"
+d1 $ every 12 (const $ sound "bd*4 sn*2") $ sound "bd sn bass2 sn"
+
+--concat patterns
+
+d1 $ fastcat [sound "bd sn:2" # vowel "[a o]/2",
+              sound "casio casio:1 casio:2*2"
+             ]
+
+d1 $ fastcat [sound "bd sn:2" # vowel "[a o]/2",
+              sound "casio casio:1 casio:2*2",
+              sound "drum drum:2 drum:3 drum:4*2"
+]
+
+d1 $ cat [sound "[bd sn:2]*2" # vowel "[a o]/2",
+          sound "casio casio:1 casio:2*2",
+          sound "drum drum:2 drum:3 drum:4*2"
+         ]
+
+d1 $ randcat [sound "[bd sn:2]*2" # vowel "[a o]/2",
+         sound "casio casio:1 casio:2*2",
+         sound "drum drum:2 drum:3 drum:4*2"
+        ]
+--playing in parralell
+
+d1 $ stack [
+  sound "bd bd*2",
+  sound "hh*2 [sn cp] cp future*4",
+  sound (samples "arpy*8" (run 16))
+]
+
+d1 $ every 4 (slow 2) $ whenmod 5 3 (# speed "0.75 1.5") $ stack [
+  sound "bd bd*2",
+  sound "hh*2 [sn cp] cp future*4",
+  sound (samples "arpy*8" (run 16))
+] # speed "[[1 0.8], [1.5 2]*2]/3"
+
+--cut
+d1 $ sound (samples "arpy*8" (run 8)) # speed "0.25"
+
+d1 $ sound (samples "arpy*8" (run 8)) # speed "0.25" # cut "1"
+
+d1 $ sound (samples "arpy*8" (run 8)) # speed "0.25" # cut "1"
+
+d2 $ sound (samples "bass2*6" (run 6)) # speed "0.5" # cut "2"
+hush
+
+d1 $ stack [
+   sound (samples "arpy*8" (run 8)) # speed "0.25" # cut "1",
+   sound (samples "bass2*6" (run 6)) # speed "0.5" # cut "2" ]
+
+--transistions
+
+d1 $ sound (samples "hc*8" (iter 4 $ run 4))
+t1 anticipate $ sound (samples "bd(3,8)" (run 3))
+
+t1 (xfadeIn 16) $ sound "bd(5,8)"
+
+hush
+--superdirt synths
+
+d1 $ midinote "60 62*2" # s "supersaw"

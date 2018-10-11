@@ -1,0 +1,191 @@
+do
+
+  import Sound.Tidal.MIDI.Output
+
+  import Sound.Tidal.MIDI.Context
+
+  import Sound.Tidal.MIDI.Synth
+
+  cps (140/60/4)
+
+  devices <- midiDevices
+
+hush
+
+  displayOutputDevices >>= putStrLn
+
+  m1 <- midiStream devices "VirMIDI 0-0" 1 synthController
+  m2 <- midiStream devices "VirMIDI 0-0" 2 synthController
+  m2 <- midiStream devices "VirMIDI 0-0" 3 synthController
+
+sound "midi" # midicmd "start"
+
+sound "midi" # midicmd "stop"
+
+sound "midi" # midicmd "continue"
+
+
+d1 $
+every 4 (spin "[1 1 3]") $
+every 8 (stut "[8 1 3]" 0.5 (-0.2)) $
+every 16 (spread (striate) [2,3,4,1] )$
+randcat [
+  stack [
+    sound "bd:6*2",
+    sound "[. hh]*2",
+    sound ". sn:2"
+  ],
+  stack [
+    sound "bd:6*2",
+    sound "[. hh]*2",
+    sound ". sn:3"
+  ],
+  stack [
+    sound "bd:6 bd:6 [bd:6 bd:6 bd:6]",
+    sound "[. hh]*2",
+    sound ". sn:3"
+  ],
+  stack [
+    sound "bd:6*2",
+    sound "[. hh]*2",
+    sound "[. [ . [sd:2*3]]] [sn:3 . . sn]"
+  ]
+]
+
+d1 $ silence
+
+d1 $
+-- every 4 (spin "[1 1 3]") $
+-- every 8 (stut "[8 1 3]" 0.5 (-0.2)) $
+-- every 16 (spread (striate) [2,3,4,1] )$
+every 4 (const $ sound "bd bd bd") $
+cat [
+  stack [
+    sound "bd bd . bd:2",
+    sound ". . . . sn:5 . . .",
+    sound "hh hh ~ [hh*3] ~ hh ~ hh"
+  ],
+  stack [
+    sound "[bd:6 bd:2] . [. [bd:7 [bd:6 [bd:6 [hh:6]] ]]] . . [bd:2] ~",
+    sound ". . . . sn:5 . . .",
+    sound "hh hh ~ hh [~ hh] hh ~ [hh [hh [hh hh hh]]]"
+  ]
+]
+
+hush
+
+d1 $ every 4 (const $
+  cat [
+    s "[909 909 909]",
+    s "909",
+    s "<~ [909 909 909]*2 [909 909 909] ~>"
+  ]) $
+sound "909 909?*3" # gain 1.3
+
+d2 $ every 4 (const $ slow 2 $
+  cat [
+    rev $ s "[~ dr55:0 dr55:0 dr55:0 dr55:0 dr55:0 dr55:0 dr55:0]*2",
+    rev $ s "~ dr55:0 dr55:1 dr55:2 dr55:3 dr55:0 dr55:0 dr55:0",
+    s "~ dr55:5 dr55:0 dr55:3 dr55:3 dr55:0 dr55:0 dr55:3",
+    s "~ dr55:2*3"
+]) $ sound "~ [drum:3*3 drum:1? ] dr55:0 [~ drum:5]" # gain 1.4
+
+d3 $ sound "hh*8" # gain ( scale 0 1.2 $ slow 6 $ saw1) # pan ( slow 8 $ sinewave1)
+
+d3 $ silence
+
+d4 $ slow 4 $
+  cat [
+    n "ds5 ~ gs5 .",
+    n "[es4 ds4 gs3 es4] [es4 ds4 as3 cs4]"
+  ] # s "superhex"  # sustain 4 # gain 0.7
+
+d5 $ n "<gs3 es5 bs4>" # s "supergong" # gain 0.9 # sustain 1.2
+
+d6 $ cat[
+  cat[
+    n "<g5 [~ g5] [e5 d5] [[b5 d5]/2] ~>",
+    n "[b4 e6 [b5 e5 [ d5]]]",
+    n "g5 [~ g5] [e5 d5] [[a5 b5]/2] ~",
+    n "b4 cs5 ~ ~"
+  ]
+] # s "supergong"
+# cat [
+  sustain "1 0.125 0.25 0.5",
+  sustain "0.25 0.25 0.1 0.1",
+  sustain "1 0.125 0.5 0.5",
+  sustain "0.25 0.5 0.1 0.25"
+]
+# cat [
+  velocity "1 0.25 0.1 0.1",
+  velocity "0.25 0.25 0.1 0.1"
+]
+
+
+
+do
+  d1 $ silence
+  d2 $ silence
+  d3 $ silence
+  d4 $ silence
+  d5 $ silence
+  d6 $ silence
+
+
+d2 $ midinote (slow 2 $ (run 8) * 7 + 50) # s "supergong" # decay "[1 0.2]/4"
+  # voice "[0.5 0]/8" # sustain (slow 16 $ scale 5 0.5 $ saw1)
+
+d1 $ sound "bd:3*2"
+
+d6 $ n "g3" # s "supergong" # sustain ("[1 2 3 4 5]/5") # velocity (slow 16 $  scale 0 1 $ sinewave1)
+
+do
+  d6 $ silence
+  d1 $ silence
+  d2 $ silence
+
+hush
+
+--- PATTERN ---
+
+d1 $ every 4 (const $
+  cat [
+    s "[909 909 909]",
+    s "909",
+    s "<~ [909 909 [909 909 909]]*2 [909 909 909] ~>"
+  ]) $
+sound "909 [909?*3 [909 909]?]" # gain 1.3
+
+d2 $ sound "[[~ 808:1] [808:3 808:1 808:4 808:4]] [[sn:9 [[. sn:7*2]/2 sn:5]]/2]"
+
+d2 $ silence
+
+d3 $ every 4 (const $ sound "[. [hh:9*3]]") $ sound "hh:9*4"
+
+d4 $ cat [
+  sound "hh:1",
+  sound "hh:2",
+  sound "hh:3",
+  sound " [[ [hh:2*6 ]]hh:2]" # gain (slow 2 $ scale 0 1 $ saw1)
+]
+
+d5 $ slow 4 $
+  cat [
+    n "as4 [~ . . cs5] [ .  . [es3 ds5]] .",
+    n "[es4 ds4 gs3 [ . [ds3 ~ ~] es4]] [es4 ds4 as3 cs4]",
+    n "as4 [~ . . gs5] [ .  . [es3 ds5]] .",
+    n "[es4 ds4 gs3 [ . [ds3 ~ ~] es4]] [es4 ds4 as3 cs4]"
+  ] # s "superhex"  # sustain 4 # gain 0.7
+
+d6 $ every 4 (const $ n "[gs3 es5 bs4] , [ds4 ds3]") $ cat [
+  n "<[. gs3] [. es5 .] [. bs4]>"
+] # s "supergong" # gain 0.9 # sustain 1.2
+
+d7 $ slow 4 $ cat [
+  n "[es5 [. as5]/2] [[. ds5.  .] . . es5 fs5 gs5 .]",
+  n "[es5 gs5] [. [fs5 es5]]",
+  n "[gs5 ds5] [[. ds5.  .] . . es5 fs5 gs5 .]",
+  n "as5 [ . [ds6 b5 [gs5 as5]]]"
+] # s "superpiano" #  sustain 8 # gain 0.9
+
+------------------------------------------------------------------

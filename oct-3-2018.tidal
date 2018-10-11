@@ -1,0 +1,98 @@
+import qualified Sound.Tidal.Scales as Scales
+
+import qualified Sound.Tidal.Chords as Chords
+
+hush
+
+let toChord chord note = toScale chord note
+
+d1 $ slow 4 $ n (spread toScale [map (+ 3) Chords.minor,map (+ 2) Chords.major] $  "[3 2 1] 4 8 0") # s "superpiano" # gain 1 # sustain 1
+
+d1 $ n (scaleP "minPent" "0 .. 4") # sound "superpiano"
+
+d1 $ slow "4" $ n ("{e4 g4 [es4*3]}%3" + chord "minor major7 major7*2")  # sound "superpiano"
+
+d1 $ n ("e4 g4" + chord "minor major")  # sound "superpiano"
+
+d1 $ n (toChord (Chords.major) "0 3 4 9") # s "superpiano" # gain 1 # sustain 1
+
+d1 $ degradeBy 0.1 $ foldEvery [4,3,7] (rev) $ every 4 (smash 4 [6, 2, 3]) $ sound "{bd jvbass(3,8) [sd sd sd]sn:3, [. hh .]}%2"
+
+d1 $ degradeBy 0.5 $ sound "<arpy*8>" #up (scaleP "mixolydian" "0 2 3 8 4 2 1 4")-- # s "arpy"
+
+d2 $ up (scaleP "minor" "{[0(1,3) . 3 5]/2}%3") # s "jvbass:3"
+
+hush
+
+d1 $ stut' 2 (1/3) (# vowel "{a e i o u}%2") $ sound "bd sn"
+
+d1 $ up (scaleP "minor" "7 3 2") #s "tx81z-tine" |+| up 6
+
+d1 $ ifp ((== 0).(flip mod 2))
+  (striate 4)
+  (# coarse "24 48") $
+  sound "hh hc"
+
+d1 $ s (mask ("1 1 1 ~ 1 1 ~ 1" :: Pattern Bool)
+  (cat ["sn*8", "[cp*4 bd*4, bass*5]"] ))
+  # n (run 8)
+
+
+d1 $ when ((elem '4').show)
+  (striate 4)
+  $ sound "hh hc"
+
+d1 $ whenmod 8 4 (fast 2) $ sound "bd sn kurt"
+
+getNow >>= \now -> d1 $ (pure now) ~> seqP [
+  (0, 12, sound "bd bd*2"),
+  (4, 12, sound "hh*2 [sn cp] cp future*4"),
+  (8, 12, sound (samples "arpy*8" (run 16)))
+]
+
+d1 $ superimpose (fast 2) $ sound "bd sn [cp ht] hh"
+
+d1 $ weave 16 (sound "arpy*8" # n (run 8))
+  [vowel "a e i",
+   vowel "i [i o] o u",
+   vowel "[e o]/3 [i o u]/2",
+   speed "1 2 3"
+  ]
+
+d1 $ weave' 3 (sound "bd [sn drum:2*2] bd*2 [sn drum:1]") [fast 2, (# speed "0.5"), chop 16]
+
+d1 $ wedge (1/4) (sound "bd*2 arpy*3 cp sn*2") (sound "odx [feel future]*2 hh hh")
+
+d1 $ sound "jvbass(3,8)"
+
+t1 (anticipateIn 4) $ sound "jvbass(5,8)"
+
+t1 anticipate $ sound "jvbass(5,8)"
+
+
+d1 $ sound "bd(3,8)"
+
+t1 (histpan 3) $ sound "[hh*4, odx(3,8)]"
+
+d1 $ sound "feel*4 [feel:2 sn:2]"
+
+t1 (superwash (# accelerate "4 2 -2 -4") (striate 2) 2 4 6) $ sound "bd [odx:2 sn/2]"
+
+d1 $ sound (fit 3 ["bd", "sn", "arpy", "arpy:1", "casio"] "0 [~ 1] 2 1")
+
+
+hush
+
+d1 $ fit' 1 4 (run 4) "[0 3*2 2 1 0 3*2 2 [1*8 ~]]/2" $ chop 4 $ (sound "breaks152" # unit "c")
+
+
+d2
+  $ foldEvery [6,8] (iter 4)
+  $ stack [
+    sound (fit 4 ["bd", "sn:3", "sn", "mt", "bd"] "0 1 ~ [2 3]"),
+    sound "bd:3*2"
+  ]
+
+d3 $ slow 4 $ (fit' 1 4 (irand 4) "~ [0 ~] 1 [3 2]" ) $ up (scaleP "harmonicMinor" "{<0 3 5 9 5, 2 4 7 11 8, 0 7 9 3>}%4") #s "arpy"
+
+hush
