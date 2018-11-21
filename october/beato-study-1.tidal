@@ -1,0 +1,111 @@
+-- let prog = "c:minor7 d:dim d:minor7b5 [A:major Ds:major] G:dom7"
+
+hush
+
+
+
+
+
+import qualified Sound.Tidal.Chords as Chords
+
+import qualified Data.Text as T
+
+romanNumeralToRoot :: String -> String
+romanNumeralToRoot str
+--major
+  | str == "I"    = show 0
+  | str == "ii"   = show 2
+  | str == "iii"  = show 4
+  | str == "IV"   = show 5
+  | str == "V"    = show 7
+  | str == "vi"   = show 9
+  | str == "viio" = show 11
+  | str == "i"    = show 0
+  | str == "iio"  = show 2
+  | str == "bIII" = show 3
+  | str == "iv"   = show 5
+  | str == "v"    = show 7
+  | str == "VI"   = show 8
+  | str == "VII"  = show 10
+  | str == "III+" = show 3
+  | str == "vio"  = show 9
+-- double harmonicMishow $ map (+ n)or
+  -- | str == "VI+"  = show $ map (+ 8)  Chords.aug
+  | otherwise = str
+
+romanNumeralToChord :: String -> String
+romanNumeralToChord str
+--major
+  | str == "I"    = show              Chords.major
+  | str == "ii"   = show $ map (+ 2)  Chords.minor
+  | str == "iii"  = show $ map (+ 4)  Chords.minor
+  | str == "IV"   = show $ map (+ 5)  Chords.major
+  | str == "V"    = show $ map (+ 7)  Chords.major
+  | str == "vi"   = show $ map (+ 9)  Chords.minor
+  | str == "viio" = show $ map (+ 11) Chords.dim
+--minorshow $ map (+ )
+  | str == "i"    = show $ map (+ 0)  Chords.minor
+  | str == "iio"  = show $ map (+ 2)  Chords.dim
+  | str == "bIII" = show $ map (+ 3)  Chords.major
+  | str == "iv"   = show $ map (+ 5)  Chords.minor
+  | str == "v"    = show $ map (+ 7)  Chords.minor
+  | str == "VI"   = show $ map (+ 8)  Chords.major
+  | str == "VII"  = show $ map (+ 10) Chords.major
+-- melodicMinor
+  | str == "III+" = show $ map (+ 3)  Chords.aug
+  | str == "vio"  = show $ map (+ 9)  Chords.dim
+-- double harmonicMishow $ map (+ n)or
+  -- | str == "VI+"  = show $ map (+ 8)  Chords.aug
+  | otherwise = str
+
+getScaleForChord :: String -> String
+getScaleForChord str
+--major
+  | str == "I"    = "major"
+  | str == "ii"   = "dorian"
+  | str == "iii"  = "phrygian"
+  | str == "IV"   = "lydian"
+  | str == "V"    = "mixolydian"
+  | str == "vi"   = "aeolian"
+  | str == "viio" = "locrian"
+--minorshow $ map (+ )
+  | str == "i"    = "minor"
+  | str == "iio"  = "locrian"
+  | str == "bIII" = "ionian"
+  | str == "iv"   = "dorian"
+  | str == "v"    = "phrygian"
+  | str == "VI"   = "lydian"
+  | str == "VII"  = "mixolydian"
+-- melodicMinor
+  | str == "III+" = "melodicMinor"
+  | str == "vio"  = "melodicMinor"
+-- -- double harmonicMishow $ map (+ n)or
+--   | str == "VI+"  = ""
+  | otherwise = str
+
+import Data.List.Split
+
+progressionsToDegree :: String -> Pattern Int
+progressionsToDegree str =
+  let symbols = foldr (++) [] $ map (Data.List.Split.split (oneOf "[]")) $ words str
+  in p(unwords $ map romanNumeralToRoot symbols)
+
+mapOverProgression :: (Parseable a, Enumerable a) => (String->String) -> String -> Pattern a
+mapOverProgression function str =
+  let symbols = foldr (++) [] $ map (Data.List.Split.split (oneOf "[]")) $ words str
+  in p( unwords $ map function symbols)
+
+tester :: (String->String) -> String -> String
+tester function str =
+  let symbols = foldr (++) [] $ map (Data.List.Split.split (oneOf "[]")) $ words str
+  in (unwords $ map function symbols)
+
+tester romanNumeralToRoot "i ii [vi vii]"
+
+hush
+
+let progression = "i ii bIII [ vi V ] i"
+
+d1 $ slow 8 $ note ( mapOverProgression romanNumeralToChord progression ) #s "pe-gtr:9"
+
+d2 $ slow 8 $ note ((scaleP (mapOverProgression getScaleForChord progression) "{ 0 2 4 7 }%16" ) + (mapOverProgression romanNumeralToRoot progression) + 12) # s "pe-gtr:9"

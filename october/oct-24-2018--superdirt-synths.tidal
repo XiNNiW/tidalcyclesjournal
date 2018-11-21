@@ -1,0 +1,6 @@
+
+d1 $ n ((scaleP "mixolydian" "0 2 3 [4 7]" )) #s "supermandolin" #detune "1 0.1 0.5 0.75" #sustain 1
+
+d1 $ note (((scaleP "todi" "0 3 4 5"))) #s "pe-gtr:9"
+
+hush

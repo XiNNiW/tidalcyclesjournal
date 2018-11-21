@@ -1,0 +1,135 @@
+-- sent to nick
+
+cps (133/60/4)
+
+hush
+
+
+let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
+
+d3
+  $ append'
+  -- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+  (up ((scaleP "minor"
+    $ stack [
+      slow "<1 1 2 3>" $ "0 2 3",
+      melody1
+    ]
+  ) + 5) # sound "rhodes" #n 5)
+  (up ((scaleP "minor"
+    $ stack [
+      slow "<1 1 2 3>" $ "0 2 3",
+      melody1
+    ] + 5
+  ) + 5) # sound "rhodes" #n 5)
+
+let chordProgression = slow 4 $ "7 2 3 4 5 0 6 8" - 7
+
+d3
+  $ slow 3
+  $ up ( (scaleP "ahirbhairav"
+    $ stack [
+      "2[~ [0 2 5 3]] . 3"+"9 2 3 4" + chordProgression
+    ]
+  )+ 5) # sound "rhodes" #n 10
+
+d4
+  $ slow 3 $ (1.5 <~)
+  $ up (scaleP "ahirbhairav"
+    $ stack [
+      "<0, 2, 4, 6>" + chordProgression
+    ]
+  ) # sound "pe-gtr" #n 10
+
+hush
+
+d5
+  $ foldEvery [2,3,5,7] (slow "[3 2] 2")
+  $ chop "8 32 24 3"
+  $ striate "64 32 128 24"
+  $ up (scaleP "harmonicMajor"
+    $ stack [
+       chordProgression + 24
+    ]
+  ) # sound "AKWFchain:6" #n 10 |+| begin 0.125 |+| end 0.5 # gain 0.7
+
+hush
+
+do
+
+
+let chordRoots = "d5 e5 [a5 as5] gs5"
+
+let chordProgression = slow 4 $ chordRoots + chord "sevenSus2 minor7 [minor major7 ] m7sharp9"
+
+let scaleProgression = slow 4 $ "harmonicMajor phrygian hungarianMinor melodicMinor"
+
+d4 $ up (chordProgression + 5) #s "rhodes" # n 12
+
+d3 $ up ((scaleP scaleProgression "0 2 3 [4 7 8]") + (slow 4 chordRoots) +12) #s "pe-gtr" # n 4
+
+
+do
+let chordProgression = slow 4 $ " d5 e5 [a5 as5] gs5" + chord "sevenSus2 minor7 [minor major7 ] m7sharp9"
+d4 $ up (chordProgression ) #s "gtr" # n 12
+
+hush
+
+do
+let chordRoots = "d5 e5 [a5 as5] gs5"
+let chordProgression = slow 4 $ chord "sevenSus2 minor7 [minor [~ maj9]] m7sharp9" + chordRoots
+let scaleProgression = slow 4 $ "melodicMinor phrygian [minor lydian] melodicMinor"
+d4 $ up (chordProgression ) #s "pe-gtr" # n 5
+d3 $ up ((scaleP scaleProgression "0 2 3 [4 7 8]") + (slow 4 chordRoots) +12) #s "pe-gtr" # n "<8, 0>" # gain 1.2
+
+-- ================================ fts experiments ==================================== --
+hush
+
+do
+
+import qualified Data.Set as Set
+
+makeUnique :: Ord a => [a] -> [a]
+makeUnique = Set.toList . Set.fromList
+
+collectByTime :: Time -> [(Arc,a)] -> [a]
+collectByTime onset = map snd . takeWhile ( (== onset) . fst . fst)
+
+collectEvents :: Pattern a -> Pattern [a]
+collectEvents pat =
+  let
+  patternAsTupleList = (patToList $ timedValues pat)
+  onsets = makeUnique $ map (fst.fst) patternAsTupleList
+  listOfSimultainiousEvents = map (($ patternAsTupleList).collectByTime) onsets
+  in
+  listToPat listOfSimultainiousEvents
+
+mapToPitchPattern :: Pattern Int -> Pattern Int -> Pattern Int
+mapToPitchPattern pitchSetPattern  = temporalParam toScale (collectEvents pitchSetPattern)
+
+let chordRoots = "d5 e5 [a5 as5] gs5"
+
+let chordProg = slow 4 $ chord "sevenSus2 minor7 [minor [~ maj9]] m7sharp9" + chordRoots
+
+:t chordProg
+
+d4 $ up (spread toScale [(patToList chordProg)] "0 1 2 3 [4 7 8]") #s "pe-gtr" # n 5
+
+d4 $ up (mapToPitchPattern chordProg "0 1 2 3 [4 7 8]") #s "pe-gtr" # n 5
+
+-- d4 $ up ((spread ($) [( toScale (patToList chordProg) )]) "0 1 2 3 [4 7 8]") #s "pe-gtr" # n 5 -- FAIL
+
+
+
+
+
+patToList  $ timedValues chordProg
+-- -- | @withEvent f p@ returns a new @Pattern@ with events mapped over
+-- -- function @f@.
+-- withEvent :: (Event a -> Event b) -> Pattern a -> Pattern b
+-- withEvent f p = Pattern $ \a -> map f $ arc p a
+--
+-- -- | @timedValues p@ returns a new @Pattern@ where values are turned
+-- -- into tuples of @Arc@ and value.
+-- timedValues :: Pattern a -> Pattern (Arc, a)
+-- timedValues = withEvent (\(a,a',v) -> (a,a',(a,v)))

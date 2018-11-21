@@ -1,0 +1,69 @@
+-- goals: find new ways of using algorithmic canons to compose parts
+hush
+
+cps(120/60/2)
+
+let melody = slow 6 $ "0 2 [4 8 .] [3 4 3] 8 4 9"
+
+d1
+$ stack [
+  note ((scaleP "minor" melody)) #s "pe-gtr:9" #gain 1.2,
+  (4 ~>) $ note ((scaleP "minor" $ melody)) #s "pe-gtr:9" #gain 1.2,
+  (8 ~>) $ slow 4 $ note ((scaleP "minor" $ melody)+12) #s "pe-gtr:9" #gain 1
+  -- (2 ~>) $ slow 2 $ note ((scaleP "minor" $ melody )*(-1)) #s "tx81z-tine:2" #gain 0.8 #cut 1
+]
+
+d1
+$ superimpose ((4 ~>) )
+$ note ((scaleP "minor" melody)) #s "[pe-gtr:9, midi]" # gain 1.2 #midichan 1
+
+let inversion = (* (-1))
+
+d1
+$ note
+((scaleP "melodicMinor"
+  $ off 1 (inversion)
+  $ palindrome
+  $ e 3 5
+  $ (irand 14)
+))#s "pe-gtr:9"
+
+hush
+
+
+-- ================================================================================ --
+-- ================================================================================ --
+
+let system1 = p(take 128 $ lindenmayer 5 "0:0 2 3 1,1:0,6:[7 8 7 .],1:6 [. 2] 0" "0")
+
+d1
+$ note
+((scaleP "melodicMinor"
+$ slow 16
+$ system1 - slow 4 system1 ))
+#s "pe-gtr:9"
+
+let lrules = "1:1 ~,0:0 1 ~ 0,~:~ 1 ~ ~ 0 0"
+    lsys n s = p ("{" ++ lindenmayer n lrules s ++ "}%8")
+
+hush
+
+let pattern = lsys 4 "1 1 ~ 0 ~ 0"
+
+let x = gain pattern
+
+d1 $
+x # sound "909" # cut 1
+
+let inverse 1 = 0
+    inverse 0 = 1
+
+do
+  let pattern = lsys 2 "[1 0 1][ ~ 0 ~ 0]"
+  let x = gain pattern
+  let y = gain (inverse <$> pattern)
+  d1 $ slow 64 $
+    stack [
+      x # sound "bd",
+      y # sound "808sd"
+    ]

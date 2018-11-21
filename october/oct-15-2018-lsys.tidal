@@ -1,0 +1,31 @@
+
+
+let lindenP iterations rules seed = p(lindenmayer iterations rules seed)
+
+let ruleSet = "0: 1 ,1: 2 ,2: 3 ,3: 4 ,5: 4 3 , 6: 7 2 . 5 , 7: 0 . 1 , 0 1: 3 2 1 0"
+
+lindenmayer 4 ruleSet "0"
+
+hush
+
+d1
+$ slow 64
+$ note ((scaleP "harmonicMajor" $ lindenP 4 ruleSet "0 3" )) #s "pe-gtr:9" # cut 1
+
+d1 $ sound "pe-gtr:9"
+
+hush
+
+let drumRules = "bd bd: bd virus-hh virus-sd virus-hh , virus-sd: virus-hh*3 virus-sd virus-sd bd , virus-hh: bd virus-hh virus-sd . "
+
+lindenmayer 3 drumRules "virus-hh"
+
+d1 $ slow 16 $ sound $ lindenP 3 drumRules "virus-hh"
+
+hush
+
+let drumRules2 = "0: 0 2 1 ~ , 1: 0 . ~ 1 2 . , ~: 0 . 1 ~ "
+
+lindenmayer 3 drumRules2 "0"
+
+d1 $ slow 32 $ sound ( fit 3 ["bd", "virus-sd", "808oh"] ( lindenP 3 drumRules2 "0"))

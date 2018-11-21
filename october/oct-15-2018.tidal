@@ -1,0 +1,80 @@
+-- goals ... polyrythm and interpolation.. slow shifting patterns
+-- TODO look up transition functions and see how they can help you shift the rythm over time
+-- TODO try to get more variety and structure without manually triggering the next pattern
+
+hush
+
+do
+cps (133/60/2)
+
+-- d9 $ midicmd "midiClock*48" # s "midi"
+-- d9 $ midicmd "stop" # s "midi"
+-- d9 $ midicmd "start" # s "midi"
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9"
+   -- sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6)
+   -- up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   -- sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6)
+   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6),
+   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   sound ". 808sd:6",
+   sound (slow 4 $ "acousticBass:3*3 acousticBass? acousticBass acousticBass") # n (run 6),
+   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+
+d1
+  $ iter 4
+  $ stack [
+    sound "808bd*2" # gain 1.2,
+    sound "808oh" # gain 0.9,
+    sound "[. 808sd:19]/2" # gain 1,
+    sound "808mt 808mt 808mt 808lt 808ht 808mt 808lt 808mt" # n (run 8)
+  ]
+
+
+
+d1
+  $ preplace (1,8) (slow 4 "1 . 1 [1 1] 1 1 1 1")
+  $ n
+  (scaleP "melodicMinor"
+  -- "0 3 4 5" )
+  $ (flip mod 14) $ (* 2) $ (+ (run 4)) $ ( run 64))
+  # s "midi" # midichan 1
+
+
+
+-- ==================================================================== --
+
+d1
+  $ preplace (1,8) "1 . 1 1"
+  $ n
+  (scaleP "melodicMinor"
+  -- "0 3 4 5" )
+  $ e 5 8
+  $ slow 4
+  $ (flip mod 14) $ (* "3 4 3") $ (+ (run 4)) $ ( run 8))
+  # s "midi" # midichan 1

@@ -1,0 +1,35 @@
+--fractal right
+d1 $ slow 2 $ sound (foldr (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
+
+--equivalent to
+d1 $ slow 2 $ sound "[bd bd] [ [bd sn] [ [bd virus-cp] [808oh*4] ] ]"
+
+--fractal left
+d1 $ slow 2 $ sound (foldl (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
+
+--equivalent to
+d1 $ slow 2 $ sound "[ [ [808oh*4] [bd bd] ] [bd sn] ] [bd virus-cp]"
+
+hush
+
+d1 $ do x <- slow 8 $ scale 0.1 0.9 sine1
+        y <- rand
+        (if y > 0.5 then ((# speed 2) . (chop 8)) else id) $ if x > 0.125 then s "808bd(3,8) 808mt*4" # room (pure x) else silence
+
+import Data.Complex
+
+let maxIter = 64
+
+rawJulia :: Coordinate -> Color
+drawJulia (x,y) = colorIterations $ julia c (x :+ y) 0
+
+julia :: Complex Double -- Constant C
+      -> Complex Double -- Iterating Z value
+      -> Int -- Current iteration
+      -> Int -- Iterations before diverging
+julia c z iter
+    | iter > maxIter = 0
+    | otherwise = let z' = z^2 + c in
+                  if magnitude(z') > 2
+                  then iter
+                  else julia c z' (iter+1)

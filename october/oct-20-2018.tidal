@@ -1,0 +1,48 @@
+
+
+let system1 = take 128 $ lindenmayer 5 "a: d [b] ,b: b b , c: [a b] a , d: " "a"
+
+system1
+
+hush
+
+resolveRule :: String -> String
+resolveRule str
+  | str == "a" = " [[0 2 [3 5]]] "
+  | str == "b" = "[ 4 3 4 . ]"
+  | str == "c" = " [7 7 7] "
+  | str == "d" = " [8 6 4 2]"
+  | otherwise = " . "
+
+-- (unwords $ map resolveRule $ words system1)
+
+resolveRules :: (Parseable a, Enumerable a) =>  String -> Pattern a
+resolveRules str = p("{"++(unwords $ map resolveRule $ words str)++"}")
+
+:t resolveRules system1
+
+d1 $ slow 32 $ note ((scaleP "dorian" $ (resolveRules system1)  )) #s "pe-gtr:9"
+
+
+let
+  melody = "<1 4 0 2> [0 1] -1 <[3 7] 6>"
+  prog = (slow 2 "<4 0 [1 3] -2>")
+
+d1 $ slow 2 $ note ((scaleP "mixolydian" $ melody + prog)) #s "pe-gtr:9" # gain 1.2
+
+d2 $ slow 2 $ note ((scaleP "mixolydian" $ (slow 2 $ melody )+ prog + "<2 2 -2 2>")) #s "pe-gtr:9" # gain 1
+
+d3 $ slow 2 $ note ((scaleP "mixolydian" $ (rev $ slow 4 $ melody ) + prog - "<<0 4 5 7> [5 -1 4 1] [2 5] 4>")-12) #s "pe-gtr:9" # gain 1.4
+
+hush
+
+
+
+resolveRule :: (Parseable a, Enumerable a) => [(String,(Pattern a -> Pattern a))] -> String -> (Pattern a -> Pattern a)
+resolveRule ruleDictionary str = fromJust $ lookup str ruleDictionary
+
+resolveRule :: [(Char,a)] -> Char -> a
+resolveRule ruleDictionary str = fromJust $ lookup str ruleDictionary
+
+stringToRules :: [(Char,a)] -> String -> [a]
+stringToRules ruleDictionary systemString = fmap (resolveRule ruleDictionary) systemString

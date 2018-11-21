@@ -1,0 +1,61 @@
+-- sent to nick
+
+cps (133/60/4)
+
+hush
+
+d1 $ spaceOut ([0.1,0.2..3] ++ [3,2.9..0.1]) $ sound "cp*4"
+
+let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
+
+let counterMelody1 = "< <0 1 3 [2 6]> . [ <-4 -1 . [2 0] > < . . 1 7 >] <[2 1] -3 0 [-1 0]> >"
+
+hush
+
+d2
+  $ up ((scaleP "minor" counterMelody1 ) ) #s "tx81z-tine" #legato 1  #gain 1
+
+d1 $ (0.5 ~>) $ sound "tech*3" # gain (scale 1 0.5 $ ((run 8)/8)) # nudge "<0.01 0.03 0.04 0.09> 0 0.1"
+
+d3
+  -- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+  $ up ((scaleP "minor"
+    $ stack [
+      slow "<1 1 2 3>" $ "0 2 3" ,
+      melody1,
+      counterMelody1 - 7
+    ]
+  ) -7 + 24) # sound "rhodes" #n 9
+
+d3
+  $ append'
+  ((up ((scaleP "minor"
+    $ stack [
+      slow "<1 1 2 3>" $ "0 2 3",
+      melody1
+    ]
+  ) -7 + 24) # sound "rhodes" #n 5))
+  (up ((scaleP "minor"
+    $ stack [
+      slow "<1 1 2 3>" $ "0 2 3",
+      melody1
+    ] + 5
+  ) -7 + 24) # sound "rhodes" #n 5)
+
+
+
+d1 $ stack [slow 2 $ n (chord "<major7 minor7 major7 m7flat5>" + "<c4 e4 c4 b3>") # s "supercomparator",
+superimpose ((# bpf (slow 8 $ scale 400 6000 sine)).(#bandq 0.5).(#gain 1.2))
+$ arpg (every 6 (fast 2))"<major7 m7flat5>" "<c4 b4>" # s "[supersaw, superchip]"
+|+| n (choose[0,12,-12,24,-24]) # att 0.6 # sus 0.6]
+# room 0.6 # size 0.6 # delay 0.7 # delayt 0.25 # delayfb 0.7 # orbit 1
+
+import Sound.Tidal.Chords
+
+d1 $ arpgt "major" "c5" # s "superpiano" -- notes c5 e5 g5 playing
+
+d1 $ note (arpg  "major") # s "rhodes:9"
+
+d1 $ note ((arpg "major7") + "e4") # s "rhodes:9"
+
+hush

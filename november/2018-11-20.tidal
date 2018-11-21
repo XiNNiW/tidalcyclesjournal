@@ -1,0 +1,28 @@
+do
+d9 $ midicmd "stop" # s "midi"
+hush
+
+do
+cps (128/60/2)
+d9 $ midicmd "midiClock*48" # s "midi"
+
+d9 $ midicmd "stop" # s "midi"
+
+d9 $ midicmd "start" # s "midi"
+
+let melody1 = "<[0 . -3 . -2 . -1] . [ ~ . -2 . 0 . ~ ] . [ -1 . -4 . 1 . ~ ] . [ 0 . 1 . -1 . 0] >"
+    melody2 = (+ 5) $ "<<[-12 . ~  . -5  .  ~] . [ ~ -14 .   ~ .  -9 ~ . [-10 ~] -11 ] . [ ~ -5] . [-2] >>"
+
+let hhPattern = " ~ x . ~ x . ~ x . ~ x "
+
+let verseTransformations = rev
+
+
+d5 $ swingBy (1/5) 10  $ note ( scaleP "phrygian" $ 1 ~> stack [ (+ 7) $ melody1, slow 2 $ melody2]   ) #s "pe-gtr:9" #gain 2
+
+d1 $ slow 2 $ swingBy (1/5) 10 $ sound "{bd [ ~ bd ~*3] . sd . bd . ~ . sd }%8"
+
+d2 $ (#nudge 0.001) $ slow 2 $ swingBy (1/5) 10  $  sound ( hhPattern <~> "hh") #gain "<0.88 1 . 0.9 1.1>"
+
+
+melody2 = (+ 7) "<<[-12 . ~  . -5  .  ~] . [ ~ -14 .   ~ .  -9 ~ . [-10 ~] -11 ] . [ ~ -5] . [-2] >>"

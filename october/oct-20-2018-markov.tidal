@@ -1,0 +1,54 @@
+import Data.Maybe
+
+import System.Random
+
+evaluateMarkovChain :: [[Double]] -> [Double] -> [Int] -> [Int]
+evaluateMarkovChain transitionMatrix randomNumbers currentChain =
+  (
+    fromJust
+    $ findIndex (r <=)
+    $ scanl1 (+)
+    (transitionMatrix!!(head currentChain))
+  ):currentChain
+  where r = randomNumbers!!(length currentChain)
+
+makeMarkovPattern :: Int -> Int -> [Double] -> [[Double]] -> Pattern Int
+makeMarkovPattern chainLength initialState randomNumbers transitionMatrix = slow (fromIntegral chainLength) $ listToPat
+  $ reverse $ (iterate (evaluateMarkovChain transitionMatrix randomNumbers) [initialState]) !! (chainLength-1)
+
+makeMarkovChain :: Int -> Int -> [Double] -> [[Double]] -> [Int]
+makeMarkovChain chainLength initialState randomNumbers transitionMatrix =
+     reverse $ (iterate (evaluateMarkovChain transitionMatrix randomNumbers) [initialState]) !! (chainLength-1)
+
+hush
+
+transitions :: [[Double]]
+transitions =
+  [
+    [0.2,0.3,0.1,0.1,0.1,0.2,0  ],
+    [0.5,0  ,0.2,0  ,0  ,0  ,0.3],
+    [0  ,0.3,0  ,0.2,0  ,0.3,0.2],
+    [0.1,0.2,0.1,0.1,0.5,0  ,0  ],
+    [0.2,0  ,0  ,0.2,0.2,0.1,0.3],
+    [0.2,0  ,0  ,0.5,0.3,0  ,0  ],
+    [0.2,0  ,0  ,0.2,0.1,0.2,0.3]
+  ]
+
+hush
+
+take 10 (randomRs (0.0,1.0) g)
+
+do
+g <- newStdGen
+d1 $ note ((scaleP "lydian" $ makeMarkovPattern 64 1 (randomRs (0.0,1.0) g) transitions)) #s "pe-gtr:10" # gain 1
+
+
+patternStates :: [String]
+patternStates = ["0 2 3 4", "0 . 0 3","[4*3] 5","7 9","3"]
+
+chooseMarkovStates :: (Parseable a, Enumerable a) => [String] -> [Int] -> Pattern a
+chooseMarkovStates states chain = cat $ fmap (p) $ fmap (states!!) chain
+
+d1 $ note ((scaleP "lydian" $ chooseMarkovStates patternStates (makeMarkovChain 6 0 (randomRs (0.0,1.0) g) transitions) )) #s "pe-gtr:10" # gain 1
+
+hush
