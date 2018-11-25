@@ -1,0 +1,36 @@
+do
+d9 $ midicmd "stop" # s "midi"
+hush
+
+do
+cps (128/60/2)
+d9 $ midicmd "midiClock*48" # s "midi"
+
+d9 $ midicmd "stop" # s "midi"
+
+d9 $ midicmd "start" # s "midi"
+
+let melody = slow 6 $ "0 2 [4 8 .] [3 4 3] 8 4 9"
+
+inversion = (* (-1))
+
+-- generateMelodicSeed = palindrome
+--   $ (+ ( (irand 4) - 2))
+--   $ slow "<2 1 2 1>"
+--   $ melody
+
+generateMelodicSeed = palindrome
+  $ linger 0.5
+  $ (+ ( (irand 4) - 2))
+  $ slow ((irand 3) + 1)
+  $ "<[[x ~ x x ]*2]  [[x x x]*2] >"<~>(irand 7)
+
+hush
+
+d1
+$ note
+((scaleP "egyptian"
+  $ off 4 ((+ 2 ).slow 2)
+  $ off 1 (inversion.slow 2)
+  $ generateMelodicSeed
+))#s "pe-gtr:9" #gain 1.2

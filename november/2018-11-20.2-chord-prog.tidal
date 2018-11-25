@@ -1,0 +1,28 @@
+do
+d9 $ midicmd "stop" # s "midi"
+hush
+
+do
+cps (128/60/2)
+d9 $ midicmd "midiClock*48" # s "midi"
+
+d9 $ midicmd "stop" # s "midi"
+
+d9 $ midicmd "start" # s "midi"
+
+let chordRoot        = "<  8     3      1           4          >"
+    chordType        = "<  minor major lydianMinor mixolydian >"
+    pulsePattern     = "< [[0,2,4,7]*2] [[0,2,4,7]*2]  [[0,2,4,7]*2]  [ [0,2,4,7] [7,9,11] ]   >"
+
+pickingPattern   = cat [
+  "[7 0 . 2 . 4 . 6]"
+  ,"[7 2 . 4 0 . 5 . ~ ]"
+  ,every 2 (slow 2 . rev) "[ [4 0 . 1] [ 2 6  . 9] ] "
+  ,"<[0 -2 . 2 4 . 7 . ~ ] [ [4 0 . 1] [ 2 6  . 9] ] >" ]
+
+d5 $ slow 2 $ note ( (+ chordRoot ) $ scaleP chordType pickingPattern ) #s "pe-gtr:9" # gain 2
+
+d6 $ slow 2 $ note ( (+ chordRoot ) $ scaleP chordType pulsePattern ) #s "pe-gtr:9" # gain 2
+
+let chordRoot2 = "< 5      6     7       8   >"
+    chordType2 = "< lydian major minor major >"

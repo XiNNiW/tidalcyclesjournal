@@ -18,6 +18,8 @@ d9 $ midicmd "stop" # s "midi"
 
 d9 $ midicmd "start" # s "midi"
 
+hush
+
 -- d1 $ sound "[bd sn] . [hh hh hh] sn"
 {-
 main idea...
@@ -34,6 +36,10 @@ melody =
     "[8 7 6 [10 9] ] [[8 7]] " +1,
     " [4 [0 -1]] [5 7]"
   ]
+
+hush
+
+d1 $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1.2 # orbit 0
 
 do
 d9 $ midicmd "start" # s "midi"

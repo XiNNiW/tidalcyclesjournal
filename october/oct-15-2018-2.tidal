@@ -14,10 +14,22 @@ $ stack [
 ]
 
 d1
-$ superimpose ((4 ~>) )
+$ superimpose ((4 ~>))
 $ note ((scaleP "minor" melody)) #s "[pe-gtr:9, midi]" # gain 1.2 #midichan 1
 
 let inversion = (* (-1))
+
+d1
+$ note
+((scaleP "minor"
+  $ off 4 (+ 2 )
+  $ off 1 (inversion.slow 2)
+  $ palindrome
+  $ (+ ( (irand 4) - 2))
+  $ slow "<1 2 1 3>"
+  $ melody
+))#s "pe-gtr:9" #gain 1.2
+
 
 d1
 $ note
