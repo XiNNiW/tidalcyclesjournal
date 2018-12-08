@@ -1,0 +1,17 @@
+do
+d9 $ midicmd "stop" # s "midi"
+hush
+
+do
+cps (128/60/2)
+d9 $ midicmd "midiClock*48" # s "midi"
+
+d9 $ midicmd "stop" # s "midi"
+
+d9 $ midicmd "start" # s "midi"
+
+d1 $ note ((scaleP "minor" $ slow 8 $ (run 8))) #s "[pe-gtr:9,midi]"
+
+d2 $ note ((scaleP "minor" $ slow 4 $ shuffle 4 $ "0 2 4 7" + 0)) #s "[pe-gtr:9,midi]"
+
+d1 $ smash 3 [2,3,4] $ sound "ho ho:2 ho:3 hc"

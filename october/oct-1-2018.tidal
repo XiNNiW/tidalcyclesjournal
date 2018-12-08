@@ -1,5 +1,6 @@
 
 getNow >>= \now ->
+
 d9 $ (pure getNow) ~> $ seqP [
   (0,1, silence),
   (1,2, midicmd "start" #sync),

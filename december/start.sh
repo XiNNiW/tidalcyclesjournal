@@ -1,0 +1,1 @@
+sclang "tidal-startup.scd"

@@ -1,0 +1,17 @@
+cps (24/60/2)
+
+d1 $ sound "[[bd bd bd] bd bd] bd bd bd [bd[bd[bd[bd[bd[bd]]]]]]"
+
+d2 $ sound "[~ ~ sd]*4"
+
+d3 $ sound "ho ho ho ho"
+
+hush
+
+d1 $ sound "{[bd bd ~ [bd bd]],[~ sd], ~ ho*3}%2"
+
+d2 $ note ((scaleP "dorian" "[0 3 4 8] 2 3 4")) #s "pe-gtr:10"
+
+d3 $ note ((scaleP "dorian" "< [< ~ 8 ~ [8 11 . 9]> [10 9 8 7]]>")) #s "pe-gtr:9"
+
+d3 $ slow 8 $ note ((scaleP "dorian" $ fast (fast 1.25 $(sine)*1.5) $ (run 8))) #s "pe-gtr:9"
