@@ -1,0 +1,75 @@
+hush
+
+let rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p
+
+d1
+$ foldEvery [5,6] (often (rip 0.6 0.1))
+$ foldEvery [3,4] (chunk 3 (iter 4 . chop 8 . slow 2))
+$ every 8 (slow 4. ply 3)
+-- $ foldEvery [2,3] (sometimes ((0.25 <~).slow 3.(# speed 0.5).rev))
+$ stack [
+  s "[EFM(<5 6 5 3>,8), [~ [~ PI:5]/2]]" #n (foldEvery [2,3] (rev. iter (slow 4 (run "<8 6>"))) $ (run 8)),
+  s "EP12:2*8" #gain (saw1) #nudge 0.1,
+  note "<0 0? ~ [0*3]>" #s "[pizz]" #nudge 0.01 # vowel "<o e i a>" # lpf (scale 100 4000 (slow ((irand 8)+1) $ sine))
+]
+
+d2 $ s "[~ EFM:0?] [~ ~ EFM:0? ~]"
+
+
+
+
+---------------------------------------------------
+
+d1
+$ foldEvery [4,6] (often (rip 0.5 0.1))
+$ foldEvery [3,4] (chunk 3 (iter 8 . chop 6 . slow 2))
+-- $ foldEvery [2,3] (sometimes ((0.25 <~).slow 3.(# speed 0.5).rev))
+$ s "{TRX:0 TRX:1? , ~ [ TRX:4 TRX:5], [~ TRX:6(3,8)]/4}%2"
+
+d1 $ s "EP12:2*8"
+
+p 1 $ s "TRX:0([[3 5] 3 [2 3]]/6,8)"
+
+hush
+
+d1 $ stripe 3 $ sound "bd sd ~ [mt ht]"
+
+d1 $ sound (sew "[t ~] [[t  ~]f t] f" "bd(<3 5 7>,8)" "cp*8")
+
+let patterns =
+  [
+    ("a", foldEvery [4,6] (often (rip 0.5 0.1))
+      $ foldEvery [3,4] (chunk 3 (iter 8 . chop 6 . slow 2))
+      $ s "TRX*8"
+      #n (foldEvery [2,3] (rev. iter (slow 4 (run 8))) $ (run 8)) # cps(133/60/2)
+    )
+  ]
+
+  fx = [("faster", fast 2)]
+
+
+p 1 $ ur 8 "a b" patterns fx
+
+
+hush
+
+let pats =
+      [
+        ("a", stack [n "c4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[c3,g4,c4]" # s "superpiano"# gain "0.7"
+                    ]
+        ),
+        ("b", stack [n "d4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[d3,a4,d4]" # s "superpiano"# gain "0.7"
+                    ]
+        ),
+        ("c", stack [n "f4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[f4,c5,f4]" # s "superpiano"# gain "0.7"
+                    ]
+        )
+      ]
+    fx = [("reverse", (# (room 0.8 # sz 0.99 # orbit 1))),
+          ("faster", fast 2)
+         ]
+in
+d1 $ ur 12 "a b:reverb c:faster" pats fx

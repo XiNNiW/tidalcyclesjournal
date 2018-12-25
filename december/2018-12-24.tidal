@@ -1,0 +1,11 @@
+
+hush
+
+d1 $ note (scale "minor" $ "0 4 7 . 2 3") #s "gtr"
+
+d1 $ slow 2 $ note ("<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>") #s "gtr"
+
+d2 $ slow 2 $ stack [
+  sound "[[bd*2] ~ bd*2][sn:2 bd*2]" # nudge "[0.01 <0.08 0.1>] [<0.01 0.01> 0.04]",
+  sound "hh*4" # nudge "0.01 0.04"
+]

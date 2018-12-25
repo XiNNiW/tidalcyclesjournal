@@ -1,0 +1,54 @@
+-- BWV 1074 in tidalcycles .. sort of
+
+let halfNoteInCycles = 0.5
+
+hush
+
+let melody = cat ["1 ~*3 4 ~*3","~*4 2 ~*3", "3 ~*7", "1 ~*3 2 ~*3", "0 ~*5 -1 0"]
+
+-- part 1
+
+do {
+  hush;
+  setcps(-1)
+}
+
+do {
+  setcps(1);
+  d1
+  $ slow 4
+  $ stack [
+    note (scale "major" $ ((3*halfNoteInCycles)~>) $ melody ) # s "[gtr,midi]",
+    note (scale "major" $ ((2*halfNoteInCycles)~>) $ melody |+ 6) # s "[gtr,midi]",
+    note (scale "major" $ ((1*halfNoteInCycles)~>) $ melody |+ 4) # s "[gtr,midi]",
+    note (scale "major" $ melody |+ 13) # s "gtr"
+  ];
+}
+
+hush
+
+-- part 2:  in reverse and inverse
+
+let melody2 = rev $ melody |* (-1)
+
+do {
+  hush;
+  setcps(-1)
+}
+
+do {
+  setcps(1);
+  d1
+  $ slow 4
+  $ stack [
+    note ((scale "major" $ ((3*halfNoteInCycles)~>) $ melody2 |+ 13)|-2) # s "[gtr,midi]",
+    note ((scale "major" $ ((2*halfNoteInCycles)~>) $ melody2 |+ 8)|-2) # s "[gtr,midi]",
+    note ((scale "major" $ ((1*halfNoteInCycles)~>) $ melody2 |+ 6)|-2) # s "[gtr,midi]",
+    note ((scale "major" $ melody2 ) |-2) # s "gtr"
+  ];
+}
+
+
+
+
+hush

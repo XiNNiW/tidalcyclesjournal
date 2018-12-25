@@ -1,0 +1,19 @@
+hush
+
+melody = "{ [6]  [2 3 4] , [~ ] [~ [10 8] 9]  [10 11 ~ 8] }%2" -- +  slow 3 "<4 3> . 4 . 2 6 8"
+
+melody = "{6 . 2 3 4 , ~ . ~ [10 8] 9 . 10 11 ~ 8}%2"
+
+melody = "{5 6 . 2 3 4, 3 7}%2"
+
+melody = "0"
+
+d1 $ n ((scale "dorian" $ "10")) #s "mrimba-f" # gain 1
+
+d2 $ slow 2 $ n ((scale "dorian" $ melody +  ( slow 3 $ iter 4 $ melody |- 3))|+12) #s "autoharp-m" # gain 0.8
+
+d1 $ note ((scale "dorian" $ "{6 . 2 3 4 , ~ . ~ [10 8] 9 . 10 11 ~ 8}%2")) #s "gtr" # gain 0.8
+
+d3 $ note ((scale "dorian" $ melody)) #s "pizz" # gain 1
+
+d2 $ note ((scale "dorian" ("0 2 3 . 2 3" + (arpeggiate "<c'maj e'min>")) )) #s "gtr"

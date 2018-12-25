@@ -1,0 +1,22 @@
+hush
+
+cps (128/60/2)
+
+let rip a b p = within (0.25, 0.75) (slow 2 . rev . stut 8 a b) p
+    rip' a b c d e p = within (a, b) (slow 2 . rev . stut c d e) p
+
+d1
+-- $ whenmod 14 17 (iter 4)
+-- $ foldEvery [3,4] (within (0, 0.5) (0.25 <~))
+-- $ every 7 (often (rip 0.5 0.1))
+-- $ every 6 (often (rip' 0 1 8 0.25 0.1))
+-- $ foldEvery [3,5] (sometimes (|=| coarse (shift' 3 $ choose [4,6..18])))
+-- $ every 4 (|=| accelerate "0.5 -0.5")
+$ stack [
+  s "PI:0(<[2 3 8] 1 2 3>,8) [~ PI:0]",
+  s $ cat ["~ PI:4", " ~ [~ PI:4]"],
+  -- s "PI:2(<2 [2 3 7] [3 2 1]>,8,2)" #gain 0.95,
+  s "PI:3*2" # gain (slow 3.3 $ saw1),
+  s "[ ~ PI:5? PI:5(<2 0 0 0>,8) ] ~",
+  s $ slow (slow 4 "<4 8>") $ "PI:8"
+]
