@@ -1,0 +1,81 @@
+
+setcps(120/60/2)
+
+drums = ( slow 2 $ stack [
+  every 3 ( (const $ s "[[606*2] ~*17]")) $ n "<0 [[0 0] ~*8] > " #s "606",
+  s "~ sn:3"
+  ])
+
+-- d2
+-- $ slow 4
+-- $ note 12 #s "pe-gtr:9"
+
+
+
+hush
+
+
+let rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p -- thanks mike
+
+mangle = (inside 3 (rev.chop 8)
+  $ iter 8 . (juxBy 0.5 (rip (0.5) 0.1.(|*| speed "<[[1 0.5] 1] [-1 1] 1>"))). within (0.2, 0.33 ) (chop 3)
+  $ inside 2 ( palindrome) $ c)
+
+a = (note (scale "hexPhrygian" $ "0 3 4 5" + (slow 2 $ cat [" 0 . -2 -1 3"])) # sound "[pe-gtr:9,midi]")
+
+b = ( note (scale "hexPhrygian" $ "0 3 4 5" + (slow 2 $ cat [" 0 . -2 -1 3", " -2 . -3 4"] )) # sound "[pe-gtr:9,midi]")
+
+c = ( note (scale "hexPhrygian" $ "0 3 4 5" + (slow 2 $ cat [" 0 . -2 -1 3", " -2 . -3 4"] |+ "<<[0 1] [-1 -2] -3 1>>")) # sound "[pe-gtr:9,midi]")
+
+let measureInCycles = 8
+in
+do {
+  resetCycles;
+  setcps(120/60/2);
+  once $ midicmd "start" # s "midi";
+  d9 $ midicmd "midiClock*48" # s "midi";
+  d1 $  seqPLoop [
+    (0, 4*measureInCycles, slow 2 $ a),
+    (4*measureInCycles, 6*measureInCycles, slow 2 $ b),
+    (6*measureInCycles, 7*measureInCycles, slow 2 $ c),
+    (7*measureInCycles, 11*measureInCycles, slow 2 $ slow ( slow 16 $ "<2 1>") c),
+    (11*measureInCycles, 19*measureInCycles, mangle)
+  ];
+}
+
+do
+  once $ midicmd "stop" # s "midi"
+  
+  d1 $ silence
+
+d9 $ midicmd "midiClock*48" # s "midi"
+
+
+
+
+
+
+
+
+
+
+
+mangle arg = (inside 3 (rev.chop 8)
+  $ iter 8 . (juxBy 0.5 (rip (0.5) 0.1.(|*| speed "<[[1 0.5] 1] [-1 1] 1>"))). within (0.2, 0.33 ) (chop 3)
+  $ inside 2 ( palindrome) $ arg)
+
+patterns = [("a",a),("b",b),("c",c)]
+
+fx = [
+  ("slowfast",slow ( slow 16 $ "<2 1>")),
+  ("slow",slow 2),
+  ("mangle",mangle)]
+
+do{
+  resetCycles;
+  d1 $ ur (measureInCycles*6) "[a:slow*4 b*2]" patterns fx
+}
+
+
+
+hush

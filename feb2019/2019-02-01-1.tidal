@@ -1,0 +1,59 @@
+hush
+
+setcps(133/60/2)
+
+cascade :: [Pattern a] -> Pattern a
+cascade voices = stack $ delayEntry voices
+      where delay = toTime (1%n)
+            n =  length voices
+            tranform = rotR delay
+            delayEntry (v:vs) = v : (delayEntry $ map tranform vs)
+            delayEntry [] = []
+
+import Sound.Tidal.Chords
+
+chordList :: String
+chordList = unwords $ map fst (chordTable :: [(String, [Int])])
+
+d1
+$ ghost
+$ juxBy 0 (((1/4)~>).euclid 6 16.(|* gain 0.75))
+$ outside 2 (every 2 (euclid "5" 8))
+$ brak
+$ cascade [
+    s "<[po12  [~ <po12 po12*2>]] po12(<3 2>,8)>",
+    (#nudge 0.001) $ s "EP12:2*2 ~ [EP12:3 ] [~ EP12:2*2]",
+    s "[po12:4] ~ ",
+    s "[po12:6] ",
+    ghost $ s "po12:5",
+    s "po12:7*8",
+    s "po12:8 ",
+    s "po12:9"
+    ]
+
+
+d3
+$ outside 2 (every 2 (euclid "5 7" 8))
+$ brak
+$ ((1/2)~>)
+$ (note $ (+| "-12 [-24 <-17 -7>]") $ mono $ arpg $ slow 8 "<[c'maj7 c'maj9] [d'm9'3 [d'm9'4 d'm9'3] [d'm9'5 d'm9'3] [c'6by9 [f'm7flat9]]]>" ) #s "karplus01"
+
+d2
+$ brak
+$ ( note
+  $ (+ "-0")
+  $ slow 8 "<[c'maj7 c'maj9] [d'm9'3 [d'm9'4 d'm9'3] [d'm9'5 d'm9'3] [c'6by9 [f'm7flat9]]]>"
+  )
+#s "pm01"
+# gain 0.65
+# orbit 3
+#pF "harmonic" "3"
+#pF "spread" 1
+#pF "brightness" 0.25
+#pF "drive" 1
+# delay 0.6
+# delaytime 0.666
+
+chordList
+
+hush

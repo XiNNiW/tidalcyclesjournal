@@ -1,0 +1,81 @@
+hush
+
+-- the charge
+
+setcps(98/60/2)
+
+d1  $ stack [
+  mono $ sound "EFM:0(<3>,<8>,<5 3 2 1, 4 4 5 6 >)",
+  mono $ sound "EFM:2(<2 3 2 4>,8,<2 ,3>)",
+  mono $ sound "EFM:6(1,8,5)" # gain 1,
+  mono $ sound "EFM:11(<1, 3, 1>,8,<3 2>)" # gain 0.8
+  -- sound "707:1(2,8,4)"
+  ]
+
+d2 $ mono $ sound "fm01(<3 2 1 5>,8,<6 2, 3>)" #pF "harmonic" (1 / run 8)
+
+d3 $ (note $ scale "hexPhrygian" $ (12*irand 2) + "[0(2,3,<4 3 2 5>),3(4,5,6),5(4,11,3),7(4,5,<2 3 2 1>)]") #s "modal03" # gain 0.6
+
+d1 $ sound "{EFM(4,8),EP12(4,5)}%2" # n (run 8)
+
+d2 $ every 2 (inside 2 (rev)) $ n "0(<3 2>,4) . 2 [3,5] .1 . 2 3" # s "EP12"
+
+d3 $ slow 4 $ note (scale "lydian" $ off (0.25) (+ 10) $"0 . 2. 3 4 . 5 " - slow 3 "0 . 2 3 . 4 . 5 ") # s "rhodes:7"
+
+hush
+
+d4
+$ iter 2
+$ every 3 (inside 2 (rev))
+$ stack [
+  sound "bd(3,5,<0 3>) [~ ~ bd]",
+  ghost $ sound "EFM:6(1,8,5)",
+  sound "EP12:2(4,5)" # gain "0.8"
+  ] # orbit 0 # room 0.1
+
+
+d4
+$ whenmod 18 17  (iter 5)
+-- $ outside 8 (every 2 (iter 5))
+$ off 0.25 (inside "4 6" (rev))
+$ sound "EFM*5" #n (run 5)
+
+d3
+$ whenmod 18 17  (iter 5)
+-- $ outside 8 (every 2 (iter 5))
+$ outside 4 (every 3 (inside 4 (rev)))
+$ slow 4
+$ note (scale "lydian" $ off (0.25) (+ 10) $ "0 . 2. 3 4 . 5 . 1 " )
+# s "pe-gtr:10" # gain 0.7 # room 0.75 # orbit 1 # delay 0.5 # delaytime 0.33
+
+d1 $ slow 4 $ chop "8" $ s "autoharp-m:24" #speed "-1"
+
+--
+
+d3
+$ slow 4
+$ note ((
+  scale "lydian"
+  $ "[0, 3, 5, 9]"
+  + "<0 2 -3 4>"
+  )+ 0)
+# sound "modal02"
+# gain 0.6
+# room 0.5
+# delay 1
+# delaytime 0.66
+
+d4
+$ note (
+  ( scale "lydian"
+  $ every 4 (const "[0 -2] ~. -2 -3. -1 2 4 -7")
+  $ "~"
+  )-12)
+# s "fm01"
+# pF "harmonic" "2 4 3 8 6 1 1.5"
+# pF "brightness" rand
+# delay 0.8
+
+
+
+hush

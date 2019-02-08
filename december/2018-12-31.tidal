@@ -1,0 +1,12 @@
+
+d1 $ stack [
+  sound "808bd [[bd 808bd ~] ~ ~ bd ]" # orbit 0,
+  sound "~ EFM:5" # orbit 0,
+  sound "[~ EFM:2]*2"
+]
+
+d2 $ note ("[0 -12] 3 [4 14] 9 . <[[2 -9] [3 15]] [[2 -9] [3 15]] [[3 -8][-12 5 [5 5]]] [0]>"-12) #s "acid309" #legato "0.25 1 0.75" # gain 1
+
+d3 $ note ("[0, 3, 5, 7]"+12) # s "rhodes:7" # gain 0.75
+
+hush

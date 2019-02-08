@@ -1,0 +1,78 @@
+setcps(133/60/2)
+
+hush
+
+let rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p -- thanks mike
+
+do
+
+d1
+$ every 8 (striate 4)
+$ every 3 (rip 0.5 0.1)
+$ foldEvery [3,4] ((0.25 <~) . rev)
+$ stack [
+  every 2 (iter 4 . (0.25 <~)) $ slow 2 $ n "{0 . 0(2,7), [~ 3]}" # sound "EFM",
+  every 3 (sometimes (fast 2)) $ n "~ 5" #s "EP12"
+]
+
+d1 $ silence
+
+do
+
+d2 $ note (scale "hexDorian" $ "0 . 2 3 . 4" + "<0 1 2 5>" +  (slow 4 "<0 1 -1 3>")) #s "pe-gtr:9" # gain 1.2 #orbit 2
+
+d2 $ silence
+
+d3 $  note (scale "hexDorian" $ "<~ [~ [0,2,5]]>" |+ "<0 1 2 5>" |+ (slow 4 "<0 1 -1 3>")|+5) #s "rhodes:5" #orbit 2
+
+d3 $  note (scale "hexPhrygian" $ "<~ [~ [0,2,5,7]] ~ [~ [0,2,5,8]]>" |+ "<0 1 2 5>" |+ (slow 4 "<0 1 -1 3>")|+5|-12) #s "rhodes:5" #orbit 2
+
+hush
+
+d1
+$ every 4 (rip 0.5 0.1)
+$ foldEvery [3,4] (within (0.25, 5) (iter 8))
+$ foldEvery [3,4] ((0.25 <~) . rev)
+$ stack [
+  n (run 8) # s "EP12",
+  sound "TRX:0"
+]
+
+d4 $ note (scale "hexPhrygian" $ mono $ every 4 (sometimes (arpeggiate)) $ "<0 [0 [0,2,5,7]] ~ [~ [0,2,5,8]]>" + "<0(3,8) 1 2(4,9,2) 5>" + (slow 4 "<0 1 -1 3>")|+5|-12) #s "pizz" #orbit 6 #gain 1.2
+
+d2
+$ foldEvery [3,4] (rot "<4 5>")
+$ note (scale "hexPhrygian"
+$ "<[~ <3 [3 5] [-1 -1 0] [~ 2]>] [~[0 . 2 3 . 4]/2]>" + "<0 1 2 -5>" +  (slow 4 "<0 1 -1 3>")) #s "prophet5" # gain 0.7 #orbit 2
+
+d3 $ note (scale "hexPhrygian" $ "<~ [~ [0,2,5,7]] ~ [~ [0,2,5,8]]>" |+ "<0 1 2 5>" |+ (slow 4 "<0 1 -1 3>")|+5) #s "superzow" #orbit 4 # gain 0.6
+
+d1 $ silence
+
+d3 $ silence
+
+hush
+
+d1
+-- $ striate 128
+-- $ chop 8
+$ every 2 (sometimes (stut 3 0.5 0.5))
+$ every 4 (rip 0.5 0.1)
+$ foldEvery [3,4] (rot "<4 5>") $ sound "EFM(<5 5 7 [3 5]>,8)" #n (run 16)
+
+d4 $ every 2 (sometimes (stut 4 0.5 0.5)) $ foldEvery [3,5] (slow 3) $ note ("0(3,8)"+"0 3 5" + "~ . 3 ~ 0 . 2") # s "pizz" # orbit 3
+
+d3 $( note  $"<~ [0,2,4,11]>" + "12" + "<0 2 5>") # s "rhodes:4" # gain 1.4
+
+d3 $ silence
+
+d5 $ every 4 (striate 4) $( note (scale "lydian" ("0 2 3 4" + "<0 [3 2 10] 4>"))|+ 12) #s "arpy" #orbit 2 # gain 0.8
+
+d4 $ silence
+
+hush
+
+-- BYE! thanks for watching!
+
+
+hush

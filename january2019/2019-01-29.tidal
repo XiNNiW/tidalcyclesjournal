@@ -1,0 +1,78 @@
+hush
+
+setcps(1)
+
+d1
+-- $ soak 4 ( rot 3 .ghost )
+$ outside 8 (every 3 $ zoom(0.25, 0.75).fast 4)
+$ every 4 (trunc "0.75 0.25")
+$ soak 4 (inside 2 $ every 2 (zoom (0.25, 0.75)).(0.25 <~))
+$ s "po12*8"
+# n (run 8)
+# delay 0.57
+# delaytime  0.333
+# orbit 0
+
+d2
+$ slow 3
+$ within (0.75,1) ((# speed "-1").fast 2)
+$ every 3 (sometimes (slow 2.fast 3))
+$ within (0, 0.25) (inside 2 (fast 2))
+$ chop 8
+-- $ ((1/8) ~>)
+$ s "EP12:3*8"
+# orbit 2
+
+d3
+$ outside 8 (every 2 $ zoom (0.25, 0.75).fast 4)
+$ (note
+  $ scale "ritusen"
+  $ soak 4 (rot "<0 1 2 3>") "0 2 [2 3] . 2 4"
+  )
+# s "fm01"
+# gain 1
+# pF "harmonic" (smooth "-1 <0 <1.5 0.5>> 2 3")
+-- # delay 0.5
+# orbit 1
+
+
+d4 $ slow 8 $ (0.5 ~>) $ note ("3") #s "amb-chord:9" # orbit 3 #gain 1.2
+
+hush
+
+scaleList
+
+hush
+
+
+d1 $ n "{ ~ ~ 1 [~ 1 ~ ] ~, 0 [~ 0] [0 ~ 0] }%3" #s "po12"
+
+d2 $ note ("{0 ~ ~ [~ 0] 12, 12, 7 19 5 <[8 5 7][5 7]> 7}%1"+12) # s "pe-gtr:7"
+
+d3
+$ outside 8 (every 2 $ zoom (0.25, 0.75).fast 4)
+$ (note
+  -- $ (+ "-12")
+  $ scale "ritusen"
+  $ soak 4 (rot "<0 1 2 3>") "0 2 [2 3] . 2 4"
+  )
+# s "modal01"
+# gain 1
+# pF "overdrive" 4
+# pF "harmonic" (smooth "1.5 2 5 3")
+-- # delay 0.5
+# orbit 1
+
+d4
+$ outside 8 (every 2 $ zoom (0.25, 0.75).fast 4)
+$ (note
+  $ (+ "-12")
+  $ scale "ritusen"
+  $ soak 4 (rot "<0 1 2 3>") "0 2 [2 3] . 2 4"
+  )
+# s "karplus01"
+# gain 0.8
+# pF "overdrive" 8
+# pF "harmonic" (smooth "1.5 2 5 3")
+-- # delay 0.5
+# orbit 1

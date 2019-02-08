@@ -1,11 +1,18 @@
+setcps(92/60/2)
 
 hush
 
 d1 $ note (scale "minor" $ "0 4 7 . 2 3") #s "gtr"
 
-d1 $ slow 2 $ note ("<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>") #s "gtr"
+d1 $ slow 2 $ note ("<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>") #s "superzow" #gain 0.5
 
 d2 $ slow 2 $ stack [
-  sound "[[bd*2] ~ bd*2][sn:2 bd*2]" # nudge "[0.01 <0.08 0.1>] [<0.01 0.01> 0.04]",
-  sound "hh*4" # nudge "0.01 0.04"
+  sound "[[bd*2] ~ bd*2, [~ sn:1] [~ ~ sn:1?]][sn:2 bd*2]" # nudge "[0.01 <0.08 0.1>] [<0.01 0.01> 0.04]",
+  sound "hh*8" # nudge "0.01 0.02 0.04 0.03"
 ]
+
+d1 $ sound "pe-gtr:9"
+
+d1 $ slow 2 $ note ("0 . 2 . 0 3 3 4") #s "basicFM" #gain 1 #pF "modMult" ("[4 2.5 3 4 1 2 3 2]*9" * slow 4 (sine)) #pF "modAmount" (range 2000 1 $ slow 4 (sine))
+
+d1 $ sound "superzow"

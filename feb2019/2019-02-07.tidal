@@ -1,0 +1,23 @@
+hush
+
+setcps(133/60/4)
+
+d1
+$ stack [
+ ghost $ s "~ virus-sd"
+ sometimes ghost $ s "PI(3 5,16,<2 3 6 5>)"
+]
+
+d2 $ stack [
+  s "karplus01" #octave 0 #lpf 9000 
+]
+
+d3
+$ slow 4
+$ (note $ scale "lydian" $ "[0,3,4,6]")
+#octave "<5 4>"
+# legato 1.5
+#s "modal01"
+#pF "spread" 1
+# gain 0.8
+# hpf 800 #bpf 1500

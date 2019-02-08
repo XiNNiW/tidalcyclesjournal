@@ -1,0 +1,78 @@
+hush
+
+
+setcps(98/60/2)
+
+d1 $ soak 4 (within (0.5 , 0.75) (stut 3 0.25 1.5).(|*| speed (slow 3 $ smooth "1 -2")))  $ sound "[bd*2 ~*2] [bd*3] [lt*2]" #n (run 8)
+
+
+
+hush
+
+let
+chordProg = slow 8 $ scale "leadingWhole" $ cat ["0 -2 <1 -1>", "1"]
+callMelody = (note ((
+    scale "minor" $ "0 . -2 [-1 [1 -3 -5]]" - chordProg)
+  ))
+responseMelody = (note (
+    scale "hexDorian" $ (snowball 4 (+) (rot 3.slow 3)
+    $ chordProg
+    )
+    +
+    snowball 6 (+) (slow 3.inside 2 (palindrome.fast 2.(|- "24 12 0")) . (rot ("0*3"+|(run 8)))) "0 3 2 . <[4,2(3,8)] [-1,5]> 5 . 2"
+  ))
+melody = (every 4 ( const (
+    ((|* speed "<-1 1 . 1 2  1 -1 .[ 1 -1] 1 1 -1 1 2>") $ callMelody + 12 )
+    #s "pm03"
+    # pF "spread" 1
+    # delay 0.5
+    # gain 1.2
+    # delaytime 1.5
+    #orbit 3
+  ) )
+  $ slow 2
+  $ soak 2 (iter 3.fast "<1 3 2 1>")
+  $ juxBy 0.7 (|* speed ("1(3,11)"*"[0 2 1] 4 -2 [4 1] 0 "))
+  $ slow 2
+  $ responseMelody
+  #s "<<pm03 pm02> [pm04 pm03]>"
+  #n ("7(4, 7)" + (tri*rand))
+  # room 1
+  #orbit 2)
+rythm = (every 4 (const (sound "<bd sn>"))
+    $ slow "<2 1>"
+    $ soak 2 (iter 4.fast "<1 1 2 1>")  . (inside 3 (every 4 (rev))).(|*speed "-1 <[0 0.5] 1>")
+    $ every 4 (slow 2)
+    $ stack [
+      (sound $ step' ["EFM:6","mfb712:5","cp","rm","cp"] "x ~ x ~ x x ~ x ~" )# orbit 1,
+      ((1/9) ~> ) $ (sound "bd*3" #n (run 4)),
+      rot 2 $ sound "[~ [r50:5 EP12:5] ~]"#orbit 4,
+      callMelody*|"1(2,8)" #s "pizz" #octave "<0 1 2 3>" ]
+      #lpf (2000* (slow 3 $ smooth $ "1 -1" *"3 . 2 . 5 6 3 5 2 . 4 5"))
+    )
+in
+do
+    resetCycles;
+    d9 $ midicmd "midiClock*48" # s "midi"
+    d1 $ rythm
+    d2 $ melody
+    d3 $ callMelody #s "midi" #midichan 0
+    d4 $ responseMelody #s "midi" #midichan 1
+    d9 $ midicmd "midiClock*48" # s "midi"
+    d8 $ midicmd "start" # s "midi"
+
+do
+    once $ midicmd "stop" # s "midi"
+    hush
+    d9 $ midicmd "midiClock*48" # s "midi"
+
+hush
+
+
+  d9 $ silence
+
+
+
+scaleList
+
+d1 $ sound "bd"

@@ -1,0 +1,40 @@
+
+
+d1
+$ slow 4
+$ (note ( scale "lydian" "0 3 . 2 4 . 5 .  <6 _>") +12)
+#s "sn0w1"
+#legato 2
+#pF "harmonic" (10/2)
+#pF "brightness" rand*3
+#pF "spread" ((1233~>)$ fast 4.34 $ rand)
+# hpf 600
+# delay 0.5
+# delaytime (3/5)
+# room 0.4
+# size 0.7
+# orbit 3
+# gain 0.9
+
+d2
+-- $ slow 4
+$ whenmod 17 18 (iter 5.rev)
+$ sometimes (within (0.75, 1) (ghost' (1/5)))
+$ (note ( scale "lydian" "0 3 . 2 4 . 5 .  <6 _>"))
+#s "karplus01"
+#octave 4
+#pF "harmonic" (5/4)
+#pF "brightness" "0.02"
+#pF "muted" 0.25*rand
+
+
+d3
+$ slow 4
+$ (note $ scale "lydian" "[0, 3, 5 ,8]")
+# s "fm01" #gain 0.9
+
+d1 $ silence
+
+d2 $ silence
+
+hush

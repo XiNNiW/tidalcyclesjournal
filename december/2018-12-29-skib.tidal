@@ -1,0 +1,9 @@
+let rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p -- thanks mike
+
+
+d1
+$ foldEvery [5,4] (rip 4 0.1)
+$ every 3 (rev. fast 2)
+$ slow 4 $ sound "bd bd"
+
+hush

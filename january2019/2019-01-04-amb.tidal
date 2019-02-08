@@ -1,0 +1,44 @@
+
+setcps(122/60/4)
+
+d1 $ stack [
+  stut "[3 1]0 0 0" 0.25 0.9 $ n "[0 [~ 0]] [[~ 0] [~ 0]] [[~ 0] <0*2 0>] 1" #s "bd" #gain 1 #lpf 10000,
+  ghost $ n "[[~ ~ ~ 3] [~ ~]] [2 ~ ~ ~]" #s "specdrm",
+  n "[[~ 5 ~ ~] [~ [5*2]]] [~ 5 ~ 5]" #s "specdrm" # gain "[[0.88..1][0.9..1]] [0.9..1] [0.88..1]",
+  s "[~] [606:6 ~]" # gain 1
+]
+
+d2
+$ mono
+$ note
+(scale "hexDorian"
+  $ "-6" - slow 8 "0 [1 2 [3 [1 -1]]]"
+) #s "pm03"
+# delay 0.5
+# delayfeedback 0.5
+#orbit 1
+#pF "harmonic" 2
+#pF "brightness" 1.25
+#sustain 1
+#attack 1
+#gain 1.5
+
+d3
+$ note
+(scale "hexDorian"
+  $ rot "<0 1 2 3>"
+  $ (slow 3 $ (0.75 ~>) $"0 2 4 5") + ("[~ 0] [2 1 ~ 1] [~ 3] <4 6>") + ( "2 [3 -2 4]")
+) #s "pm03"
+# delay 0.5
+# delayfeedback 0.5
+# delaytime 0.333
+# orbit 2
+#gain 1.5
+
+hush
+
+-- d1 $ seqPLoop [
+--   (0, 12, sound "bd bd*2"),
+--   (4, 12, sound "hh*2 [sn cp] cp future*4"),
+--   (8, 12, sound (samples "arpy*8" (run 16)))
+-- ]

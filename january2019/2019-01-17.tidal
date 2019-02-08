@@ -1,0 +1,29 @@
+
+hush
+
+d1
+$ outside 2 ( chunk 2 (inside 4 (iter 8).rev.slow 2) )
+$ s "po12*16" # n (run 8) # gain "[0.7 0.6]*8"
+
+d2
+-- $ outside 4 ( chunk 2 (inside 4 (iter 4).rev.slow 2) )
+$ jux (#s "pm03")
+$ note (scale "hexDorian"
+$ (+ "<<0 1 2 3>>")
+$ off 1 (outside 2 (iter 8))
+$ "0(3,8) 3 2 5" + "0 . 0 1 . 2 3 . 4") #s "[pm02]" # delay 0.5
+
+d3
+$ mono
+$ note ((scale "hexDorian"
+$ (+ "<<0 1 2 3>>")
+$ off 1 (outside 2 (iter 8))
+$ "0(3,8) 3 2 5" + "0 . 0 1 . 2 3 . 4")-24) #s "[pm04]" # delay 0.5
+
+d2
+$ outside 4 ( chunk 2 (inside 4 (iter 4).rev.slow 2) )
+$ note (scale "hexDorian"
+$ "0(3,8)"+"[0,4,5,8]"+"<0 2 3 -1>") #s "pm03" #gain 1.25 #attack 0.45 #decay 0.1 #sustain 1 #release 0.01 #legato 1.5
+
+
+d2 $ slow 4 $ (note 12) #s "scream03"

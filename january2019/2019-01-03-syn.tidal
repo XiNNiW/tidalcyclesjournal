@@ -1,0 +1,29 @@
+
+let rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p -- thanks mike
+
+hush
+
+let roots = "<0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 [5 7]>"
+in
+d2
+$ every 2 (often(striate "1 [1..12]"))
+$ stack [
+  note (roots |- 12) #s "pm02" #delay 0.8 #delaytime "0.33 0.5 0.25" # delayfeedback 0.5 #orbit 3  # vowel "<a e>" #crush 10000 ,
+  note (scale "minPent" (slow 3 "<0(3,5,2) -3(2,5,3)>" )+"~ [-2 2] 3 0")  #s "moogbass" #gain 0.9 #orbit 4 # vowel "a [e i a i]" # bpf (rangex 500 2000 $ slow 9 tri) # bpq 4,
+  note ((scale "minPent" (slow 3 "<0(3,5,2) -2(2,5,3)>") + (slow 2 "<0(3,5,2) -2(2,5,3)>"))+roots) #s "pm02" #orbit 3 #room 0.5 # size "[0.1 0.5] [0.1] 0.7 [0.1 0.8]"
+]
+
+d1
+$ every 8 (rip 0.5 0.1)
+$ every 4 (sometimes (# bpf 999))
+-- $ every 2 (within (0.125, 0.5) (slow (3/2)))
+-- $ every 8 (rip (0.25*tri) "<0.1 [~ 0.25 0.33]>".(|*| speed "<[[1 0.5] 1] [-1 1] 1>"))
+-- $ every 4 (iter 8.(juxBy 0.5 (rip (0.5) 0.1.(|*| speed "<[[1 0.5] 1] [-1 1] 1>"))). within (0.2, 0.33 ) (chop 3))
+$ every 4 (often (within (0.75, 1) (|*| speed "-1")))
+$ stack [
+  sound "[~ EP12 ~ ~ ~ ~] ~ ~ ~",
+  sometimes (ghost) $ n ("<0 0 0 [0 1 0] 0 0 0(3,8,1) [~ ~ [0*3 ~*9]]>" + "0*2") #s "bd" # lpf (slow 3 $ smooth ("10000 1000 500 50 500 600 700 800"*"[1 0.7]*12")) # orbit 0 #gain 1,
+  (# speed "-2")$s "[~ [ ~ minipops?]] .[ ~ minipops minipops ]?" # lpf "10000 " # orbit 2 #n "4 4 5 7" # bpf (rangex 300 2000 $ (slow 3 tri) + (slow 5 tri)),
+  foldEvery [3,4] ((0.25 <~) .rev) $ often (ghost) $ s "~ mfb712:2" #lpf 10000 #orbit 1 # room 0.1,
+  (0.25 ~>) $ s "[EP12 [~ EP12]]*2" #orbit 2 #n "2" # gain (smooth "[0.8 0.7 1 0.9]") -- #delay "<[0.9 0.1] 0>" -- #delaytime (0.11*(saw))
+]

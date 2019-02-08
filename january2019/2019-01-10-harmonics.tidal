@@ -1,0 +1,82 @@
+hush
+
+setcps(60/60/2)
+
+
+d1 $ every 4 (rev) $ sound "606*8" # n (run 8)
+
+hush
+
+-- let chordScale = "hexSus"
+chordScale = "hexDorian"
+
+melodicSeed = (seqPLoop [
+    (0,32,cat [" 0 . [0 -3] 0 . 1 2 0 1 . 2"::Pattern Int]),
+    (33, 48,"-3(3,8). -4 -5"+6),
+    (48, 64, "6")
+  ])
+
+drums = (stack [
+    every 3 ((inside 4 (rev)).ghost) $ sound "~ [fmSnare01]" #pF "index" 10 #sustain 0.2 #orbit 1 # room 0.3,
+    -- every 4 (sometimes (const $ s "bd*3 ~")) $ every 2 (sometimes (inside 2 (fast "2 1".palindrome.(|*| speed "1 -1")))) $ note (("0(4,9)" + "<0 0(3,8)>" + slow 4 "<0 1(2,5)>")-12) #s "bd" #n (run 8) # shape ((range 0.2 0.5 rand)*(smooth "1 0.2")) #gain (smooth "[1 0.5]*2")
+    every 4 (sometimes (const $ s "TRX*3 ~")) $ s "TRX"
+  ])
+
+bells = (
+  -- $ zoom
+  -- $ outside 2 ( slow 4 )
+  -- $ slow 4
+  every 4 (sometimes ((inside 2 (slow 3)).(rev)).stut 3 0.5 0.33  )
+  $ note ((scale chordScale $ melodicSeed |+ "<0> <0 2(3,5)>" |+ slow 4 "<0 [[-1(3,8)]*4]>" )+12)
+  #s "[pm04,pe-gtr:9,midi]"
+  #pF "brightness" (slow 19 $ 1.75*tri*rand)
+  #legato 4
+  #pF "index" 1.5
+  #pF "harmonic" ("1 2 3 4 5 6"/2)
+  #room 0.33
+  #orbit 3)
+
+horn = (
+  -- $ zoom
+  -- $ outside 2 ( slow 4 )
+  -- $ slow 4
+  every 2 (within (0.125, 0.25) (ply 2))
+  $ note ((scale chordScale $ (+ slow 16 "<0 ~>") $ (+  (slow 4 "<0 -2(7, 9)>")) $ melodicSeed +| "<0> <0 2(3,5)>" |+ slow 4 "<0 [[-1(3,8)]*4]>" + 6 ))
+  #s "[pm02,midi]"
+  #pF "brightness" (slow 9 $ 0.5*tri)
+  -- #legato 1
+  -- #pF "index" 1.5
+  #pF "harmonic" 0.5
+  # room 0.33
+  # gain 1
+  # orbit 4)
+
+fmbass = (
+  -- $ zoom
+  -- $ outside 2 ( slow 4 )
+  -- $ slow 4
+  (0.25 ~>)
+  $ inside 4 (fast "2 3 4 1")
+  $ note ((scale chordScale $ (|+ slow 2 "0 -2") $ (* 2) $ melodicSeed +| "<0> <0 2(3,5)>" +| slow 4 "<0 [[-1(3,8)]*4]>" -2 ))
+  # s "[fm01,midi]"
+  -- #pF "brightness" 1.75
+  -- #legato 1
+  -- #pF "index" 1.5
+  #pF "harmonic" ("1(3,8) 3(3,8)"+ "1 2 3 4 2 6"/2)
+  #pF "index" (fast 12 $ rand*"3"*"[1*4 2*4]")
+  # room 0.13
+  # nudge "0.01 0"
+  # gain 1
+  # orbit 2)
+
+do
+d1 $ drums
+d2 $ bells
+d3 $ horn
+d4 $ fmbass
+
+
+
+  -- #legato 0.25 #orbit 4  #attack 0.5 #decay 1.5 #sustain 0.5 #release 1.75
+
+hush

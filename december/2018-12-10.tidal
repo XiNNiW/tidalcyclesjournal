@@ -9,8 +9,8 @@ $ every 8 (slow 4. ply 3)
 -- $ foldEvery [2,3] (sometimes ((0.25 <~).slow 3.(# speed 0.5).rev))
 $ stack [
   s "[EFM(<5 6 5 3>,8), [~ [~ PI:5]/2]]" #n (foldEvery [2,3] (rev. iter (slow 4 (run "<8 6>"))) $ (run 8)),
-  s "EP12:2*8" #gain (saw1) #nudge 0.1,
-  note "<0 0? ~ [0*3]>" #s "[pizz]" #nudge 0.01 # vowel "<o e i a>" # lpf (scale 100 4000 (slow ((irand 8)+1) $ sine))
+  s "EP12:2*8" #gain (saw) #nudge 0.1,
+  note ("<0 0? ~ [0*3]>" |- 24) #s "[basicFM]" # pF "modMult" ("0.5" * "1 . 1 1 2 3")#gain 0.7 #nudge 0.01 # vowel "<o e i a>" # lpf (range 100 4000 (slow ((irand 8)+1) $ sine))
 ]
 
 d2 $ s "[~ EFM:0?] [~ ~ EFM:0? ~]"

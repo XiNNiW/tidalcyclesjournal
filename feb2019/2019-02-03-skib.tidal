@@ -1,0 +1,77 @@
+
+d1 $ sound "bd bd"
+
+
+d2 $ silence
+
+hush
+
+
+rand' seed = ((seed*802398407340230497) <~) $ rand
+
+_degradeBySeed x seed p  = fmap fst $ filterValues ((> x) . snd) $ (,) <$> p <*> (srand seed)
+
+degradeBy' seed = tParam $ _sdegradeBy seed
+
+_unDegradeBySeed x seed p = fmap fst $ filterValues ((<= x) . snd) $ (,) <$> p <*> (srand seed)
+
+unDegradeBy' seed = tParam $ _unDegradeBySeed seed
+
+sometimesBy' x seed f p = overlay (degradeBySeed seed x p) (unDegradeBySeed seed x $ f p)
+
+sometimes' seed = sometimesBy' 0.5 seed
+
+often' seed = sometimesBy' 0.75 seed
+
+rarely' seed = sometimesBy' 0.25 seed
+
+almostNever' seed = sometimesBy' 0.1 seed
+
+almostAlways' seed = sometimesBy' 0.9 seed
+
+degrade' seed = _degradeBySeed 0.5 seed
+
+someCyclesBy' x seed = when test
+  where test c = (flip timeToRands) seed (fromIntegral c :: Double) < x
+
+someCycles' seed = someCyclesBy 0.5 seed
+
+somecycles' seed = someCycles' seed
+
+choose' seed = chooseBy $ rand' seed
+
+wchoose' seed = wchooseBy $ rand' seed
+
+spreadChoose' f vs seed p = do v <- _segment 1 (choose' seed vs);
+                                f v p;
+
+spreadr' f vs seed p = spreadChoose' f vs seed p
+
+
+randArcs' n seed =
+  do rs <- mapM (\x -> pure (toRational x / toRational n) <~ choose' seed [1 :: Int,2,3]) [0 .. (n-1)]
+     let rats = map toRational rs
+         total = sum rats
+         pairs = pairUp $ accumulate $ map (/total) rats
+     return pairs
+       where pairUp [] = []
+             pairUp xs = Arc 0 (head xs) : pairUp' xs
+             pairUp' [] = []
+             pairUp' [_] = []
+             pairUp' [a, _] = [Arc a 1]
+             pairUp' (a:b:xs) = Arc a b: pairUp' (b:xs)
+
+randStruct' n seed = splitQueries $ Pattern {nature = Digital, query = f}
+ where f st = map (\(a,b,c) -> Event a (fromJust b) c) $ filter (\(_,x,_) -> isJust x) as
+         where as = map (\(i, Arc s' e') ->
+                   (Arc (s' + sam s) (e' + sam s),
+                      subArc (Arc s e) (Arc (s' + sam s) (e' + sam s)), i)) $
+                     enumerate $ value $ head $
+                     queryArc (randArcs n) (Arc (sam s) (nextSam s))
+               (Arc s e) = arc st
+
+
+cycleChoose' seed xs = Pattern {nature = Digital, query = q}
+ where q State {arc = Arc s e} = [Event (Arc s e) (Arc s e) (xs !! floor (dlen * ctrand' s))]
+       dlen = fromIntegral $ length xs
+       ctrand' s = ((( timeToRands)seed) :: Time -> Double) $ fromIntegral $ (floor :: Time -> Int) $ sam s

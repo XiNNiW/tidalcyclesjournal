@@ -8,10 +8,12 @@
 
 do
 d9 $ midicmd "stop" # s "midi"
+
 hush
 
 do
-cps (128/60/2)
+setcps (128/60/2)
+
 d9 $ midicmd "midiClock*48" # s "midi"
 
 d9 $ midicmd "stop" # s "midi"
@@ -42,7 +44,8 @@ hush
 d1 $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1.2 # orbit 0
 
 do
-d9 $ midicmd "start" # s "midi"
+-- d9 $ midicmd "start" # s "midi"
+
 d1
   $ every 8 ( scramble 4 . rarely (chop 16) . (0.25 <~) )
   $ chunk 4 (slow 2 . sometimes (rev) . sometimes ( (0.25 <~)))
@@ -51,42 +54,46 @@ d1
   $ foldEvery [2,3,11,7] (often (0.125 <~))
   $ iter 4
   $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1.2 # orbit 0
+
+
 d2
   $ foldEvery [3,4,11] (sometimes (degradeBy 0.3))
   $ foldEvery [4,5] (sometimes (slow 2))
   $ chunk 8 (sometimes (rev))
   $ (#nudge "[0.005 0.02]*4")
   $ note "0*8"
-  # sound "[lighter,midi]"
-  # speed  (0.6 + (0.3/8)*(slow ((irand 7)+1) $ saw1))
-  # gain (scale 0.88 0.6 (slow ((irand 11)+1) $ saw1)) # midichan 0 #orbit 1
+  # sound "lighter"
+  # speed  (0.6 + (0.3/8)*(slow ((irand 7)+1) $ saw))
+  # gain (range 0.88 0.6 (slow ((irand 11)+1) $ saw)) # midichan 0 #orbit 1
+
 d3
   $ slow 8
-  $ note ((scaleP "hexMajor7" (
+  $ note ((scale "hexMajor7" (
     melody
-    )) + 12)
-  #s "[ pe-gtr:5, midi]" # gain 1.2 # midichan 1 #orbit 2
+    )) |+ 12)
+  #s "[pe-gtr:5,midi]" # gain 1.2 #orbit 2 # midichan 1
 -- d4
 --   $ slow 8
---   $ note ((scaleP "hexMajor7" (
+--   $ note ((scale "hexMajor7" (
 --     "<[0 [3 5]?] 9 [2 [3 5]?] 5>"+melody
 --     )) )
 --     #s "[pe-gtr:9,midi]" # gain 1.2 #midichan 2 #orbit 3 -- #pan "<0 1 1 0.75 0.75 0.5>"
+
 d5
   $ slow 8
-  $ note ((scaleP "hexMajor7" (
-    (flip mod 12) $ "<[0 -2] 2 [2 1 ] 7>"-melody
+  $ note ((scale "hexMajor7" (
+    (flip mod 12) $ "<[0 -2] 2 [2 1 ] 7>"|-melody
     )) )
-  #s "[ pe-gtr:2, midi]" # gain 1.2 # midichan 3 #orbit 4
+  #s "pe-gtr:2" # gain 1.2 # midichan 3 #orbit 4
 
 do
 hush
 
-d4 $ slow 8 $ note (scaleP "hexMajor7" $ "<[0 [3 5]?] 9 [2 [3 5]?] 5>"+melody) #s "[pe-gtr:9,midi]" #gain 1.2 #midichan 2 #orbit 3
+d4 $ slow 8 $ note (scale "hexMajor7" $ "<[0 [3 5]?] 9 [2 [3 5]?] 5>"+melody) #s "[pe-gtr:9,midi]" #gain 1.2 #midichan 2 #orbit 3
 
 d4
   $ slow 8
-  $ note ((scaleP "hexMajor7" (
+  $ note ((scale "hexMajor7" (
     "<[0 [3 5]?] 9 [2 [3 5]?] 5>"+melody
     )) )
     #s "[pe-gtr:9,midi]" # gain 1.2 #midichan 2 #orbit 3 -- #pan "<0 1 1 0.75 0.75 0.5>"
@@ -102,7 +109,7 @@ d4
 d3
   -- $ runWith 8 (slow 3)
   $ slow 8
-  $ up ((scaleP "hexMajor6" (
+  $ up ((scale "hexMajor6" (
     -- off 0.25 (+4)
     -- off 0.125 (slow 3.rev.(+2) )
     "<10 3 9 1> 6(3,8) 3 [5 -2] <[4 3] [2 3]> <4(5,8,3) 0(5,8,3) <4 5>(5,8,3) 1(5,8,3)> <2 5 [2 0] [5 . 4]> ~" )) + 12 - 5)
