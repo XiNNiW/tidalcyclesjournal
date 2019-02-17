@@ -1,4 +1,5 @@
 :set -XOverloadedStrings
+:set -XFlexibleContexts
 :set prompt ""
 :set prompt-cont ""
 
@@ -61,16 +62,29 @@ snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinat
 soak depth f pattern = cat $ take depth $ iterate f pattern
 
 -- cascade :: [Pattern a] -> Pattern a
-cascade voices = stack $ delayEntry voices
-                    where delay = toTime (1%n)
-                          n =  length voices
-                          transform = rotR delay
-                          delayEntry (v:vs) = v : (delayEntry $ map transform vs)
-                          delayEntry [] = []
+-- cascade voices = (stack $ delayEntry voices
+--                     where delay = toTime (1%n)
+--                           n =  length voices
+--                           transform = rotR delay
+--                           delayEntry (v:vs) = v : (delayEntry $ map transform vs)
+--                           delayEntry [] = [])
 
 rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p
 
 -- chordList :: String
 chordList = unwords $ map fst (chordTable :: [(String, [Int])])
+
+ghostBy a p = tParam ghost' (a) p
+
+replicator text1 = [putStr (text1) | x <- replicate 500 text1]
+
+flood text2 = sequence_(replicator text2)
+
+replicator' n text1 = [putStr (text1) | x <- replicate n text1]
+
+flood' n text2 = sequence_(replicator' n text2)
+
+-- terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
+terr start stop pattern = (start, stop, pattern)
 
 :set prompt "tidal> "

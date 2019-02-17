@@ -18,7 +18,7 @@ SynthDef(\amb0, {
 	osc1 = PMOsc.ar(vibFreq+osc1tune.midicps, harmonic*0.5*vibFreq, Line.ar(20,0,4)*mod*(1+noise)*brightness, 0, 0.1);
 	osc2 = PMOsc.ar(vibFreq+osc1tune.midicps, harmonic*0.5*vibFreq, Line.ar(20,0,4)*mod*(1+noise)*brightness, 0, 0.1);
 	osc3 = PMOsc.ar(vibFreq+osc1tune.midicps, harmonic*0.5*vibFreq, Line.ar(20,0,4)*mod*(1+noise)*brightness, 0, 0.1);
-	env = EnvGen.kr(Env.adsr(attack,decay,sustain,release,amp), gate, timeScale:sustain, doneAction:2); // look at the helpfile for Env for more
+	env = EnvGen.kr(Env.adsr(attack,decay,1,release,amp), gate, timeScale:sustain, doneAction:2); // look at the helpfile for Env for more
 	OffsetOut.ar(out, DirtPan.ar((osc1+osc2)/2, ~dirt.numChannels, pan-spread, env));
 	OffsetOut.ar(out, DirtPan.ar((osc2+osc3)/2, ~dirt.numChannels, pan+spread, env));
 }).add

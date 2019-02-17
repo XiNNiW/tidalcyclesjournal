@@ -1,0 +1,108 @@
+-- last time we covered basic rhythm and sample playing in tidalcycles
+-- lets make some melodies next
+-- the 'note' function takes a pattern of numbers and pitches the sound up or down
+
+d1 $ note "0 2 4 5 7 9 11 12" # s "gtr"
+
+hush
+
+-- this pattern plays a major scale using a guitar sample as its sound source
+-- the '#' symbol is a function that sets a property of the pattern. in this case, it sets the sample property 's' to 'gtr'
+
+-- the numbers indicate the number of semitones that to transpose the sample by
+-- the semitones for the major scale are the collection above
+-- a minor scale looks like this:
+d1 $ note "0 2 3 5 7 8 10 12" # s "gtr"
+
+hush
+
+-- the following also plays a major scale
+d1 $ note (scale "major" "0 1 2 3 4 5 6 7") # s "gtr"
+
+hush
+
+-- minor
+d1 $ note (scale "minor" "0 1 2 3 4 5 6 7") # s "gtr"
+
+hush
+
+-- by the way, tidal has lots of scales to choose from
+-- the 'scaleList' function will print them out
+scaleList
+-- each scale has a different mood and feeling
+
+d1 $ note (scale "pelog" "0 1 2 3 4 5 6 7") # s "gtr"
+
+-- you can of course use all the rythmic tricks we learned last time
+d1 $ note (scale "minor" "[0 1 2] 0 [4 2] 7") #s "gtr"
+
+-- the scale function lets you experiment with the numbers while staying within a key
+-- the following code transposes a short phrase while keeping in the minor scale
+-- the angle brakets slow the pattern within to one number per cycles
+-- the result is that, each cycle, the phrase transposed higher
+d1 $ note (scale "minor" ("[0 1 2] 0 [4 2] 7" + "<0 1 2 3 4 5 6 7>")) # s "gtr"
+
+-- here are some more
+
+d1 $ note (scale "minor" ("[0 1 2] 0 [4 2] 7" - "[0 . -3 -2 . 1 . 2 3]/2")) # s "gtr"
+
+-- you don't have to know what will happen beforehand... its fun to just play with the numbers and see what happens
+
+d1 $ note (scale "minor" ("[0 1 2] 0 [4 2] 7" + "[4 . 3 2 0 . 1 . [2  3]/2]/2" - "4 . 2 3 . 5")) # s "gtr"
+
+hush
+
+-- did you notice that the rythmn changes in that last example?
+-- thats because, in tidal, the rythmic structure of a pattern comes from both sides of an operator like "+"
+-- if the following plays two notes in a cycle
+d1 $ note ("0 0") # s "gtr"
+
+-- and this plays 3
+d1 $ note ("2 4 2") # s "gtr"
+
+-- this plays 4
+
+d1 $ note ("0 0" + "2 4 2") # s "gtr"
+
+-- it is the same as saying
+d1 $ note ("2 [4 4] 2") # s "gtr"
+
+hush
+
+-- the first two numbers (0 and 2), occur at the same time, so they simply add together
+-- the second note in the second pattern, interrupts the first creating a new notes
+-- don't worry if this doesnt make sense yet
+-- if you don't like the effect of combining structure from both sides you can choose which side to take the rhythm from
+-- you can choose using the '|' symbols
+
+-- rhythm/structure from the right:
+d1 $ note ("0 0" |+ "2 4 2") # s "gtr"
+
+-- rhythm/structure from the left:
+d1 $ note ("0 0" +| "2 4 2") # s "gtr"
+
+hush
+
+-- you can use the syntax we learned last time with commas to make chords
+-- here are all the 3 note chords in c major
+
+d1 $ note ( scale "major" $ "[0, 2, 4]" + "<0 1 2 3 4 5 6 7>") # s "gtr" # gain 0.9 -- the "# gain 0.9" makes things a bit quieter
+
+hush
+-- bonus, you can also put patterns in the chords
+
+d1 $ note ( scale "major" $ "[0 0 -1 0, 2*3, 4 3]" + "<0 1 2 3 4 5 6 7>") # s "gtr" # gain 0.9 -- the "# gain 0.9" makes things a bit quieter
+
+-- you can also play chords this way
+d1 $ note ("<c'maj7 d'6by9 c'maj7 [d'6by9 g'maj9]>") # sound "gtr" # gain 0.9
+
+
+hush
+
+-- you can combine all of the tools above to make some pretty intricate melodies/chords
+d1 $ note ( scale "yu"
+  $ stack [
+    "<[0 1 0 1] [0 1]> . <[2 3] [1 2]> . <5 1 6 [-1 2]>" + "<0 [-1*4] 1 <[4*4] 6>>", -- melody
+    "<[0, 2, 4 ,5] [-2, 0, 3 ,4]>" --chords
+  ]
+) #s "gtr" # gain 0.89

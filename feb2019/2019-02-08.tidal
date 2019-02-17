@@ -1,0 +1,70 @@
+hush
+
+d1
+-- $ outside 2 (iter 16)
+$ stack [
+  ghost $ s "virus-ch(7,16,5)" #n (sometimes (const $ irand 5) $"[0]") # gain 0.8
+  ,s "virus-bd:5(<2>, 16, <0 [0 1] 5 [3] >)"
+  ,s "virus-tm:1(<0 0 0 [11 7]>, 16, < 5 3 7>)" #up "5 -2 3 5 2" |* speed( 1+( range "-0.1" 0.1 $ smooth $ fast 3 $ rand)) #crush (range 5 8 $ rand)
+  ,inside 2 (every 2 (sometimes (fast 2.palindrome.(*| gain 0.8)))) $ s "virus-sd:6(<1 3>, 16, <7>)" # gain 0.93
+]
+
+d2
+$ slow 3
+$ (note $ scale "indian" $ snowball 4 (+) (fast 2. slow 3.(+ (slow 5 (run 5)))) "0")
+# s "pm02"
+#pF "harmonic" "2"
+# octave 2 # legato 1.125 # orbit 1 #gain 1.2
+
+d3
+$ slow 4
+$ (0.125 ~>)
+$ jux (rev)
+$ loopAt "-0.75"
+$ chop 24
+$ iter 8
+$ chop 16
+$ s "thrush" # unit "c" *| speed "-1 -0.5" # delay "0.5" #delaytime 0.333 # orbit 3 # crush 5 # lpf 2000 #hpf 6000 #accelerate "-2"
+
+
+scaleList
+
+--
+
+hush
+
+let m1 = "[<0 -1> <0 5>,<7 6 [7 6 5] [3 4] 5 4 3 2 1>/4, <<-3 -4> ~ -2(3,16,<0 1 2 3>)> <~ 2(2,16,5 3 5)>]"
+    melody =  (scale "melodicMinorDesc" $ soak 4 (outside 3 (iter 2)) $ m1 |+ (slow 2 (1*( m1 -"<[4 2] 3>"))))
+in
+d1
+$ stack [
+  s "sn0w1"
+    + note (scale "melodicMinorDesc" m1)
+    # gain 0.88
+    # attack 1 #release (0.333*4)
+    # legato 2.5
+    # pF "spread" 1
+    # pF "warmth" 0.02
+  ,s "modal03"
+    + note  (scale "melodicMinorDesc" melody)
+    # attack (fast 2 $"0.333(3,16)"*saw) #release (0.333*4)
+    # legato 2.5
+    # pF "spread" (rand*saw)
+]
+#delay 0.877
+#delaytime 0.66
+#room 1 #size 0.88
+#pF "harmonic" 3 #pF "brightness" 1
+# pF "overdrive" 2
+
+
+hush
+
+:t ghost'
+
+: choose
+
+:t tParam
+--
+
+ghostBy a p = tParam ghost' (a) p

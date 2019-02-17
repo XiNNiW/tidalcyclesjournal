@@ -24,6 +24,8 @@ d3 $ slow 4 $ note (scale "lydian" $ off (0.25) (+ 10) $"0 . 2. 3 4 . 5 " - slow
 
 hush
 
+:t replicate
+
 d4
 $ iter 2
 $ every 3 (inside 2 (rev))
@@ -60,7 +62,7 @@ $ note ((
   + "<0 2 -3 4>"
   )+ 0)
 # sound "modal02"
-# gain 0.6
+# gain 1
 # room 0.5
 # delay 1
 # delaytime 0.66
@@ -75,6 +77,8 @@ $ note (
 # pF "harmonic" "2 4 3 8 6 1 1.5"
 # pF "brightness" rand
 # delay 0.8
+
+hush
 
 
 

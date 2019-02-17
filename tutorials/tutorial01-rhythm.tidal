@@ -1,0 +1,136 @@
+-- lets make a 4 on the floor beat
+-- the 'sound' function lets us make sound
+-- it takes one argument: a string that tells it which sound to play
+-- 'bd' is the name of a folder full of bassdrum samples
+
+-- the code below makes the bass drum play once per cycle
+-- try it out by putting your cursor on line 8 and pressing control+enter
+d1 $ sound "bd"
+
+hush
+
+-- lets break down what's going on in that line:
+-- 'd1' is the name of the pattern channel we would like to assign the sounds to.
+
+-- 'sound' is a function that makes sound when given a name
+
+-- '$' means execute everything to the right first.
+-- it is equivalent to wrapping the right half of the line in paranthesis
+-- the code on the next line is saying the same thing as the code on line 8
+d1 (sound "bd")
+
+-- so is the next line
+d1 $ s "bd"
+
+-- the 'hush' command silences all pattern channels
+hush
+
+
+-- everything in tidal happens in a cycle. time is circular. the code above plays the bd sample at the start of each cycle.
+-- if we want to add more notes to pattern channel d1, we can do so by adding more names of sounds
+-- the code on the next line plays the bd sample 2 times per tidalcycles
+d1 $ sound "bd bd"
+-- notice that we hear the bd twice as fast in this example, that is because tidal is fitting 2 bd sounds in 1 cycle
+
+-- this code plays it 3 times per cycle
+d1 $ sound "bd bd bd"
+
+-- this code plays it 4 times per cycle
+d1 $ sound "bd bd bd bd"
+
+-- the '~' symbol denotes a rest
+d1 $ sound "bd ~ bd bd"
+
+-- this code also plays bd 4 times per cycle
+d1 $ sound "bd*4"
+-- the multiplication symbol '*' means play the sound x times more often where x is the number to the right of "*"
+
+-- other math symbols work in similar ways
+-- this code plays it 3 times LESS frequently, or every 3rd cycle
+d1 $ sound "bd/3"
+
+-- square brakets can be used to make groupings within tidalcycles
+-- the following code makes a tripelet in the bass drum followed by a snare drum
+d1 $ sound "[bd bd bd] sd"
+
+-- here are some other ways to express the same idea
+d1 $ sound "[bd*3] sd"
+
+-- you can slow down and speed up groups of notes the same way we did earlier with single notes
+
+d1 $ sound "[bd bd bd]/2 sd"
+
+-- the '.' symbol can alse be used to create groupings
+
+d1 $ sound "bd . bd bd bd . sd . bd bd"
+
+-- is the same as∷
+
+d1 $ sound "[bd][bd bd bd][sd][bd bd]"
+
+-- angle brakets slow down the pattern within them so that only one note plays per cycle
+-- the following plays a bassdrum on the first cycle, a snare on the second, and a highhat on the third
+
+d1 $ sound "<bd sd hh>"
+
+
+-- you can choose different samples from a given set of sounds using the ':' symbol
+-- remember when i said that 'bd' was the name of a folder full of bass drums?
+-- this will play through some of them
+
+d1 $ sound "bd:0 bd:1 bd:2 bd:3 bd:4 bd:5 bd:6 bd:7"
+
+--the same is true of the other sound names
+d1 $ sound "sd:0 sd:1"
+
+d1 $ sound "hh:0 hh:1 hh:2 hh:3 hh:4 hh:5 hh:6 hh:7"
+
+
+
+-- in combination
+d1 $ sound "[bd*2] hh:3 . bd:5 hh . <sd:3 [sd*3]> . hh <bd:2 [bd*2]/3 hh>"
+
+-- you can make alot of different rhythms this way
+-- you don't have to know what will happen, its fun just to play around until you find somthing you like
+
+hush
+
+-- what happens if we want to make more than one sound at a time?
+-- there are several ways to do this
+-- one of the easiest ways is to use commas inside groups
+d1 $ sound "bd [bd,sd]"
+-- in the line above the bass drum plays together with the snare
+
+-- these ideas can all be combined to create more complex musical ideas
+d1 $ sound "[bd*3]/2 [[bd bd]/3, [sd*3]]"
+
+-- the 'stack' function is another way to make more than one note play at a time
+-- 'stack' takes an list of patterns
+
+d1 $ stack [
+  sound "bd bd",
+  sound "~ sd"
+]
+
+-- this pattern is the same thing as
+
+d1 $ sound "bd [bd,sd]"
+
+hush
+
+-- all together now
+d1 $ stack [
+  sound "hh hh hh hh",
+  sound "~ lt lt",
+  sound "[bd*2] hh:3 . bd:5 hh . <sd:3 [sd*3]> . [hh:2, bd] <bd:2 [bd*2]/3 hh:1>"
+]
+
+-- you can change the tempo with the setcps function. cps stands for cycles per second
+-- the following line sets the tempo to 98 bpm
+
+setcps(98/60/4)
+
+hush
+
+-- with these tools alone, you can write alot of drum parts
+-- but there is alot more in tidal...

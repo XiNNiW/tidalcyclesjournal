@@ -1,0 +1,63 @@
+-- hi... I am xinniw
+-- thanks for watching
+
+flood "--- ok ---"
+
+hush
+
+d1
+$ every 9 (# crush 4)
+$ soak 4 (inside 2 (rev))
+$ foldEvery [2,3] (0.25 ~>)
+$ iter 8
+$ every 8 brak
+$ stack [
+  s "EFM(<3 5 8 4>, 16, <0 1 0 3>)"
+  ,
+  ghost $ s "[~ EFM:5]*2"
+  ,
+  s "EP12:2(<6 8 4 5>,16,<2 1 3 2>)"
+]
+
+chordprog = "<0 0 0 1 -3 -2 2>"
+
+d3 $ note (scale "pelog" $ soak 4 ((+ "1"). slow 2) $ every 2 (+ "~ -3 2 4") "0 . 1 2 . 4 5" + "<0 0 0 1 -3 -2 2>")# s"modal01" #delay 0.4 #delaytime 0.3333 # orbit 3
+
+d4 $ slow 4 $ note (scale "pelog" $ "[-3,0,2,5]" + "<0 0 0 1 -3 -2 2>") # "modal03" # orbit 4 # room 0.44
+
+d5 $ note (scale "pelog" $ soak 4 (inside 2 (rev)) $ "3 . 4 5 . 5 9 2" +chordprog) # s "chBand01" # gain 0.77 # room 0.5 # orbit 2
+
+d2 $ silence
+
+
+
+d1 $ every 8 (chop 16. iter 16) $ ghost $ soak 4 (inside 2 (rev). (0.125 ~>)) $ iter 8 $ s "EP12*8" # n (run 8) # crush 4
+
+d1 $ silence
+
+d2 $ sound "modal02" # delay 0.7 # orbit 3
+
+d3 $ note (scale "hexMajor7" $ "0 3 . 2 3 . 5 5 5") # s "pm03" # legato 2 # gain 1.4 # orbit 3 # pF "harmonic" (scan 16) # lpf 500
+
+d4 $ slow 4 $ sound "pm02" # pF "spread" 2 # pF "harmonic" 3
+
+hush
+
+-- THANKS ALL
+
+-- terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
+-- terr start stop pattern = (start, stop, pattern)
+--
+-- terrace :: Time -> [Pattern a] -> (Time, Time, Pattern a)
+-- terrace entryDelay patterns =
+-- where 
+-- joinTerrace start p ps terraces = (start, (start + entryDelay), p) ++ (joinTerrace (start + entryDelay) p ps )
+-- joinTerrace start p [] = (start, (start + entryDelay), p)
+
+d1 $ seqPLoop [
+terr 2 3 $ s "bd(4,5,8)"
+,
+terr 4 6 $ s "bd(<3 2 4 5>,16,<0 2 5 4>)"
+,
+terr 5 8 $ s "EP12*8" # n (run 8)
+]

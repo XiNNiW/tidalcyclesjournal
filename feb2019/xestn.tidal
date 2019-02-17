@@ -1,0 +1,84 @@
+ghostBy a p = tParam ghost' (a) p
+
+-- rtmp://toplap.org/algotest/
+-- rtmp://toplap.org/toplap15/
+
+
+let squip p = slow 1 $ soak 2 (iter 4 . off (8/16) ((|+ n 1).mono.slow "3/4 3/2 5/7 2". ghostBy ((+ 0.75)$(/24)$"<5 8 11 9>").(|* speed (range 0.75 1 $ fast 16 $ rand)) .inside 2 (rev).(|* speed "-1"))) p
+in
+d1
+$ stack [
+  -- every 9 (inside 4 (sometimes (# crush 4))) $
+  -- outside 2 (sometimes (stut 7 (1/32) 1).soak 2 (euclid 12 16))
+  -- $ outside 2 (every 2 (squip))
+  iter 8
+  -- $ foldEvery [2,3,9] (sometimes (rot "<1 6/2 2 4/7>"))
+  -- $ soak 3 (euclid "<2 6 3 9>" 16)
+  -- $ outside 2 (every 2 (slow 3.fast 2))
+  -- $ outside 2 (brak)
+  $ cat [
+    stack [
+      n "0 . [2 [2? <6? 0> 2 2]/5] . <[~ 4] 5/3> ." # s "EP12"
+      ,s "~ virus-sd"
+      ,n "~. ~. 2 . 2 . ~ . 2 3" # s "EP12" # gain (fast 3 $ range 0.75 0.88 $ saw) # start 0.2
+      ,n "2*8" # s "EFM:2" # gain (range 0.75 0.88 $ saw)
+    ]
+    ,
+    stack [
+      n "0(<3 2 1 2>,16, <0 3 2>) . 1(1,16,<2,3>) . <[~ 4] 5/3> ." # s "EP12"
+      ,s "~ virus-sd"
+    ]
+  ]
+  # lpf 8000
+  , outside 2 (every 2 (fast (slow 2 $ scan 3)))$ s "EP12:2*8" # gain (fast 3 $ range 0.75 0.88 $ saw) # speed (fast 3 $ range 1.5 1.88 $ fast (scan 8) saw) #nudge "[0.001 0.05]*8"
+]
+
+setcps(110/60/4)
+
+d1
+$ stack [
+  s "EFM(<1 3 2 5>,16,<0 3 2 1>)"
+  ,
+  s "~ virus-sd:1"
+  ,
+  ghost $ s "808:4(<6,8>,16,<[1 1 0] [1 3 0]>)" # gain (range 0.5 0.75 $ saw + (fast 2 saw))
+]
+
+flood "hello "
+
+rtmp://toplap.org/toplap15/
+
+d2
+$ mono
+$ note (scale "pelog" $ snowball 4 (-) (slow 4.(substruct ("1(<1 2 3 4>,16,<16 2 3 4>)"))) (slow 2 $ "0 . -1 2 . 3 5 . -2") )
+#s "chBand01" #legato 2 #pF "brightness" 1.2 #octave 4 #pF "overdrive" 2 #orbit 2 #delay 0.5 #delaytime 0.333 #gain 0.8
+
+d3 $ every 3 (euclid 5 8) $ note ( scale "minor" $ "[-3, <0 0 0 -1>, <4 5>, 9]") # s "chBand01" #pF "brightness" 1.2 #pF "overdrive" 1 # octave 3 #hpf 750 #orbit 3
+
+anticipateIn 4 3 $ sound "modal01"
+
+hush
+
+scaleList
+
+d1 $ silence
+
+d2
+-- $ slow 16
+$ every 2 (slow 9)
+$ stack [
+  inside 4 (euclid 3 8)
+  $ cat [
+    note (scale "pelog" "[-3,0,5,13]"),
+    note (scale "pelog" $ "[-3,0,5,13]" + 5)
+  ] #s "[<modal03 karplus01> fm01]*8"
+  # lpf (smooth $ range 2000 5000 $ rand+saw)
+  #pF "harmonic" "<1 4 . 1 6 . 1 . 2>"
+  # gain 0.08 # pF "brightness" rand
+  #room "0.1 0.4" #size "0.1 0.75" # orbit 3
+  ,
+  every 2 (sometimes (slow 2)) $ note (scale "pelog" $ soak 2 (+ irand 4) $ run 8) # sound "[chBand01]*8" #legato 2 #pF "overdrive" 2 #pF "brightness" (fast 4 $(1213~>) $rand) #gain 0.7
+]
+
+
+hush

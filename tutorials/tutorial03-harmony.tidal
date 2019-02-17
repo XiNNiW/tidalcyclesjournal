@@ -1,0 +1,29 @@
+-- there are many ways to control harmony in TidalCycles
+-- last time we looked at using the 'scale' function to control the set of notes that we used
+
+hush
+
+d1 $ note ( scale "major" $ "[0 0 -1 0, 2*3, 4 3]" + "<0 1 2 3 4 5 6 7>") # s "gtr" # gain 0.9
+
+-- you can also specify chords directly in the patterns
+d1 $ note ("<c'maj7 d'6by9 <c'maj7 b'min7> [d'6by9 g'maj9]>") # sound "gtr" # gain 0.9
+
+-- the letter before the single quote specifies the root note and the part after specifies the chords
+-- you can also specify how many notes should be included in the chords
+-- the following plays the first 3 notes of a cmaj7 chords
+d1 $ note ("c'maj7'3") # sound "gtr" #gain 0.9
+
+-- the first 4 note of cmaj7
+
+d1 $ note ("c'maj7'4") #sound "gtr" #gain 0.9
+
+-- patterns of chords can be arpeggiated using the 'arpg' and 'arpeggiate' functions
+
+d1 $ note (arpeggiate $ "ds'min7 gs'm9") # sound "gtr" #gain 0.9
+
+-- notice one half of the arpeggio pattern is faster
+-- thats because it contains more notes
+-- this will make them play at the same speed
+d1 $ note (arpeggiate $ "ds'min7'6 gs'm9'6") # sound "gtr" #gain 0.9
+
+hush

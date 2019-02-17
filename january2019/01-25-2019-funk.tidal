@@ -6,7 +6,7 @@ setcps(1)
 d1
 $ juxBy 0 (("0.75 0.25" ~>).slow 3.inside 2 (rev))
 $ soak 4 (euclid "<3 4>" "< 8>".slow 2)
-$ juxBy 0.5 (rev . striate 12)
+$ juxBy 1 (rev . striate 12)
 $ stack [
   inside 8 (every 4 (ghost.sometimes (rev))) $ sound "<EP12*8>" #n (run 8),
   stut 3 0.3 (rand) $ sound "[PI*1]"

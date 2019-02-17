@@ -26,7 +26,7 @@ SynthDef(\karplus02, {
 	noise = PinkNoise.ar(1);
 	oscC = Pluck.ar(noise,strike,maxDelay,(vibFreq*WhiteNoise.kr(atonal)*burst/2).reciprocal,10,coef:muted.tanh);
 
-	env = EnvGen.ar(Env.adsr(attack,decay,sustain,release, 1, -4), gate, timeScale:sustain, doneAction:2);
+	env = EnvGen.ar(Env.adsr(attack,decay,1,release, 1, -4), gate, timeScale:sustain, doneAction:2);
 
 	overdrive = overdrive + 1;
 

@@ -1,6 +1,8 @@
 
 setcps(133/60/2)
 
+clutchIn 1 16 $ silence
+
 d1
 -- $ every 8 (often (rev.striate "3..9").slow 2)
 $ every 4 (slow 2 . ghost)
@@ -31,11 +33,11 @@ cascade voices = stack $ delayEntry voices
                           delayEntry (v:vs) = v : (delayEntry $ map tranform vs)
                           delayEntry [] = []
 
-d2 $ slow 4 $ ( note $ scale "pelog" $ inside 2 (snowball 4 (+) ( inside 2 (euclid (slow 2 $ run 5) 8) ) ) $ "1 0 -1 . 3") #octave "4 3" # s "[modal01,midi]" #midichan 1 #orbit 1 # pF "overdrive" 0
+d2 $ slow 4 $ ( note $ scale "pelog" $ inside 2 (snowball 4 (+) ( inside 2 (euclid (slow 2 $ run 5) 8) ) ) $ "1 0 -1 . 3") #octave "4 3" # s "[modal01,midi]" #midichan 1 #orbit 1 # pF "overdrive" 1
 
 d3 $ inside 2 (ghost) $ outside 2 (rot (slow 8 $ run 4)) $ slow 2  $ ( note $ scale "pelog" $ inside 2 (snowball 4 (+) ( inside 2 (euclid (slow 2 $ iter 4 $ run 5) 8) ) ) $ "1 0 -1 . 3" - (slow 2 $ run 4)) #octave "6" # s "[fm01,midi]" #midichan 2 # orbit 2 # pF "overdrive" 3
 
-d4 $ slow 4 $ outside 4 (ghost) $ slow 2  $ ( note $ scale "pelog" $ inside 2 (snowball 4 (+) ( inside 2 (euclid (slow 2 $ iter 4 $ run 5) 8) ) ) $ "1 0 -1 . 3" + "[-3,0,-4]") #octave "7" # s "[pm03,midi]" #midichan 3 # orbit 3 # pF "overdrive" 3 # pF "spread" (0.5*(slow 4 $ saw) +0.5) # delay "0 0.7" #delaytime 0.66
+d4 $ slow 4 $ outside 4 (ghost) $ slow 2  $ ( note $ scale "pelog" $ inside 2 (snowball 4 (+) ( inside 2 (euclid (slow 2 $ iter 4 $ run 5) 8) ) ) $ "1 0 -1 . 3" + "[-3,0,-4]") #octave "7" # s "[pm03,midi]" #midichan 3 # orbit 3 # gain 0.8 # pF "overdrive" 3 # pF "spread" (0.5*(slow 4 $ saw) +0.5) # delay "0 0.7" #delaytime 0.66
 
 -- iteratin 1
 d1

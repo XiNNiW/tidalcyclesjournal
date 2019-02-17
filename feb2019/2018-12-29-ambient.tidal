@@ -9,8 +9,10 @@ do {
 }
 
 do {
-    once $ midicmd "start" #s "midi";
+    once $ midicmd "start" #s "midi"
+    ;
     p "clock" $ midicmd "midiClock*48" #s "midi"
+    ;
     d3
     $ slow 8
     -- $ every 4 (rot "0.25 0.5 0.25")
