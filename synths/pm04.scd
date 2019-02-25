@@ -3,11 +3,16 @@
 SynthDef(\pm04, {
 	|
 	freq=220, amp=1, gate=1, pan=0,out=0,
-	attack=0.1, decay=1, sustain=0.88, release=0.6,
+	a=0.1, d=0.5, s=0.88, r=0.6, sustain,
 	harmonic=1.5,brightness=0.5,
 	stiffness=0.75,distance=0.5,spread=0
 	|
 	var smoothFreq, vibFreq, osc1, osc2, mod, springMod, inforce, panner, env,noise;
+	// envelope times must add up to 1
+	var envelopeScaleing = 1/(a+d+r);
+	a = a*envelopeScaleing;
+	d = d*envelopeScaleing;
+	r = r*envelopeScaleing;
 
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,0.5,0.01);
@@ -20,11 +25,11 @@ SynthDef(\pm04, {
 
 
 	noise = PinkNoise.ar(EnvGen.kr(Env.perc, doneAction: 0));
-	osc1 = PMOsc.ar(vibFreq+spread, harmonic*0.5*vibFreq, (1+noise)*springMod*brightness, 0, 0.1);
-	osc2 = PMOsc.ar(vibFreq-spread, harmonic*0.5*vibFreq, (1+noise)*springMod*brightness, 0, 0.1);
-	env = EnvGen.kr(Env.adsr(attack,decay,sustain,release,amp), gate, timeScale:sustain, doneAction:2);
-	OffsetOut.ar(out, DirtPan.ar((osc1/2).tanh, ~dirt.numChannels, pan+spread, env));
-	OffsetOut.ar(out, DirtPan.ar((osc2/2).tanh, ~dirt.numChannels, pan-spread, env));
+	osc1 = PMOsc.ar(vibFreq+spread, harmonic*0.5*vibFreq, (1+noise)*springMod*brightness, 0, 1);
+	osc2 = PMOsc.ar(vibFreq-spread, harmonic*0.5*vibFreq, (1+noise)*springMod*brightness, 0, 1);
+	env = EnvGen.kr(Env.linen(a,d,r,s,'lin'), timeScale:sustain, doneAction:2);
+	OffsetOut.ar(out, DirtPan.ar((osc1/4).tanh, ~dirt.numChannels, pan+spread, env));
+	OffsetOut.ar(out, DirtPan.ar((osc2/4).tanh, ~dirt.numChannels, pan-spread, env));
 }).add
 )
 

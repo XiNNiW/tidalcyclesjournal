@@ -44,20 +44,3 @@ d4 $ slow 4 $ sound "pm02" # pF "spread" 2 # pF "harmonic" 3
 hush
 
 -- THANKS ALL
-
--- terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
--- terr start stop pattern = (start, stop, pattern)
---
--- terrace :: Time -> [Pattern a] -> (Time, Time, Pattern a)
--- terrace entryDelay patterns =
--- where 
--- joinTerrace start p ps terraces = (start, (start + entryDelay), p) ++ (joinTerrace (start + entryDelay) p ps )
--- joinTerrace start p [] = (start, (start + entryDelay), p)
-
-d1 $ seqPLoop [
-terr 2 3 $ s "bd(4,5,8)"
-,
-terr 4 6 $ s "bd(<3 2 4 5>,16,<0 2 5 4>)"
-,
-terr 5 8 $ s "EP12*8" # n (run 8)
-]

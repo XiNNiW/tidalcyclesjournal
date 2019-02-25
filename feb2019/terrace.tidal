@@ -1,0 +1,185 @@
+
+terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
+
+terr start stop pattern = (start, stop, pattern)
+
+--
+terrace :: Time -> [Pattern a] -> Pattern ControlMap
+
+terrace entryDelay patterns = seqPLoop $ [terr 0 sequenceLength (head patterns)] ++ (terrace' entryDelay (tail patterns))
+        where
+        terrace' start [] = []
+        terrace' start ps = [(terr start sequenceLength (head ps))] ++ (terrace' (start + entryDelay) (tail ps))
+        sequenceLength = entryDelay * (fromIntegral $ length patterns)
+
+do
+{
+  resetCycles;
+  d1 $ terrace 4 [
+    s "bd(<4 5 3 6>,16,<0 1 2>)"
+    ,
+    s "~ sd"
+    ,
+    s "EP12:2*16" # gain (range 0.8 0.97 $ fast 4 $ saw)
+    ,
+    s "EP12*16" # n (run 8)
+  ];
+}
+
+hush
+
+d1 $
+note (scale "hexPhrygian" $ snowball 4 (+) ((flip mod 7).slow 2) $ "~ 7 . 9@7 2 . 3 5 ")
+#s "chBand03" #octave 4 #orbit 4 #delay 0.4 #delaytime 0.33 # legato 1
+
+-- it works... why did i want it again??
+-- looping the build up to a track isn't that helpful
+-- it would be cooler if it randomly build up and broke down a track
+
+
+let
+mkpat name pattern = (name,pattern)
+mkfx name fx = (name,fx)
+structure = cat [
+    "kicks@8 [kicks,snares]@7 kicks:backrush"
+    ,
+    "[hats@3 [kicks,[hats]/2]]@4 [kicks,hats]@4 [kicks,snares,hats]@7 hats"
+    ,
+    "kicks@8 [kicks,snares]@7 kicks:backrush:r"
+    ,
+    "[hats@3 [kicks@3 kicks:r(3,8,1),[hats]/2]]@4 [kicks,hats]@4 [kicks,<snares snares:one>,hats]@7 snares:slw:r"
+  ]
+pats = [
+    mkpat "kicks" $ sometimes ghost $ s "bd(<4 5 3 6>,16,<0 1 0 3>)"
+    ,
+    mkpat "snares" $ sometimes ghost $ s "~ sd"
+    ,
+    mkpat "hats" $ "EP12:2*16" # gain (range 0.7 0.799 $ fast (1+irand 3) saw)
+  ]
+fx = [
+    mkfx "backrush" $ backrush 16
+    ,
+    mkfx "one" one
+    ,
+    mkfx "r" (# speed "-1")
+    ,
+    mkfx "slw" $ slow 2
+  ]
+one p = stut' 2 (0.125/2) (|* gain "1") $ p
+backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
+in
+d2 $ ur 16 structure pats fx
+
+hush
+
+let
+songStructure = cat [
+    "drums@12 [drums,melodies]@4"
+    ,
+    "[drums,melodies]@16"
+    ,
+    "[drums,melodies]@16"
+    ,
+    "[drums,melodies]@16"
+    ,
+    "drums@7 melodies [drums,melodies]@8"
+    ,
+    "[drums,melodies]@16"
+    ,
+    "[drums,melodies]@16"
+    ,
+    "[drums,melodies]@16"
+  ]
+sections = [drums,melodies]
+globalFx = [
+  ]
+drums = mkpat "drums" $ ur 16 structure pats fx
+        where
+        mkpat name pattern = (name,pattern)
+        mkfx name fx = (name,fx)
+        structure = cat [
+            "kicks@8 [kicks,snares]@7 kicks:backrush"
+            ,
+            "[hats@3 [kicks,[hats]/2]]@4 [kicks,hats]@4 [kicks,snares,hats]@7 [hats@3 hats:dly]"
+            ,
+            "kicks@6 [kicks snares:one] [kicks,snares]@7 kicks:backrush:r"
+            ,
+            "[hats@3 [kicks@3 kicks:r(3,8,1),[hats]/2]]@4 [kicks,hats]@4 [kicks,<snares snares:one>,hats]@7 snares:slw:r:dly"
+          ]
+        pats = [
+            mkpat "kicks" $ sometimes ghost $ s "bd(<4 5 3 6>,16,<0 1 0 3>)"
+            ,
+            mkpat "snares" $ sometimes ghost $ s "~ sd"
+            ,
+            mkpat "hats" $ "EP12:2*16" # gain (range 0.7 0.799 $ fast (1+irand 3) saw)
+          ]
+        fx = [
+            mkfx "backrush" $ backrush 16
+            ,
+            mkfx "one" one
+            ,
+            mkfx "r" (# speed "-1")
+            ,
+            mkfx "slw" $ slow 2
+            ,
+            mkfx "dly" $ ((#delay 0.6).(#delaytime (1/3)))
+          ]
+melodies = mkpat "melodies" $ ur 32 structure pats fx
+        where
+        mkpat name pattern = (name,pattern)
+        mkfx name fx = (name,fx)
+        structure = cat [
+            "~@15 bass",
+            "[chords]@8 [chords,bass]@7 lead",
+            "[lead]@8 [lead,bass]@6 [[lead,bass][lead,chords]]",
+            "[lead,chords,bass]@15 chords"
+            ,
+            "~@8 lead:lacepm03@8",
+            "[lead:lacepm03,bass]@15 bass",
+            "[lead:lacepm03,bass]@14 [[lead,bass][lead:lacepm03,chords]]",
+            "[lead:lacepm03,chords,bass]@15 chords:lacepm03"
+          ]
+        pats = [
+            mkpat "bass"
+            $ const silence
+            $ mono $ slow 2
+            $ note (scale "pelog" $ snowball 4 (+) ((flip mod 7).slow 3) "0 . 0 0 . -2 1 4 . 5" )
+            #s "chBand02" #legato 2 # octave 2 #gain 0.89 #lpf 2000
+            ,
+            mkpat "chords"
+            $ note ( scale "hexPhrygian" $ "[-3,0,5,7,9]" + "<0 0 3 5 -2 1 ~ [1 -1]>")
+            #s "modal03" #octave "<5>" #orbit 3 #room 0.33
+            ,
+            mkpat "lead"
+            $ note (scale "hexPhrygian" $ snowball 4 (+) ((flip mod 7).slow 2) $ "~ 7 . 9@7 2 . 3 5 ")
+            #s "chBand03" #octave 4 #orbit 4 #delay 0.4 #delaytime 0.33
+          ]
+        fx = [
+            mkfx "backrush" $ backrush 16
+            ,
+            mkfx "one" one
+            ,
+            mkfx "r" (# speed "-1")
+            ,
+            mkfx "slw" $ slow 2
+            ,
+            mkfx "dly" $ ((#delay 0.6).(#delaytime (1/3)))
+            ,
+            mkfx "lacepm03" $ laceWith (slow 3 . rev . (#s "chBand02") . (# octave 4) . (# gain 0.8) . (# pF "brightness" 0.1) . (#lpf 3000). (#legato 2))
+            ,
+            mkfx "frac" $ snowball 4 (+) (slow 2)
+          ]
+        one p = stut' 2 (0.125/2) (|* gain "1") $ p
+        backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
+in
+d2 $ ur 64 songStructure sections globalFx
+
+hush
+
+d1
+$ mono
+$ slow 2
+$ note (scale "pelog" $ snowball 4 (+) ((flip mod 7) . slow 3) "0 . 0 0 . -2 1 4 . 5" )
+#s "chBand02" #legato 2 # octave 3 #gain 0.89 #lpf 2000
+
+d1 $ ur 4 "A A B:rotated:backwards A" [("A", s "bd bd"), ("B",s "bd lt ht sd*2")] [("backwards",(# speed "-1")),("rotated", rot 4)]

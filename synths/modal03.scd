@@ -3,7 +3,7 @@
 SynthDef(\modal03, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
-	attack = 0.2,sustain=1,decay=0.2,release=0.5,
+	a = 0.2,sus=1,d=0.4,r=0.5,sustain,
 	harmonic=1.0,overdrive=0,spread=1,muted=0.007
 	|
 	var smoothFreq, vibFreq, oscL, oscR, env, noise, detune,strike,partials,resonances,amplitudes;
@@ -25,7 +25,7 @@ SynthDef(\modal03, {
 
 	oscR = DynKlank.ar(`[partials, amplitudes, resonances],strike,freqscale:(freq+detune)/f);
 
-	env = EnvGen.ar(Env.adsr(attack,decay,1,release, 1, -4), gate, timeScale:sustain, doneAction:2);
+	env = EnvGen.ar(Env.linen(a,d,r, sus, 'lin'), timeScale:sustain, doneAction:2);
 
 	overdrive = overdrive + 1;
 

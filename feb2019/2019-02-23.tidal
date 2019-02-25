@@ -1,0 +1,67 @@
+setcps(170/60/4)
+
+hush
+
+d1 $ stack [
+  off 0.125 (+ n "~ 0 . 1 <0 5> . ~ 2") $ s "808*8" #n (run 8)
+  ,
+  rarely (within (0.75, 1) (ghost.slow 2.one)) $ s "909*4"
+  ]
+
+d2
+$ note (
+  scale "hungarianMinor"
+  $ snowball 4 (overlay) (rot 1.slow 3.(+ 7))
+  $ snowball 4 (+) ((flip mod 7).rot 1. euclid 5 8.slow 3)
+  $ "0 . 1 . 2 . 3 . 4"
+)
+#s "chBand02" #octave 4 #pF "overdrive" 4 #orbit 0
+
+scaleList
+
+d1
+$ s "660*16" #n (run 16)
+
+d1
+$ s "pss*16" #n (run 16) #shape 0.5
+
+d1 $ s "cr78*16" #n (range 0 4 $ saw) #shape 0.5
+
+d1
+$ s "cr8000*16" #n (run 16) #shape 0.5
+
+d1
+$ sometimes (|* speed "1 1 1 -1 . 1 [1 -1] 1 -1")
+$ foldEvery [4,3] ("<[0.125 0] [0@3 0.25]>" ~>)
+$ rarely one
+$ sometimes ( rot "0 <1 -1 2 3> 2 0 <5 0 9 2> . [0 4] 9 <3 5 6 7> 2")
+$ s "606*8" #n (run 8) #shape 0.3
+
+d1
+$ sometimes (|* speed "1 1 1 -1 . 1 [1 -1] 1 -1")
+$ foldEvery [4,3] ("<[0.25 0] [0@3 0.25]>" ~>)
+$ rarely one
+$ sometimes ( rot "0 <1 -1 2 3> 2 0 <5 0 9 2> . [0 4] 9 <3 5 6 7> 2")
+$ chop 16
+$ s "radar-96"
+#unit "c" |* speed 1 #legato 1.5
+#shape 0.3 #attack 0.0001 #decay 0.5 #release 0.125
+
+d2
+-- $ sometimes (|* speed "1 1 1 -1 . 1 [1 -1] 1 -1")
+-- $ foldEvery [4,3] ("<[0.25 0] [0@3 0.25]>" ~>)
+-- $ chop 1
+$ mono
+-- $ rarely one
+$ note ( scale "dorian"
+  $ (flip mod 14)
+  $ slow 2
+  $ snowball 4 (+) ((flip mod 7).rot "0 <1 -1 2 3> 2 0 <5 0 9 2> . [0 4] 9 <3 5 6 7> 2" . slow 2 . rev)
+  $ "0 -3 -3 . 1 -1 2 4 . -3 0 . [ 2 -2] 6"
+  )
+#s "pm03" #pF "resonance" 10 #pF "feedback" "-1.5" #pF "overdrive" 10 #pF "harmonic" 1.5 #pF "brightness" 0.125
+#gain 1.2
+#attack 0.02 #decay 1 #release 0.25
+#octave 3
+
+hush

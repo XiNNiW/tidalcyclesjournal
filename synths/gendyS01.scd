@@ -1,6 +1,11 @@
 
 (
-SynthDef(\gendyS01, {|freq=220, amp=1, gate=1, pan=0,out=0,points=12,brightness=2.0,attack=0.02,decay=0.2,sustain=1,release=0.5|
+SynthDef(\gendyS01, {
+	|
+	freq=220, amp=1, gate=1, pan=0,out=0,
+	points=12,brightness=2.0,
+	attack=0.02,decay=0.2,sus=1,release=0.5,sustain
+	|
 	var smoothFreq, vibFreq, osc, mod, panner, env, noise,finalSignal;
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,1,0.02);
@@ -8,7 +13,7 @@ SynthDef(\gendyS01, {|freq=220, amp=1, gate=1, pan=0,out=0,points=12,brightness=
 	osc = Gendy3.ar(ampdist:1, durdist: 3, adparam: 1.0, ddparam: 1.0, freq: vibFreq, ampscale: 0.1, durscale: 0.0, initCPs: 12, knum:points, mul: 4.0, add: 0.0).tanh;
 
 	finalSignal = BMoog.ar(in:osc/2,freq:smoothFreq*brightness,q:0.12,mode: 0,saturation: 0.95);
-	env = EnvGen.ar(Env.adsr(attack, decay, sustain, release, 1, -4), gate, timeScale:sustain, doneAction:2);
+	env = EnvGen.ar(Env.linen(attack, decay, release, sus, 'lin'), gate, timeScale:sustain, doneAction:2);
 	OffsetOut.ar(out, DirtPan.ar(finalSignal/2, ~dirt.numChannels, pan, env));
 }).add
 );

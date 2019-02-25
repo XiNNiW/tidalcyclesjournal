@@ -22,7 +22,7 @@ do {
         |* gain ((0.25 ~>)$range 0.88 1.1 $ fast 6 $ saw) # gain 0.88
     ];
     d2 $ stack [
-      s "[karplus01,midi]" #octave "[<0 ~>,<4 5 3>]" #lpf 9000 #pF "spread" 0 #orbit 2 #delay 0.87 #delaytime (2/3) # delayfeedback 0.5 #pF "overdrive" 4 #midichan 4
+      s "[karplus01,midi]" #octave "[<0 ~>,<4 5 3>]" #lpf 9000 #pF "spread" 0 #orbit 2 #delay 0.87 #delaytime (2/3) # delayfeedback 0.5 #pF "overdrive" 2 #midichan 4
     ];
     d3
     $ slow 4

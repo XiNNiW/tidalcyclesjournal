@@ -2,7 +2,7 @@
 // |out, sustain=1, pan, accelerate, freq, decay=0, slide=1, detune=1
 (
 SynthDef(\amb02, {
-	| out = 0, attack = 0.01, decay = 0.26, sustain=0.88, release=3.5, pan = 0.5, freq, velocity=100|
+	| out = 0, attack = 0.01, decay = 0.26, sus=0.88, release=3.5, sustain, pan = 0.5, freq, velocity=100|
 	var  amp, sig;
 	var envLevels = [0, 0.1, 0.88, 0.2, 0];
 	var envTimes = [attack/8,attack*7/8,decay, release];
@@ -14,7 +14,7 @@ SynthDef(\amb02, {
 	var lfo1 = SinOsc.ar(0.5/(attack*2),0,0.5);
 	var lfo2 = SinOsc.ar(1/(decay*8),0,0.5);
 	var osc1, osc2, osc3;
-	osc1 = SinOsc.ar(freq+(lfo1.midicps*5), (SinOsc.ar(env*0.5/attack,0,0.5) + Sweep.ar(sustain, 2pi * [52.8, freq]) + (pi/3)).wrap(-pi, pi), [2, 0.05]);
+	osc1 = SinOsc.ar(freq+(lfo1.midicps*5), (SinOsc.ar(env*0.5/attack,0,0.5) + Sweep.ar(sus, 2pi * [52.8, freq]) + (pi/3)).wrap(-pi, pi), [2, 0.05]);
 	osc2 = SinOsc.ar(freq+(lfo1.midicps/4), (SinOsc.ar(env*0.125/attack,0,0.5)).wrap(-pi, pi), [2, 0.05]);
 	osc3 = SinOsc.ar(freq/2+(lfo1.midicps/2) + (lfo2.midicps/3), (SinOsc.ar(env2,0,0.5)*osc2+osc2*env + osc1*env2/2).wrap(-pi, pi), [2, 0.05]);
 

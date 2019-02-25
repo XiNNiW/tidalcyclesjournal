@@ -18,19 +18,19 @@ SynthDef(\fmSnare01, {
 	distance = ControlSpec.new(minval: 0.1, maxval: 0.0000001, warp:  'exp').map(distance);
 	springMod = Spring.ar(inforce, stiffness, distance,1);
 
-	noise = PinkNoise.ar(EnvGen.kr(Env.perc(0.001,(0.2+1)*decay), doneAction: 0));
+	noise = PinkNoise.ar(1)*EnvGen.ar(Env.perc(0.001,(0.2+1)*decay),gate, doneAction: 0);
 	mod = SinOsc.ar(
 		smoothFreq * harmonic,
-		LFNoise1.kr(5.reciprocal).abs,
+		0.25,//LFNoise1.kr(5.reciprocal).abs,
 		smoothFreq * index * springMod + smoothFreq * index * noise * brightness
 	);
 	osc = SinOsc.ar(
 		(smoothFreq * carPartial*springMod) + mod+noise*smoothFreq*(index/100)*amp*brightness*springMod,
-		LFNoise1.kr(5.reciprocal).abs,
+		0.25,//LFNoise1.kr(5.reciprocal).abs,
 		springMod
 	).tanh;
-	env = EnvGen.kr(Env.adsr(attack,decay,1,0.125,1,-4), gate, timeScale:sustain, doneAction:2);
-	OffsetOut.ar(out, DirtPan.ar((osc+noise)/2, ~dirt.numChannels, pan, env));
+	env = EnvGen.kr(Env.linen(attack,decay,0.125,1,'lin'),gate, timeScale:sustain, doneAction:2);
+	OffsetOut.ar(out, DirtPan.ar((osc+noise), ~dirt.numChannels, pan, env*env*env*env));
 }).add
 );
 

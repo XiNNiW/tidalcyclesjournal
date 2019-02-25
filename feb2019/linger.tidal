@@ -1,0 +1,5 @@
+d1 $ linger' ("[0 1 2 0 2 3 6 7]"/8) ("[1 0.5 0.25 1 0.125]*5%8"/8) $ chop 16 $ loopAt 1 $ s "breaks165"
+
+linger' = tParam2 (\m n p -> _fast (1/n) $ zoomArc (Arc m (m+n)) p)
+
+hush

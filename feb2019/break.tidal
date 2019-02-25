@@ -1,0 +1,54 @@
+setcps(0.5)
+
+n = 4
+
+m = 4
+
+p = s "bd bd"
+
+subDivide n p = subDivide' n p
+          where
+          subDivide' 0 p = [zoom (0,(1/n)) p]
+          subDivide' m p = [zoom (((1/n)*(m-1)), ((1/n)*m)) p] ++ (subDivide' (m-1) p)
+
+
+let
+rep m n p = stut' (n) ((1/m)*3) (|*| gain "1") $ p
+backrush speed = within (0.75, 1)(slow 2.rev.stut 4 0.56 (1/speed))
+tailfx fx = within (0.5, 1) (fx)
+subDivide n p = subDivide' n p
+          where
+          subDivide' 0 p = [zoom (0,(1/n)) p]
+          subDivide' m p = [zoom (((1/n)*(m-1)), ((1/n)*m)) p] ++ (subDivide' (m-1) p)
+jit start amount p = within (start, (start + 0.5)) (trunc (amount)) p
+rollany x p = stutWith 2 (1/x) id $ p
+suction = (rev.striate (run 16).(|* speed "-1"))
+in
+d1
+-- $ whenmod 13 5 (slow 2.suction)
+-- $ every 8 (tailfx (backrush $ choose [16,32,24]))
+-- $ every 4 (chunk 3 (rollany (choose [16,8,3])))
+-- $ chunk 4 (rollany 16)
+$ loopAt 2
+$ subDivide 16
+-- $ foldEvery [2,3] ("0.25" ~>)
+-- $ tailfx (iter 3)
+-- $ every 4 rev
+-- $ whenmod 4 5 (inside 2 (sometimes rev))
+-- $ every 2 (outside 2 (linger (1/8)))
+$ chop 32
+$ s "breaks152" #unit "c" |* speed 1
+# n "<0 1>"
+
+hush
+
+d1
+$ slow "[2 3 1]/4"
+$ jux (iter 8)
+$ every 4 rev
+$ sound "[bd*6 [sn*3 bd*2] [bd*4 sn] [sn*6]]"
+|+ speed ((+1.0)$ slow 1 sine)
+|+ cutoff ((*10000) $ slow 2 sine)
+|+ resonance ((*0.5)$ slow 3 sine)
+
+d1 silence

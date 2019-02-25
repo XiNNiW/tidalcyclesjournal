@@ -3,7 +3,7 @@
 SynthDef(\modal01, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
-	attack = 0.3,sustain=0.8,decay=0.2,release=0.5,
+	a = 0.3,sus=0.8,d=0.3,r=0.5, sustain,
 	harmonic=1.0,overdrive=1,spread=0.01,muted=0.007
 	|
 	var smoothFreq, vibFreq, oscL, oscR, env, env2, noise, detune,strike,partials,resonances,amplitudes;
@@ -16,8 +16,8 @@ SynthDef(\modal01, {
 	detune = spread*1.midicps/3;
 
 	noise = WhiteNoise.ar(1);
-	env = EnvGen.ar(Env.adsr(attack,decay,1,release, 1, -4), gate, timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.adsr(attack*attack,decay*decay,0,0, 1, -4), gate);
+	env = EnvGen.ar(Env.linen(a,d,r,sus, 'lin'), gate, timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.adsr(a*a,d*d,0,0, 1, -4), gate);
 	// env2 = env2*env2;
 	// strike =  env2*noise/10;
 	strike = Impulse.ar(0);

@@ -1,7 +1,7 @@
 :set -XOverloadedStrings
 :set -XFlexibleContexts
 :set prompt ""
-:set prompt-cont ""
+-- :set prompt-cont ""
 
 import Sound.Tidal.Context
 import Sound.Tidal.Chords
@@ -58,8 +58,12 @@ let d16 = p 16
 -- snowball :: (Pattern a -> Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Int -> Pattern a -> Pattern a
 snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
 
+fastsnowball depth combinationFunction f pattern = fastcat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
+
 -- soak :: Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
 soak depth f pattern = cat $ take depth $ iterate f pattern
+
+fastsoak depth f pattern = fastcat $ take depth $ iterate f pattern
 
 -- cascade :: [Pattern a] -> Pattern a
 -- cascade voices = (stack $ delayEntry voices
@@ -70,6 +74,12 @@ soak depth f pattern = cat $ take depth $ iterate f pattern
 --                           delayEntry [] = [])
 
 rip a b p = within ( 0.25, 0.75) (slow 2 . rev . stut 8 a b) p
+
+laceWith fx p = interlace p (fx p)
+
+one p = stut' 2 (0.125/2) (|* gain "1") $ p
+
+backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
 
 -- chordList :: String
 chordList = unwords $ map fst (chordTable :: [(String, [Int])])
@@ -86,5 +96,15 @@ flood' n text2 = sequence_(replicator' n text2)
 
 -- terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
 terr start stop pattern = (start, stop, pattern)
+
+mkpat name pattern = (name,pattern)
+
+mkfx name fx = (name,fx)
+
+sendMidiClock = p "clock" $ fast 2 $ midicmd "midiClock*48" #s "midi";
+
+sendMidiStop = once $ midicmd "stop" #s "midi"
+
+sendMidiStart = once $ midicmd "stop" #s "midi"
 
 :set prompt "tidal> "

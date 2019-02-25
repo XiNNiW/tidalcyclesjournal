@@ -46,7 +46,7 @@ SynthDef(\fm01, {
 		springMod
 
 	);
-	env = EnvGen.kr(Env.adsr(attack,0.3,1,release,1,-4), gate, timeScale:sustain, doneAction:2);
+	env = EnvGen.kr(Env.linen(attack,0.3,release,1,'lin'),gate, timeScale:sustain, doneAction:2);
 	OffsetOut.ar(out, DirtPan.ar((oscL.tanh)/2, ~dirt.numChannels, pan+spread, env*env));
 	OffsetOut.ar(out, DirtPan.ar((oscR.tanh)/2, ~dirt.numChannels, pan-spread, env*env));
 }).add

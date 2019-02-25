@@ -22,6 +22,7 @@ s.waitForBoot {
 	~dirt.loadSoundFiles;   // load samples (path containing a wildcard can be passed in)
 	~dirt.loadSoundFiles("~/Music/tidal-cycles/samples/*");
 	~dirt.loadSynthDefs("~/Music/tidal-cycles/synths/");
+	//~dirt.loadGlobalEffects("~/Music/tidal-cycles/synths/")
 	// for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
 	// ~dirt.startSendRMS;
 	s.sync; // wait for samples to be read

@@ -3,13 +3,14 @@
 SynthDef(\modal02, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
-	attack = 0.2,sustain=1,decay=0.2,release=0.5,
+	attack = 0.2,sus=0.71,decay=0.2,release=0.5, sustain,
 	harmonic=1.0,overdrive=10,spread=1,muted=0.007
 	|
 	var smoothFreq, vibFreq, oscL, oscR, env, noise, detune,strike,partials,resonances,amplitudes;
 	var maxDelay = 30.reciprocal;
 	var signalL, signalR;
 	var f = 800;
+	//attack = attack*(1/(attack+decay+release))
 
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,0.5,0.01);
@@ -26,7 +27,8 @@ SynthDef(\modal02, {
 
 	signalR = DynKlank.ar(`[partials, amplitudes, resonances],strike,freqscale:(freq+detune)/f);
 
-	env = EnvGen.ar(Env.adsr(attack,decay,1,release), gate, timeScale:sustain, doneAction:2);
+	//env = EnvGen.ar(Env.linen(attack,1-attack-release,release,sus,'lin'), timeScale:sustain, doneAction:2);
+	env = EnvGen.ar(Env.new([0, 1, sus,sus, 0],[attack,decay,1-release,release]), timeScale:sustain, doneAction:2);
 
 
 	signalL = BPeakEQ.ar(signalL,233,0.8,-15);
@@ -46,6 +48,8 @@ SynthDef(\modal02, {
 	OffsetOut.ar(out, DirtPan.ar(signalR/2, ~dirt.numChannels, pan+spread.abs, env));
 }).add
 )
+
+
 
 // Synth(\modal01);
 

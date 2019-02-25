@@ -9,16 +9,21 @@ Mix.new(Gendy3.ar(3,5,1.0,1.0,(Array.fill(5,{LFNoise0.kr(1.3.rand,1,2)})*MouseX.
 
 (
 SynthDef(\scream01, {
-	|freq=220, amp=1, gate=1, pan=0,out=0,fb=1,attack=0.002,decay=0.5,sustain=0.25,release=0.25,indexModAttack=1.0,indexMod=1.0|
+	|
+	freq=220, amp=1, gate=1, pan=0,out=0,
+	fb=1,indexModAttack=1.0,indexMod=1.0,
+	attack=0.002,decay=0.49,sus=0.25,release=0.15,sustain
+	|
 	var smoothFreq, vibFreq, osc, mod, panner, env, noise;
 
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,1,0.02);
 
-	mod = EnvGen.ar(Env.adsr(0.002, 0.5, 0.25, 0.25, 1, -4), gate, doneAction:0);
-	osc = (FBSineC.ar(vibFreq*2, LFNoise2.kr(Lag.kr(1*indexModAttack),Lag.kr(16*indexMod),17), fb, 1.005, 0.7) * 0.2).tanh;
-	env = EnvGen.ar(Env.adsr(0.02, 0.2, 0.125, 0.5, 1, -4), gate, timeScale:sustain, doneAction:2);
-	OffsetOut.ar(out, DirtPan.ar(osc/2, ~dirt.numChannels, pan, env));
+	// mod = EnvGen.ar(Env.adsr(0.002, 0.5, 0.25, 0.25, 1, -4), gate, doneAction:0);
+	mod = EnvGen.ar(Env.perc, gate, timeScale:sustain);
+	osc = (FBSineC.ar(vibFreq*2, LFNoise2.kr(Lag.kr(1*indexModAttack),Lag.kr(16*indexMod),17), fb, 1.005, 0.7)*10 ).tanh;
+	env = EnvGen.ar(Env.linen(attack,decay*0.8,release*0.8,sus,'lin'), timeScale:sustain, doneAction:2);
+	OffsetOut.ar(out, DirtPan.ar(osc.tanh, ~dirt.numChannels, pan, env));
 }).add
 );
 //

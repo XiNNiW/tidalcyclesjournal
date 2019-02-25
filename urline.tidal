@@ -1,0 +1,76 @@
+-- urline -- top level organizes sections.. sections defined at lower level of ur
+
+
+
+let
+songLen = 16
+structure = "synFract:laceWithModal1"
+patterns = [
+    mkpat "synFract"
+    $ mono
+    $ slow 2
+    $ n (scale "pelog" $ snowball 4 (+) ((flip mod 7) . slow 3. rev) "0 . 3 0 . -2 1 4 . 5" )
+    #s "chBand01" #legato 2 # octave 3 #gain 0.89 #lpf 7000 #orbit 3
+  ]
+fx = [
+    mkfx "laceWithModal1" $ ((|* gain 0.88) . laceWith (slow 2.(# s "modal01").(#pF "spread" 1).(#octave 5).(#orbit 4)))
+    ,
+    mkfx "slowd" $ (slow 2.(#octave 5))
+    ,
+    mkfx "echop" $ snowball 4 (euclidFull "7" "16") (slow 2.ply 3)
+  ]
+in
+d1 $ ur songLen structure patterns fx
+
+hush
+
+
+d1
+$ mono
+$ slow 2
+$ note (scale "pelog" $ fastsnowball 4 (+) ((flip mod 7) . slow 8 . rev .fastsoak 4 (slow 4 .substruct "1 0 1 . 1 1" . rev ) ) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "modal01" #legato 2 # octave 5 #gain 0.89 #lpf 7000 #orbit 3
+
+d1
+-- $ mono
+$ slow 4
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).slow 2.snowball 4 (wedge 0.75) ((flip mod 7) . rev . (+ 3) )) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+fastsnowball depth combinationFunction f pattern = fastcat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
+
+
+d1
+-- $ mono
+$ slow 2
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).snowball 4 (wedge 0.75) ((flip mod 7) . rev . (+ 3) . slow 2 )) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+d1
+-- $ mono
+$ slow 2
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).snowball 4 (tabby 4) ((flip mod 7) . slow 2. rev . (+ 3)  )) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+
+d1
+-- $ mono
+$ slow 2
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).snowball 4 (tabby 4) ((flip mod 7) . slow 2. rev . (+ 3)  )) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+
+
+d1
+-- $ mono
+$ slow 2
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).snowball 4 (offadd 0.25) ((flip mod 14) . slow 2. rev . (+ 3)  )) $ "0 . 0 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+d1
+-- $ mono
+$ slow 2
+$ note (scale "hexPhrygian" $ off 0.25 ((+5).snowball 4 (euclidFull "9 3 5" "16") ((flip mod 14) . slow 2. rev . (+ 3)  )) $ "0 . 3 0 . -2 1 4 . 5" )
+# s "karplus01" #legato 2 # octave 5 #gain 1 #lpf 7000 #orbit 3
+
+-- snowball 4 (+) ((flip mod 7) . slow 3)

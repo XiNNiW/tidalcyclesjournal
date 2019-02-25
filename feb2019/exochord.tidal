@@ -41,3 +41,106 @@ do {
       #legato "<1.1 2>" #pF "brightness" 0.2 #orbit 1 #release 1 #attack 0.002 #midichan 3
     ];
 }
+
+
+
+let sectionLength = 8
+    structure = cat [
+      -- "[bassdrum:backrush snare/2]:filter"
+      "bassdrum@6 [chrd1 bassdrum:backrush] fmbass:rotate/2"
+      ,
+      "[bassdrum,fmbass]@7 [bassdrum,fmbass/2 bassdrum:backrush]"
+      ,
+      "[bassdrum,fmbass,snare]@7 [chrd2*2]"
+      ,
+      "[chrd1,fmbass,bassdrum,snare]@6 [bassdrum ~ ,scream,chrd2]]@2"
+      ,
+      "[chrd1,chrd2,scream,fmbass,bassdrum,snare]"
+      ,
+      "[chrd1,chrd2,scream,fmbass,bassdrum,snare]"
+      ,
+      "[chrd1,chrd2,scream,fmbass,bassdrum,snare]@7 [snare:backrush,scream]"
+      ,
+      "[chrd1,chrd2,[scream, ~ [snare:backrush/2]]]"
+      ,
+      "[chrd1,chrd2,scream,fmbass,bassdrum,snare]"
+      ,
+      "[chrd1,chrd2,scream,fmbass,basssdrum,snare]"
+      ,
+      "[chrd1,chrd2,scream,fmbass,bassdrum,snare]@7 [snare:backrush,scream]"
+      ,
+      "[chrd1,chrd2,scream]"
+      ]
+    parts = [
+      mkpat "chrd1"
+      $ cat [
+        (s "[modal02,midi]")
+        # legato 1 #attack 0.001 #release 0.99
+        # delay 0.44 #delayfb 0.333 # delaytime 0.333
+        #gain 0.9 #room 1 #orbit 2 |+ s "midi" #midichan 0
+        ,
+        ""
+      ] + note (modulate melody)
+      ,
+      mkpat "chrd2"
+      $ cat [
+        ""
+        ,
+        s "<[modal03,midi] ~>"
+        # legato 2 #attack 1 #decay 1.2 #release 1.9
+        # pF "spread" (smooth "1" )#pF "overdrive" 5 #pF "harmonic" 1.5  #pF "brightness" 2
+        #octave "<5 6>" #orbit 3  #midichan 1
+      ] + note (modulate melody)
+      ,
+      mkpat "scream"
+      $ cat [
+        ""
+        ,
+        s "<[[scream03,midi](3,8)] [scream03,midi]>" # legato "<0.333 1.1>" #attack "<0.0133 1>" #decay 1.2 #release 1.9
+        # pF "spread" (fast "<2 1>"$ smooth "<0 [1 0]>" )  #pF "harmonic" 1.5 #pF "overdrive" 5
+        #octave "<5 6>"  #orbit 4 |+ s "midi" #midichan 2
+      ] + note (modulate melody)
+      ,
+      mkpat "callr"
+      $ cat [
+        (s "[modal02,midi]") # legato 1 #attack 0.001 #release 0.99 # delay 0.44 #delayfb 0.333 # delaytime 0.333 #gain 0.9 #room 1 #orbit 2 |+ s "midi" #midichan 0
+        ,
+        stack [
+          s "<[modal03,midi] ~>"
+          # legato 2 #attack 1 #decay 1.2 #release 1.9
+          # pF "spread" (smooth "1" )#pF "overdrive" 5 #pF "harmonic" 1.5  #pF "brightness" 2
+          #octave "<5 6>" #orbit 3  #midichan 1
+          ,
+          s "<[[scream03,midi](3,8)] [scream03,midi]>" # legato "<0.333 1.1>" #attack "<0.0133 1>" #decay 1.2 #release 1.9
+          # pF "spread" (fast "<2 1>"$ smooth "<0 [1 0]>" )  #pF "harmonic" 1.5 #pF "overdrive" 5
+          #octave "<5 6>"  #orbit 4 |+ s "midi" #midichan 2
+        ]
+      ]
+      + note (modulate melody)
+      ,
+      mkpat "fmbass"
+      $ rarely ghost $ s "[fm01,midi](<[3 7] 5 7 6>,16,<1 [5 6 0] 3 [9 8 0]>)"
+      #octave 6 + note (mono $ modulate melody) #pF "harmonic" 1
+      #legato "<1.1 2>" #pF "brightness" 0.2 #orbit 1 #release 1 #attack 0.002 #midichan 3
+      ,
+      mkpat "bassdrum" $ sometimes ghost $ sound "[virus-bd,midi](<[3 7] 3> , 16, <0 [0 2] [1 0] [5 7]>)" # n "<[8 < 7 5> 8 8] 4>" #midichan 5
+      ,
+      mkpat "snare" $ every 2 (sometimes (off 0.25 rev ). ghost)$ sound "~ [fmSnare01,midi]" #gain 1.2 #pF "distance" 0.4 #pF "index" 6 #pF "stiffness" 0.02 #orbit 1 #midichan 6
+      ]
+    fx = [
+      mkfx "backrush" $ backrush 16
+      ,
+      mkfx "rotate" $ (0.5 ~>)
+      ,
+      mkfx "filter" $ (#lpf 2000)
+      ]
+    invert n =  ((|+ 12). (|* (-1)) ) $ n
+    wrap n = (|% 12) n
+    melody = "[[0 -12], <2 2>, <7 11>, <9 4>] ~"
+    modulate m = (soak 4 ((|- (scale "augmented" (slow 3 $ run 4))) . every 2 (invert)) ) $ m
+in
+d2 $ ur sectionLength structure parts fx
+# cps(135/60/4)
+
+
+hush
