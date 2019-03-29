@@ -3,7 +3,7 @@
 SynthDef(\modal03, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
-	a = 0.2,sus=1,d=0.4,r=0.5,sustain,
+	a = 0.2,sus=1,d=0.4,r=0.5,sustain=1,
 	harmonic=1.0,overdrive=0,spread=1,muted=0.007
 	|
 	var smoothFreq, vibFreq, oscL, oscR, env, noise, detune,strike,partials,resonances,amplitudes;
@@ -15,7 +15,7 @@ SynthDef(\modal03, {
 	detune = spread*1.midicps/3;
 
 	noise = WhiteNoise.ar(1);
-	strike =  EnvGen.ar(Env.perc);//Impulse.ar(0, 0, 0.3);
+	strike =  EnvGen.ar(Env.perc);
 
 	partials = [f, f*4, f*3, f*8.33];
 	amplitudes = [1, 1.1, 0.9, 1.5];
@@ -34,6 +34,6 @@ SynthDef(\modal03, {
 }).add
 )
 
-// Synth(\modal01);
+// Synth(\modal03);
 
 // { DynKlank.ar(`[[800, 1071, 1153, 1723], nil, [1, 1, 1, 1]], Impulse.ar(2, 0, 0.1)) }.play;

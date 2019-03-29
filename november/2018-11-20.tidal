@@ -21,9 +21,9 @@ counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 
 
 do
 -- d9 $ midicmd "start" # s "midi"
-d5 $ swingBy (1/5) 10  $ note ( scaleP "phrygian" $ melody1 ) #s "pe-gtr:10,midi" #gain 1.3 #orbit 2 #midichan 1
+d5 $ swingBy (1/5) 10  $ note ( scale "phrygian" $ melody1 ) #s "pe-gtr:10,midi" #gain 1.3 #orbit 2 #midichan 1
 d1 $ swingBy (1/5) 10  $ sound "[ <[808bd] bd> 909? ~ ~  . <bd [<[[bd*2? ~ bd bd?] ~] [<bd ~>]> 808bd?]>]" #n (run 8) #orbit 0
-d6 $ swingBy (1/5) 10  $ note ( scaleP "phrygian" $ counterMelody1 ) #s "pe-gtr:9,midi" #gain 1.5 #orbit 3 #midichan 2
+d6 $ swingBy (1/5) 10  $ note ( scale "phrygian" $ counterMelody1 ) #s "pe-gtr:9,midi" #gain 1.5 #orbit 3 #midichan 2
 d2 $ swingBy (1/5) 10 $ every ((irand 5)+1) (const $ sound "~ sd" #orbit 1)  $ sound "[ ~ sd]" #n (run 8) #orbit 1
 d3 $ swingBy (1/5) 10 $ sound "lighter*8"#n (run 8) # gain  ("[8 .. 10] [9 .. 10]" /10 *0.88) #nudge 0.008 #orbit 4
 

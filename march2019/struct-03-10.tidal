@@ -1,0 +1,62 @@
+let backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
+in
+d1
+-- $ slow 4
+-- $ palindrome
+-- $ ghost
+-- $ struct "t(<7 7 5 3>,8,<0 1>)"
+-- $ inside 2 (every 2 (rev))
+-- $ slow 4
+-- $ stripe "<1 2 3 2>"
+-- $ smash 3 [2,3,4]
+$ whenmod 16 15 (backrush 16)
+-- $ every 6 (within (0.75, 1) (const (s "fmSnare01*3")))
+$ whenmod 16 14 (ghost.rev.slow 2)
+$ whenmod 32 16 (iter 8.(#pF "brightness" (slow 16 $ isaw)))
+$ linger "<0.75 0.25 1>"
+$ stack [
+ ghost $ n "0(<5 2 3 1>,16,<0 2 4 1>)" # s "opDrm02" # legato 3 # octave 3
+ ,
+ ghost $ n "12(<1 5 2 3>,16,<8 9>)" # s "fmSnare01" # legato 3
+ ,
+ ghost $ n "12(<2 3 6 7>,16,<11>)" # s "subCym01" # legato "2@3 3 2@2" # gain 0.9 #octave 6
+ ]
+# legato 4
+
+hush
+
+scaleList
+
+chordList
+
+d2
+$ (note
+  $ scale "bartok"
+  $ cat [
+  "[0 , ~ . 0(3,8,2) . -2 . -1]"
+  ,
+  "[-1, ~ . 1 . 0 2 3 . 4 -3]"
+  ]
+)
+# s "[gendyS01,pm03]"
+# octave 4
+# pF "points" 6
+# pF "brightness" 8
+
+d3
+$ (note
+  $ scale "bartok"
+  -- $ slow 2
+  $ brak
+  $ soak 4 (iter 4)
+  $ run 8
+  - (slow 4 $ run 4)
+)
+# s "[chBand01]"
+# octave 4
+# pF "points" 6
+# pF "brightness" 8
+
+d2 $ whenmod 16 12 (const silence) $ (note $ scale "dorian" $ "<0 . 2 3 . -2 1 . -6>") # s "modal02" #octave 4 -- # pF "attack" 0.001 #pF "sus" 1 #pF "release" 1
+
+hush

@@ -12,20 +12,22 @@ SynthDef(\scream01, {
 	|
 	freq=220, amp=1, gate=1, pan=0,out=0,
 	fb=1,indexModAttack=1.0,indexMod=1.0,
-	attack=0.002,decay=0.49,sus=0.25,release=0.15,sustain
+	attack=0.002,decay=0.49,sus=0.25,release=0.15,sustain=1
 	|
 	var smoothFreq, vibFreq, osc, mod, panner, env, noise;
 
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,1,0.02);
 
-	// mod = EnvGen.ar(Env.adsr(0.002, 0.5, 0.25, 0.25, 1, -4), gate, doneAction:0);
 	mod = EnvGen.ar(Env.perc, gate, timeScale:sustain);
 	osc = (FBSineC.ar(vibFreq*2, LFNoise2.kr(Lag.kr(1*indexModAttack),Lag.kr(16*indexMod),17), fb, 1.005, 0.7)*10 ).tanh;
 	env = EnvGen.ar(Env.linen(attack,decay*0.8,release*0.8,sus,'lin'), timeScale:sustain, doneAction:2);
+	env=env*env;
 	OffsetOut.ar(out, DirtPan.ar(osc.tanh, ~dirt.numChannels, pan, env));
 }).add
 );
+
+// Synth(\scream01);
 //
 // // default initial params
 // { FBSineC.ar(SampleRate.ir/4) * 0.2 }.play(s);

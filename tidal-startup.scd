@@ -49,9 +49,9 @@ s.waitForBoot {
 
 	// create a midi out connection
 	// ~midiOut = MIDIOut.newByName("FastLane USB", "Port A"); // substitute your own device here
-	~midiOutput = MIDIOut.newByName("Virtual Raw MIDI 0-0","VirMIDI 0-0");
+	~midiOutput = MIDIOut.newByName("Virtual Raw MIDI 2-0","VirMIDI 2-0");
 	~dirt.soundLibrary.addMIDI(\midi, ~midiOutput);
-	~midiOutput.latency = 0.1;
+	~midiOutput.latency = 0.01;
 
 	 // you may want to adjust the latency here
 	// ~midiOut.latency = 0.1;

@@ -1,0 +1,126 @@
+-- chapter 1
+setcps(98/60/2)
+
+hush
+
+do {
+  hush;
+  once $ midicmd "stop" #s "midi";
+}
+
+do {
+    once $ midicmd "start" #s "midi"
+    ;
+    p "clock" $ midicmd "midiClock*48" #s "midi"
+    ;
+    d3
+    $ slow 8
+    -- $ every 4 (rot "0.25 0.5 0.25")
+    $ note (scale "hexPhrygian" "4 . 0 2 . 2 3 5 . [0 ~*3[ ~*6 1 0]]"+24)
+    #s "rhodes:5" #gain 1 # legato "3.5" # orbit 2;
+    d2
+    $ slow 8
+    $ (# nudge rand)
+    $ note ((scale "hexPhrygian"
+      $ every 8 (rot "1 2". (+ 3))
+      $ every 6 (((flip mod) 12).(+ "-1 [-3 -4]").(* 2))
+      $ (|+  every 4 (rot "2 3 0.25")  "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]")
+      $ "~ [0, 3, 6, 9] . [-6, 2, 6, 9]"
+    )-5)
+    #s "[pm04,midi]" #pF "spread" 0.5
+    #gain 0.8
+    -- # legato "3.5"
+    # orbit 3
+    # delay 0.5
+    # delaytime  0.5
+    # delayfeedback   0.5
+    # room 1
+    # size 0.9;
+    d4
+    $ slow 8
+    $ every 4 (rot "4 3 1")
+    $ note ((scale "hexPhrygian"
+      $ every 8 (rot "1 2". (+ 3))
+      $ "~ [0 3 6 9] . [-6 2 6 9]" - ( every 4  (("0.25 0.5 0" ~>)) $ ("0.25 0.5" ~>) "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+ 2))+12)
+    #s "rhodes:7" #gain 1 # legato "3.5" # orbit 4;
+    d5 $ note ((scale "hexPhrygian" $ slow 3 $ "-3 0 2 5")+24-5) #s "pe-gtr:9" #orbit 5;
+    d1 $ slow 2 $ stack [
+      sound "{~ EP12:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.5 ~] [[~ 0.5] 0.5]}%2" #speed 2 #orbit 1,
+      sound "bd EFM:5" # nudge "0 <0.01 0.025>"
+    ]
+}
+
+d5 $ every 2 (const silence) $ note ((scale "hexPhrygian" $ (|+ snowball (overlay) (slow 3.fast 2. (+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") $ slow 3 $ "-3 0 2 5" )+24-5) #s "pe-gtr:9" #orbit 5
+
+
+-- d6 $ note ((scale "hexPhrygian" $ "<0 0 0 6 [6 9 . 5]>" + slow 2 "<0 [-1 0] [2 0] 0>")-5) # s "moogbass" #gain 0.8
+
+do
+d3 $ silence
+d2 $ silence
+d4 $ silence
+
+d1 $ slow 2 $ stack [
+  sound "{~ EP12:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.5 ~] [[~ 0.5] 0.5]}%2" #speed 2 #orbit 1,
+  sound "bd EFM:5" # nudge "0 <0.01 0.025>"
+]
+
+hush
+
+-- chapter 2
+
+-- chapter 2
+
+d1 $ silence
+
+d5 $ every 2 (const silence) $ note ((scale "hexPhrygian" $ (`overlay` snowball 4 (overlay) (slow 3.fast 2. (|+ "-5"))  "0(<2 3 5>,8,<0 2 3 5>) ") $ slow 3 $ "-3 0 2 5" -3)+24-5) #s "pe-gtr:9" #orbit 3;
+
+
+do {
+  -- d5 $ outside 3 (every 2 (const silence)) $ note ((scale "hexPhrygian" $ (+ snowball (overlay) (every 2 (slow 3.fast 2). (|+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") $ slow 3 $ "-3 0 2 5" -3)+24-5) #s "pe-gtr:9" #orbit 3;
+  d5 $ every 2 (const silence) $ note ((scale "hexPhrygian" $ (`overlay` snowball (overlay) (slow 3.fast 2. (|+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") $ slow 3 $ "-3 0 2 5" -3)+24-5) #s "pe-gtr:9" #orbit 3;
+  d3
+  $ slow 8
+  $ every 4 (rot "0.25 0.5 0.25")
+  $ note (scale "hexPhrygian" $ (|+ snowball (+) (slow 3.fast 2. (|+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") "4 . 0 2 . 2 3 5 . [0 ~*3[ ~*6 1 0]]"-3)
+  #s "rhodes:5" #gain 1 # legato "3.5" # orbit 2;
+  d2
+  $ slow 8
+  $ every 4 (rot "2 3 0.25")
+  $ (# nudge rand)
+  $ note ((scale "hexPhrygian" $ (|+ snowball (+) (slow 3.fast 2. (|+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") $ "~ [0, 3, 6, 9] . [-6, 2, 6, 9]" |+ "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"- 3)-5)
+  #s "pm04" #pF "spread" 0.5
+  #gain 0.9
+  -- # legato "3.5"
+  # orbit 3
+  # legato 1
+  # delay 0.5
+  # delaytime  0.5
+  # delayfeedback   0.5;
+  d4
+  $ slow 8
+  $ every 4 (rot "4 3 1")
+  $ note ((scale "hexPhrygian" $ (|+ snowball (+) (slow 3.fast 2. (|+ "-5")) 4 "0(<2 3 5>,8,<0 2 3 5>) ") $ "~ [0 3 6 9] . [-6 2 6 9]" - ( every 4  (("0.25 0.5 0" ~>)) $ ("0.25 0.5" ~>) "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+ 2-3))+12)
+  #s "rhodes:7" #gain 1 # legato "3.5" # orbit 4;
+  d1 $ slow 2 $ stack [
+    sound "{~ EP12:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.5 ~] [[~ 0.5] 0.5]}%2" #speed 2 #orbit 1,
+    sound "bd EFM:5" # nudge "0 <0.01 0.025>"
+  ];
+  -- d2
+  -- $ slow 8
+  -- $ (rot $ slow 3 (run 5))
+  -- $ note ((scale "hexPhrygian" $ "~ [0, 3, 6, 9] . [-6, 2, 6, 9]" + "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+5))
+  -- #s "rhodes:5" #gain 1 # legato "3.5" # orbit 2;
+  -- d4
+  -- $ slow 8
+  -- $ (rot $ slow 3 (run 9))
+  -- $ note ((scale "hexPhrygian" $ "~ [0 3 6 9] . [-6 2 6 9]" - ( (((slow 3 "0.25 0.5 0") <~)) $ (slow 3 ("0.25 0.5") ~>) "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+ 2))+12)
+  -- #s "rhodes:7" #gain 1 # legato "3.5" # orbit 2;
+}
+
+do
+
+hush
+
+
+once $ midicmd "stop" # s "midi"

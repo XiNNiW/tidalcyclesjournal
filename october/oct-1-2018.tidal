@@ -50,7 +50,7 @@ d4 $ cat [
   sound "rs",
   sound "hh:2",
   sound "hh:3",
-  sound " [[ [hh:2*6 ]]hh:2]" # gain (slow 2 $ scale 0 1 $ saw1)
+  sound " [[ [hh:2*6 ]]hh:2]" # gain (slow 2 $ scale 0 1 $ saw)
 ]
 
 d5 $ slow 4 $

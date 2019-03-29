@@ -4,6 +4,8 @@ import qualified Sound.Tidal.Chords as Chords
 
 let coda timesToRepeat pattern = cat $ take timesToRepeat (repeat pattern)
 
+hush
+
 print coda 4 "{{ [ bd bd ]/3 , [ . hh]} [sn sn:2] [hh bd:2] hh:9}%4"
 
 d1 $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
@@ -11,9 +13,9 @@ d1 $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
 d1 $ foldEvery [4,6] (slow "[3 2 1]" . rev) $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
 
 d2
-  $ every 8 (const $ up (toScale Scales.hexDorian $ "4 3 2 1") # s "pe-gtr:9" # gain 1.2)
+  $ every 8 (const $ up (scale "hexDorian"  $ "4 3 2 1") # s "pe-gtr:9" # gain 1.2)
   $ foldEvery [4,6] (hurry "[1 2 1 1]/2" . rev . slow "[3 2 1]")
-  $ up (toScale Scales.hexDorian $ "0 ~ [ [ 7 9 ] 2 1 5]/2 " + "[0 7 [3 2]5]/4") # s "pe-gtr:9" # gain 1.2
+  $ up (scale "hexDorian" $ "0 ~ [ [ 7 9 ] 2 1 5]/2 " + "[0 7 [3 2]5]/4") # s "pe-gtr:9" # gain 1.2
 
 hush
 
@@ -85,17 +87,17 @@ d1
     ]
 
   d2
-    $ ( "0 oct0.25" ~>)
+    $ ( "0 0.25" ~>)
     $ every 4 (striate "4 1 2 3" )
     $ up
-    ( toScale Scales.hexDorian
+    ( scale "hexDorian"
       $ slow 4 $ melody + chordRoots + 12
     ) # s "c64-broken:3" # gain 0.9
         -- ) # s "tx81z-2x-bass" # gain 0.5
 
   d3
     $ n
-    ( toScale Scales.hexDorian
+    (  scale "hexDorian"
       $ slow 4 $ melody + chordRoots-- - 12
     ) # s "superpiano" # gain 0.9 # sustain 8
 
@@ -104,15 +106,15 @@ d1
     $ every 2 (slow "[[2 6 2 3]]*32")
     $ every 4 (const $ up "0")
     $ up
-    ( toScale Scales.hexDorian
+    ( scale "hexDorian"
       $ slow 4 $ ("[0 0.125 0 0.0125]*32" ~>) $ "[ . 3 . . 0 [[3 4 5 6]/4] 2 1]*8" +  melody + chordRoots
     ) # s "tx81z-tine" # gain 0.5
 
   d5
     $ up
-    ( toScale Scales.hexDorian
+    ( scale "hexDorian"
       $ slow 4 $ "[0]*8" +  melody + chordRoots
-    ) # s "ATC-1" # gain 1 # vowel "i"
+    ) # s "ATC-1" # gain 0.3 # vowel "i"
 
   d1 $ s "[bd sn]*8" # speed "1.2*4" /// [speed "1 2 3 4", crush "4 3 2 1"]
 

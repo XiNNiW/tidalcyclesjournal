@@ -3,7 +3,7 @@
 SynthDef(\karplus01, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
-	attack = 0.002,sus=1,decay=0.8,release=0.3, sustain,
+	attack = 0.002,sus=1,decay=0.8,release=0.3, sustain=1,
 	harmonic=1.0, brightness=1,overdrive=1,spread=0.01,muted=0.07
 	|
 	var smoothFreq, vibFreq, oscL, oscR, oscC, env, noise, detune,strike,mixL,mixR;
@@ -28,13 +28,13 @@ SynthDef(\karplus01, {
 	mixL = BLowPass.ar((oscC+oscR),freq*3*brightness);
 	mixR = BLowPass.ar((oscC+ oscL),freq*3*brightness);
 
-	mixL = (overdrive*(oscC+ oscL)/2).tanh;
-	mixR = (overdrive*(oscC+ oscL)/2).tanh;
+	mixL = (overdrive*(oscC+ oscL)).tanh;
+	mixR = (overdrive*(oscC+ oscL)).tanh;
 
 	OffsetOut.ar(out, DirtPan.ar(mixL/2, ~dirt.numChannels, pan-spread, env));
 	OffsetOut.ar(out, DirtPan.ar(mixR/2, ~dirt.numChannels, pan+spread, env));
 }).add
 )
 
-// Synth(\karplus01);
+//Synth(\karplus01);
 

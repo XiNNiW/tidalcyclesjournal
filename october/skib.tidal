@@ -10,8 +10,8 @@ d1 $ stack [
    -- superimpose ((|+|speed (rand)).(|-| gain (slow 16 $ saw1)). rev . chop "16 1 4 9 4 32 16". striateL "[9 2] . 4 5" "4 . 4 3" ) $ sound  $ (0.125 <~) $ slow 6 "{808hc:0}%9",
    foldEvery [6, 7, 11] (rev. fast "[2 3]/2". (|*| gain (rand)).superimpose (((+ 0.25) $ (irand 8)/8) <~). fast "[4 0 3 2]/3". slow ((+ 1)$irand 3))$ sound ". 808sd:6",
    sound (slow 4 $ "acousticBass:3*3 acousticBass? acousticBass acousticBass") # n (run 6),
-   up ((scaleP "dorian" "[0,2,6,11]" )+5+ (slow 6 $ "1 ~ 2 1 ~ [1 2 3] 1 1"*12)) #s "rhodes",
-   (0.75 <~ ) $ foldEvery [3,2,23, 32, 13] (0.125 ~>) $  up ((scaleP "dorian" $ slow 3 "[0,9?,7,6] [2,9,11?,6,0?]"  + slow 4 "7 2 [3 4 9]" )+24) #s "pe-gtr" |+| gain "1.5" |*| gain ( slow 8 $ saw1)
+   up ((scale "dorian" "[0,2,6,11]" )+5+ (slow 6 $ "1 ~ 2 1 ~ [1 2 3] 1 1"*12)) #s "rhodes",
+   (0.75 <~ ) $ foldEvery [3,2,23, 32, 13] (0.125 ~>) $  up ((scale "dorian" $ slow 3 "[0,9?,7,6] [2,9,11?,6,0?]"  + slow 4 "7 2 [3 4 9]" )+24) #s "pe-gtr" |+| gain "1.5" |*| gain ( slow 8 $ saw)
 ]
 
 
@@ -26,6 +26,6 @@ d1 $ stack [
  ((0.125*(irand 8)) <~) $ sound ". [virus-sd*4]" # n (run 3) # gain "0.5 1 0.7 0.3"
 ]
 
-d2 $ slow 4 $ up ((scaleP "minor" $ foldEvery [2,3,13] ( slow 3 .(+ "<2 3>" ). ("<0.25 0 1 0.25 0.75 0.125>" ~>)) $ "0 2 [3 1 2] 8 " )) #s "pe-gtr:9" # gain 1.5
+d2 $ slow 4 $ up ((scale "minor" $ foldEvery [2,3,13] ( slow 3 .(+ "<2 3>" ). ("<0.25 0 1 0.25 0.75 0.125>" ~>)) $ "0 2 [3 1 2] 8 " )) #s "pe-gtr:9" # gain 1.5
 
-d3 $ slow 4 $ up ((scaleP "minor" $ foldEvery [6] ((+ "<4 5 6>")) $ "[0, 2, 3, 8]" + "<0 0 2>" )-7) #s "rhodes:9"
+d3 $ slow 4 $ up ((scale "minor" $ foldEvery [6] ((+ "<4 5 6>")) $ "[0, 2, 3, 8]" + "<0 0 2>" )-7) #s "rhodes:9"

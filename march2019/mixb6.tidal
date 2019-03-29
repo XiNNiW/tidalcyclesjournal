@@ -1,0 +1,149 @@
+hush
+
+let mixb6 =  mode 5 "melodicMinor"
+    mix fx p = ( p + fx p)
+    condFx bools fx p = sew bools (fx p) p
+    bassline = whenmodr [1,3] [5,7] [4] (mix (slow 3.rot 2.invert.(+ "-3 2 1")))
+in
+d2
+$ slow 2
+$ outside 4 (condFx "<1(5,8,3)>" (iter 4.fast 3))
+$ stack [
+  (note
+    $ mixb6
+    $ outside 2 (condFx "1(<2 3 5 1>,8,2)" (iter 4 . euclid 3 4 ))
+    $ bassline
+    $ "<0 [0 [-3 -1]]>"
+    )
+  # octave 4 # legato 4
+  # s "[fm02]" # pF "brightness" 0.02 -- #pF "attack" saw
+  #orbit 1 # gain 1
+  ,
+  (note
+    $ scale "ritusen"
+    $ outside 4 (condFx "<1(5,8,3)>" (invert.mix(rot 1.slow 3)))
+    -- $ bassline
+    $ (+| (slow 2 $ cat ["0 -1 2 . 3", "-3 ~"]))
+    $ bassline
+    -- $ (+ 2)
+    $ "<0 [0 [-3 -1]]>"
+    )
+  # s "chBand01" # octave 5 # gain 1 # legato "2" # pF "brightness" (range 0.5 (-0.5) saw) #orbit 2
+  ,
+  (note
+    $ mixb6
+    -- $ outside 4 (condFx "<1(3,8,4)>" (invert))
+    $ (+| cat ["<2 [4 2 -1]>","~"])
+    $ bassline
+    $ (+ 4)
+    $ "<0 [0 [-3 -1]]>"
+    )
+  # s "modal03" # octave 5 # gain 1 # legato 3 # pF "brightness" 0.002 #orbit 3 #room 0.75
+  ,
+  (note
+    -- $ (+ 2)
+    $ ((1/4)~>)
+    $ scale "ritusen"
+    $ outside 4 (soak 2 $ mix $ condFx "<1(5,8,4)>" (slow 3.(rot 3).invert))
+    $ (+| cat ["[~ -1 . [0 1]*2]","~ -5"])
+    -- $ bassline
+    $ "1 5"
+    )
+  # s "pe-gtr:9" # octave 6 # gain 0.88 # legato 2 # pF "brightness" (0.3*saw) #orbit 4 #room 0.5 #delay 0.88 # delaytime (5/3) #gain 0.68
+  ,
+  stack [
+    (note
+      $ mixb6
+      $ (+| "0(<3 3 1,2>,16,<0 3 1 2>)")
+      $ bassline
+      $ "<0 [0 [-3 -1]]>"
+      )
+    # octave 4 # legato 3
+    # s "[opDrm02]" # pF "brightness" 0.02 -- #pF "attack" saw
+    #orbit 0 # gain 0.88
+    ,
+    s "~ opDrm01"
+    ,
+    s "subCym01(7,8)" # legato (range 1 2 saw)
+  ]
+]
+
+
+let mixb6 =  mode 5 "melodicMinor"
+    mix fx p = ( p + fx p)
+    condFx bools fx p = sew bools (fx p) p
+    bassline = whenmodr [1,3,0.5] [5,7] [4] (mix (slow 3.rot 2.invert.(+ "-3 2 1")))
+in
+d2
+$ slow 2
+$ outside 4 (condFx "<1(5,8,3)>" (iter 4.fast 3))
+$ stack [
+  (note
+    $ mixb6
+    $ bassline
+    $ "0"
+    )
+  # octave 4 # legato 3
+  # s "[fm02]" # pF "brightness" 0.02 -- #pF "attack" saw
+  #orbit 1 # gain 1
+  ,
+  (note
+    $ mixb6
+    $ outside 4 (condFx "<1(5,8,3)>" (invert.mix(rot 1.slow 2)))
+    -- $ bassline
+    $ (+| cat ["0 1 2 3", "~"])
+    $ bassline
+    $ "0 [1 -1]"
+    )
+  # s "gtr" # octave 6 # gain 0.88 # legato 2 # pF "brightness" (range 0.5 (-0.5) saw) #orbit 2
+  -- ,
+  -- (note
+  --   $ mixb6
+  --   $ outside 4 (condFx "<1(3,8,4)>" (invert))
+  --   $ (+| cat ["<2 [4 2]>","~"])
+  --   $ bassline
+  --   $ "4 0"
+  --   )
+  -- # s "gtr" # octave 6 # gain 0.88 # legato 2 # pF "brightness" 0.02 #orbit 3 #room 0.5
+  -- ,
+  -- (note
+  --   -- $ (+ 2)
+  --   $ ((1/4)~>)
+  --   $ scale "ritusen"
+  --   $ outside 4 (soak 2 $ mix $ condFx "<1(5,8,4)>" (slow 3.(rot 3).invert))
+  --   $ (+| cat ["[~ -1 . 0 1]","~ -5"])
+  --   -- $ bassline
+  --   $ "1 5"
+  --   )
+  -- # s "gtr" # octave 7 # gain 0.88 # legato 2 # pF "brightness" (0.3*saw) #orbit 4 #room 0.5 #delay 0.88 # delaytime (5/3) #gain 0.68
+  ,
+  stack [
+    (note
+      $ mixb6
+      $ (+| "0(<3 3 1,2>,16,<0 3 1 2>)")
+      $ bassline
+      $ "0"
+      )
+    # octave 4 # legato 3
+    # s "[opDrm02]" # pF "brightness" 0.02 -- #pF "attack" saw
+    #orbit 0 # gain 0.88
+    ,
+    s "~ opDrm01"
+  ]
+]
+
+
+:t mask
+
+scaleList
+
+whenmodr speeds numerators denominators modifier pattern =
+  if (done) then (modifiedpattern) else (whenmodr rests restn restd modifier modifiedpattern)
+  where modifiedpattern = outside speed (whenmod numerator denominator (modifier)) $ pattern
+        numerator = (head numerators)
+        denominator = (head denominators)
+        speed = (head speeds)
+        done = (null $ tail speeds) && (null $ tail numerators) && (null $ tail denominators)
+        restn = if null (tail numerators) then [numerator] else (tail numerators)
+        restd = if null (tail denominators) then [denominator] else (tail denominators)
+        rests = if null (tail speeds) then [speed] else (tail speeds)

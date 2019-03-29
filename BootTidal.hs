@@ -1,10 +1,20 @@
 :set -XOverloadedStrings
 :set -XFlexibleContexts
 :set prompt ""
--- :set prompt-cont ""
+
 
 import Sound.Tidal.Context
 import Sound.Tidal.Chords
+
+-- :module Sound.Tidal.Context
+-- -- -- :set prompt-cont ""
+-- --
+-- -- import Sound.Tidal.Context
+-- -- import Sound.Tidal.Chords
+--
+-- :load "~/Music/tidal-cycles/lib"
+
+
 
 -- total latency = oLatency + cFrameTimespan
 tidal <- startTidal (superdirtTarget {oLatency = 0.3, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20})
@@ -55,6 +65,7 @@ let d14 = p 14
 let d15 = p 15
 let d16 = p 16
 
+
 -- snowball :: (Pattern a -> Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Int -> Pattern a -> Pattern a
 snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
 
@@ -97,6 +108,34 @@ flood' n text2 = sequence_(replicator' n text2)
 -- terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
 terr start stop pattern = (start, stop, pattern)
 
+-- thanks eric
+-- whenmodr :: [Pattern Time] -> [Int] -> [Int] -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+mode n scaleName p = (|- (scale scaleName (n-1))) $ scale scaleName $ (+ n) $ p
+
+invert p = (|* "-1") $ p
+
+mix fx p = ( p + fx p)
+
+condFx bools fx p = sew bools (fx p) p
+
+foldmod [] _ _ _ p = p
+foldmod timescales d n fx p = foldmod (tail timescales) d n fx $ outside (head timescales) (whenmod d n fx) $ p
+
+-- -- whenmodr :: [Pattern Time] -> [Int] -> [Int] -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+-- whenmodr speeds numerators denominators modifier pattern = if (done) then (modifiedpattern) else (whenmodr rests restn restd modifier modifiedpattern)
+--                                                             where modifiedpattern = outside speed (whenmod numerator denominator (modifier)) $ pattern
+--                                                                   numerator = (head numerators)
+--                                                                   denominator = (head denominators)
+--                                                                   speed = (head speeds)
+--                                                                   done = (null $ tail speeds) && (null $ tail numerators) && (null $ tail denominators)
+--                                                                   restn = if null (tail numerators) then [numerator] else (tail numerators)
+--                                                                   restd = if null (tail denominators) then [denominator] else (tail denominators)
+--                                                                   rests = if null (tail speeds) then [speed] else (tail speeds)
+
+-- isoe :: Pattern Int -> Pattern Int -> Pattern Time -> Pattern a -> Pattern a
+isoe n d s p = slow ((fmap toTime d)/s) $ euclid n d $ p
+
 mkpat name pattern = (name,pattern)
 
 mkfx name fx = (name,fx)
@@ -106,5 +145,7 @@ sendMidiClock = p "clock" $ fast 2 $ midicmd "midiClock*48" #s "midi";
 sendMidiStop = once $ midicmd "stop" #s "midi"
 
 sendMidiStart = once $ midicmd "stop" #s "midi"
+
+
 
 :set prompt "tidal> "

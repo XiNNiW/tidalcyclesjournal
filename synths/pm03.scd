@@ -3,7 +3,7 @@
 SynthDef(\pm03, {
 	|
 	freq=220, amp=1, gate=1, pan=0,out=0,
-	attack = 0.02,decay=0.125,sus=0.75,release=0.5, sustain,
+	attack = 0.02,decay=0.125,sus=0.75,release=0.5, sustain=1,
 	harmonic=1.0,brightness=1.0,spread =0.01,overdrive = 0
 	|
 	var smoothFreq, vibFreq, oscL, oscR, mod, panner, env, noise, detune;
@@ -27,7 +27,9 @@ SynthDef(\pm03, {
 	oscL = (overdrive*oscL).tanh;
 	oscR = PMOsc.ar(vibFreq/2-detune, harmonic*0.25*smoothFreq*(1+mod*noise), brightness*Line.ar(20,0.5,decay)*mod, 0, 1);
 	oscR = (overdrive*oscR).tanh;
-	env = EnvGen.ar(Env.linen(attack,decay,release,sus,'lin'), timeScale:sustain, doneAction:2);
+	//env = EnvGen.ar(Env.linen(attack,decay,release,sus,'lin'), timeScale:sustain, doneAction:2);
+	env = EnvGen.ar(Env.new([0, 1, sus,sus, 0],[attack,decay,1-release-decay-attack,release]), gate: gate, timeScale:sustain, doneAction:2);
+	env=env*env;
 	OffsetOut.ar(out, DirtPan.ar(oscL/3, ~dirt.numChannels, pan, env));
 	OffsetOut.ar(out, DirtPan.ar(oscR/3, ~dirt.numChannels, pan, env));
 }).add

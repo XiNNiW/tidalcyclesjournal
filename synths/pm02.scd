@@ -3,7 +3,7 @@
 SynthDef(\pm02, {
 	|
 	freq=220, amp=1, gate=1,pan=0,out=0,
-	attack=0.01,decay=0.3,sus=1,release=1, sustain,
+	attack=0.01,decay=0.3,sus=1,release=1, sustain=1,
 	harmonic=1.0,brightness=1.0,spread=0.01,overdrive=0
 	|
 	var smoothFreq, vibFreq, blipL,blipR, mod, panner, env,noise;
@@ -22,6 +22,7 @@ SynthDef(\pm02, {
 	blipR = blipR.tanh/2;
 
 	env = EnvGen.kr(Env.linen(attack,decay,release,sus,'lin'), gate, timeScale:sustain, doneAction:2);
+	env = env*env;
 	OffsetOut.ar(out, DirtPan.ar(blipL/5, ~dirt.numChannels, pan, env));
 	OffsetOut.ar(out, DirtPan.ar(blipR/5, ~dirt.numChannels, pan, env));
 }).add

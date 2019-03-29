@@ -1,7 +1,7 @@
 hush
 
 d1
--- $ outside 2 (iter 16)
+-- $ outside 4 (iter 6)
 $ stack [
   ghost $ s "virus-ch(7,16,5)" #n (sometimes (const $ irand 5) $"[0]") # gain 0.8
   ,s "virus-bd:5(<2>, 16, <0 [0 1] 5 [3] >)"

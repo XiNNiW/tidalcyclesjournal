@@ -4,7 +4,8 @@
 SynthDef(\granular01,{
 	|
 	out=0, gate = 1, amp = 1, sample=\sid,
-	pan = 0,freq=440.0,harmonic=1.0,brightness=1.0,sustain|
+	pan = 0,freq=440.0,harmonic=1.0,brightness=1.0,sustain=1
+	|
   var env, freqdev, osc, winenv, windowbuf,sndbuf,grains,smoothFreq,vibFreq;
 	smoothFreq = Lag.kr(freq);
 	vibFreq = Vibrato.kr(smoothFreq,0.5,0.01);
@@ -29,5 +30,5 @@ SynthDef(\granular01,{
 )
 
 
-// Synth(\granular01,\cp);
+// Synth(\granular01);
 

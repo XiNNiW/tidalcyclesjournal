@@ -24,7 +24,7 @@ d1 $ stack [
    -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
    sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
    -- sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6)
-   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
 ]
 
 d1 $ stack [
@@ -32,7 +32,7 @@ d1 $ stack [
    -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
    sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
    sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6),
-   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
 ]
 
 
@@ -42,7 +42,7 @@ d1 $ stack [
    sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
    sound ". 808sd:6",
    sound (slow 4 $ "acousticBass:3*3 acousticBass? acousticBass acousticBass") # n (run 6),
-   up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
 ]
 
 

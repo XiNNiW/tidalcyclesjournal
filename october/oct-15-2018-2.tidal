@@ -7,9 +7,9 @@ let melody = slow 6 $ "0 2 [4 8 .] [3 4 3] 8 4 9"
 
 d1
 $ stack [
-  note ((scaleP "minor" melody)) #s "pe-gtr:9" #gain 1.2,
-  (4 ~>) $ note ((scaleP "minor" $ melody)) #s "pe-gtr:9" #gain 1.2,
-  (8 ~>) $ slow 4 $ note ((scaleP "minor" $ melody)+12) #s "pe-gtr:9" #gain 1
+  note ((scale "minor" melody)) #s "pe-gtr:9" #gain 1.2,
+  (4 ~>) $ note ((scale "minor" $ melody)) #s "pe-gtr:9" #gain 1.2,
+  (8 ~>) $ slow 4 $ note ((scale "minor" $ melody)+12) #s "pe-gtr:9" #gain 1
   -- (2 ~>) $ slow 2 $ note ((scaleP "minor" $ melody )*(-1)) #s "tx81z-tine:2" #gain 0.8 #cut 1
 ]
 
@@ -21,7 +21,7 @@ let inversion = (* (-1))
 
 d1
 $ note
-((scaleP "minor"
+((scale "minor"
   $ off 4 (+ 2 )
   $ off 1 (inversion.slow 2)
   $ palindrome
@@ -50,7 +50,7 @@ let system1 = p(take 128 $ lindenmayer 5 "0:0 2 3 1,1:0,6:[7 8 7 .],1:6 [. 2] 0"
 
 d1
 $ note
-((scaleP "melodicMinor"
+((scale "melodicMinor"
 $ slow 16
 $ system1 - slow 4 system1 ))
 #s "pe-gtr:9"

@@ -8,15 +8,15 @@ hush
 let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
 
 d3
-  $ append'
+  $ append
   -- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
-  (up ((scaleP "minor"
+  (up ((scale "minor"
     $ stack [
       slow "<1 1 2 3>" $ "0 2 3",
       melody1
     ]
   ) + 5) # sound "rhodes" #n 5)
-  (up ((scaleP "minor"
+  (up ((scale "minor"
     $ stack [
       slow "<1 1 2 3>" $ "0 2 3",
       melody1
@@ -27,7 +27,7 @@ let chordProgression = slow 4 $ "7 2 3 4 5 0 6 8" - 7
 
 d3
   $ slow 3
-  $ up ( (scaleP "ahirbhairav"
+  $ up ( (scale "ahirbhairav"
     $ stack [
       "2[~ [0 2 5 3]] . 3"+"9 2 3 4" + chordProgression
     ]
@@ -35,7 +35,7 @@ d3
 
 d4
   $ slow 3 $ (1.5 <~)
-  $ up (scaleP "ahirbhairav"
+  $ up (scale "ahirbhairav"
     $ stack [
       "<0, 2, 4, 6>" + chordProgression
     ]

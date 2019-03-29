@@ -1,0 +1,52 @@
+setcps 0.5
+
+hush
+
+d1
+-- $ slow 1
+-- $ outside 3 (chunk 6 (slow 2))
+-- $ outside 2 (iter 9)
+$ slow 3
+-- $ within (0.5, 0.75) (sometimes ghost)
+$ (note (scale "spanish" $ "-2  ~ [-3 -4] . -5 0 -1 . ~  <0 0*2> ~ " * "-2"))
+# s "[fm02,chBand03]" # octave "<5 5 5 4 4 4>" # legato "4 8" # pF "brightness" (fast 3 $ range 0.002 0.25 $ saw)
+
+d3
+-- $ slow 1
+-- $ outside 3 (chunk 6 (slow 2))
+-- $ outside 2 (iter 9)
+$ slow 3
+$ (note (scale "spanish" $ " [-2]  ~ [-3 -4]. -5 0 -1. ~ 0 ~ " + 2))
+# s "pm03" # octave 6 # legato 4
+
+d2 $ silence
+
+d2
+$ slow 2
+$ whenmod 8 4 (const silence)
+$ (note (scale "spanish" $ "<2 0 [-2 -4] -3> 2 3 <5 6 [4 5] [7 9]>"))
+# s "karplus01" # octave 6 # legato 4
+
+d4 $ slow 4 $ (note (scale "spanish" $ " <6 3 [~ 6@7] 3 7 [4 5] [~ 3 4]>  ")) # s "chBand01" # octave "[4]" # legato 4 # orbit 3
+
+d4 $ slow 4 $ (note (scale "spanish" $ " 0 2 5")) # s "chBand01" # octave 5 # legato 4
+
+d5 $ slow 3 $ s "subCym01"
+
+-- d4
+-- $ slow 1
+-- $ outside 3 (chunk 6 (slow 2))
+-- $ outside 2 (iter 9)
+-- $ whenmod 16 14 (iter 4)
+-- $ stack [
+--   (note (scale "spanish" $ "0([3,5],16,<3 4 1 0>)" |+ "-2  ~ [-3 -4] . -5 0 -1 . ~  <0 0*4> ~ " * "-2")) #s "opDrm02" #octave 3 # legato "2 4" #gain 1.1 #pF "brightness" 1 -- #pF "overdrive" 5
+--   ,
+--   slow 2 $ every 2 (sometimes ghost) $ (note (scale "spanish" $ randcat [ "0@15 5" , "0@31 5", "0@15 [7*2]"])) # s "[808bd,opDrm02]" #octave 3 # legato 1.5 #gain 1.1  #pF "brightness" 0.2
+--   ,
+--   every 3 (sometimes ghost) $ foldEvery [3,4] (("<0 0.125> 0.25"~>) . fast 2  . (|* gain ( range 0.67 1 (fast 2 $ (0.25 <~) saw)))) $ (note (scale "spanish" $ "{~ 0}%4" |+  " <6 3 7>  ")) # s "<cp cp*3,fmSnare01>" # legato 1.5 #gain 1.1
+--   ,
+--   (note (scale "spanish" $ "0([6,4],16,[1 2])")) # s "subCym01" # legato "4 4 4 7 4 4 7 4 4" #octave 6 #gain (range 0.88 0.99 $ fast 2 $ (fast 3 $ tri) * (1 - saw))
+--   ]
+
+
+hush

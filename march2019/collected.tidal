@@ -1,0 +1,314 @@
+d3
+$ whenmod 18 17  (iter 5)
+-- $ outside 8 (every 2 (iter 5))
+$ outside 4 (every 3 (inside 4 (rev)))
+$ slow 4
+$ note (scale "lydian" $ off (0.25) (+ 10) $ "0 . 2. 3 4 . 5 . 1 " )
+# s "pe-gtr:10" # gain 0.7 # room 0.75 # orbit 1 # delay 0.5 # delaytime 0.33
+
+d1 $ slow 4 $ chop "8" $ s "autoharp-m:24" #speed "-1"
+
+
+let
+laceWith fx p = interlace p (fx p)
+in
+d2
+$ slow 4
+$ laceWith (slow 3. rev. (#s "pm03"). (# octave 5))
+$ whenmod 7 6 ( every 2 (inside 4 (chunk 4 (iter 4.(0.25 ~>)))))
+$ note ((+3)
+$ scale "hexPhrygian"
+$ soak 3 (off 0.25 (+ "<3 [3 2]> -2").slow 2) "<0 [1 0] 2 [3 -1]>"+3)
+# s "modal02" # octave 5 #orbit 4
+# pF "harmonic" (5/4) #pF "brightness" (range 2 0.5 $ slow 3.33 tri) #pF "spread" 1
+#room 0.5  # gain 0.6 #delaytime "<0.125 0.6666>" #delay 0.5 # delayfeedback "0.7 0.5"
+
+hush
+
+let melody1 = slow 4
+                $ cat [
+                  "[ [-1 -2] ~ . -4 . 1 . ~ ]",
+                  "[ [-4 0] ~ . 1 . -1 . 0]" ,
+                  "[ [0 -4] ~ . -3 . -2 . -1]",
+                  "[ ~        . ~ -2 -3 . <0 [0 -1] 0 [2 0 ~*2 ]> . < ~ [1 2] -1 [1 3]> ]"
+                ]
+    counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 3 . ~] 3 5 > <<6 -1 6 0> [6 <5 [5 3] [5 3] [5 3]>]>]"
+in
+do {
+  setcps(1.2);
+  d5 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ melody1 ) #s "[midi,pe-gtr:9]" #gain 1.5 #orbit 0 #midichan 0;
+  d6 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ counterMelody1 ) #s "midiOP1" #gain 1.5 #orbit 0 #midichan 0;
+  d1 $ swingBy (1/5) 10 $ sound "[ <[808bd] bd> 909? ~ ~  . <bd [<[[bd*2? ~ bd bd?] ~] [<bd ~>]> 808bd?]>]" #n (run 8) #orbit 0;
+  d2 $ swingBy (1/5) 10 $ every ((irand 5)+1) (const $ sound "~ sd" #orbit 1)  $ sound "[ ~ sd]" #n (run 8) #orbit 0;
+  d3 $ swingBy (1/5) 10 $ sound "lighter*8"#n (run 8) # gain  ("[8 .. 10] [9 .. 10]" /10 *0.88) #nudge 0.008 #orbit 0;
+}
+
+let melody1 = slow 4
+              $ cat [
+                "[ [-1 -2] ~ . -4 . 1 . ~ ]",
+                "[ [-4 0] ~ . 1 . -1 . 0]" ,
+                "[ [0 -4] ~ . -3 . -2 . -1]",
+                "[ ~        . ~ -2 -3 . <0 [0 -1] 0 [2 0 ~*2 ]> . < ~ [1 2] -1 [1 3]> ]"
+              ]
+    counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 3 . ~] 3 5 > <<6 -1 6 0> [6 <5 [5 3] [5 3] [5 3]>]>]"
+in
+do
+{
+  -- d9 $ midicmd "start" # s "midi"
+  d5 $ swingBy (1/5) 10  $ note ( scale "phrygian" $ melody1 ) #s "pe-gtr:10,midi" #gain 1.3 #orbit 2 #midichan 1;
+  d1 $ swingBy (1/5) 10  $ sound "[ <[808bd] bd> 909? ~ ~  . <bd [<[[bd? ~ bd bd?] ~] [<bd ~>]> 808bd?]>]" #n (run 8) #orbit 0;
+  d6 $ swingBy (1/5) 10  $ note ( scale "phrygian" $ counterMelody1 ) #s "pe-gtr:9,midi" #gain 1.5 #orbit 3 #midichan 2;
+  d2 $ swingBy (1/5) 10 $ every ((irand 5)+1) (const $ sound "~ sd" #orbit 1)  $ sound "[ ~ sd]" #n (run 8) #orbit 1;
+  d3 $ ( 0.05 ~>) $ swingBy (1/9) 10 $ sound "lighter*8"#n (run 8) # gain  ("[8 .. 10] [9 .. 10]" /10 *0.88) #nudge 0.008 #orbit 4;
+}
+
+hush
+
+setcps(0.5)
+
+melody = "{ [6]  [2 3 4] , [~ ] [~ [10 8] 9]  [10 11 ~ 8] }%2" -- +  slow 3 "<4 3> . 4 . 2 6 8"
+
+melody = "{6 . 2 3 4 , ~ . ~ [10 8] 9 . 10 11 ~ 8}%2"
+
+melody = "{5 6 . 2 3 4, 3 7}%2"
+
+melody = "0"
+
+d1 $ n ((scale "dorian" $ melody)) #s "chBand01" # gain 1
+
+d2 $ (0.5 ~>) $ slow 4 $ n ((scale "dorian" $ melody +  ( slow 3 $ iter 4 $ melody |- 3))|+12) #s "autoharp-m" # gain 0.8
+
+d1 $ note ((scale "dorian" $ "{6 . 2 3 4 , ~ . ~ [10 8] 9 . 10 11 ~ 8}%2")) #s "gtr" # gain 0.8
+
+d3 $ note ((scale "dorian" $ melody)) #s "pizz" # gain 1
+
+d2 $ note ((scale "dorian" ("0 2 3 . 2 3" + (arpeggiate "<c'maj e'min>")) )) #s "gtr"
+
+d1 $ sound "[[bd(2,<3 2 5 7>)]]sn:5"
+
+d1 $ slow 2 $ note ("<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>") #s "superzow" #gain 0.5
+
+d2 $ slow 2 $ stack [
+  sound "[[bd*2] ~ bd*2, [~ sn:1] [~ ~ sn:1?]][sn:2 bd*2]" # nudge "[0.01 <0.08 0.1>] [<0.01 0.01> 0.04]",
+  sound "hh*8" # nudge "0.01 0.02 0.04 0.03"
+]
+
+d1
+-- $ striate 128
+-- $ chop 8
+$ every 2 (sometimes (stut 3 0.5 0.5))
+$ every 4 (rip 0.5 0.1)
+$ foldEvery [3,4] (rot "<4 5>") $ sound "EFM(<5 5 7 [3 5]>,8)" #n (run 16)
+
+d4 $ every 2 (sometimes (stut 4 0.5 0.5)) $ foldEvery [3,5] (slow 3) $ note ("0(3,8)"+"0 3 5" + "~ . 3 ~ 0 . 2") # s "pizz" # orbit 3
+
+d3 $( note  $"<~ [0,2,4,11]>" + "12" + "<0 2 5>") # s "rhodes:4" # gain 1.4
+
+d5 $ every 4 (striate 4) $( note (scale "lydian" ("0 2 3 4" + "<0 [3 2 10] 4>"))|+ 12) #s "arpy" #orbit 2 # gain 0.8
+
+d3 $  note (scale "hexDorian" $ "<~ [~ [0,2,5]]>" |+ "<0 1 2 5>" |+ (slow 4 "<0 1 -1 3>")|+5) #s "rhodes:5" #orbit 2
+
+d3 $  note (scale "hexPhrygian" $ "<~ [~ [0,2,5,7]] ~ [~ [0,2,5,8]]>" |+ "<0 1 2 5>" |+ (slow 4 "<0 1 -1 3>")|+5|-12) #s "rhodes:5" #orbit 2
+
+let
+  melody = cat [ "[0 0] [2 3 4] [0 6] [5 4 2]", " [0 2] [4 8] [. . 2] [1 -1 0] " ]
+  drone = "[-12 , -5]"
+
+d1 $ note (scale "dorian" $ slow 6 $ melody ) #s "pe-gtr:8,midi" #midichan 0 #gain 2 #orbit 0
+
+d2 $ rev $ note ((scale "dorian" $ slow 2 $ drone + 12)) #s "pe-gtr:6,midi" #midichan 1 #gain 1 #orbit 0
+
+hush
+
+hush
+
+d2 $ note ((scale "minor" $ slow 4 $ shuffle 4 $ "0 2 4 7" + 0)) #s "[pe-gtr:9,midi]"  #gain 2 #octave 6
+
+d3 $ ((1/8)~>) $ slow 8  $ note ((scale "minor" $ (run 8))) #s "[pe-gtr:9,midi]" #gain 1.5
+
+d1 $ smash 3 [2,3,4] $ sound "ho ho:2 ho:3 hc"
+
+d1 $ foldEvery [4,6] (slow "[3 2 1]" . rev) $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
+
+hush
+
+d1 $ foldEvery [4,6] (slow "[3 2 1]" . rev) $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
+
+d2
+  $ every 8 (const $ up (scale "hexDorian"  $ "4 3 2 1") # s "pe-gtr:9" # gain 1.2)
+  $ foldEvery [4,6] (hurry "[1 2 1 1]/2" . rev . slow "[3 2 1]")
+  $ up (scale "hexDorian" $ "0 ~ [ [ 7 9 ] 2 1 5]/2 " + "[0 7 [3 2]5]/4") # s "pe-gtr:9" # gain 1.2
+
+hush
+
+let groove = "[bd hh] [sn sn:2] [hh bd:2] hh:9"
+
+let melody = "[[0 12] . . [3 5] . .] [ . [7 8 6]/3] . . . [[ . . . 9]/4] . [[ . . 0 5]/4]"
+
+let chordRoots = "[0 2 3 4 5 6 7 8]/4"
+
+d1
+  -- $ every 32 (spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")])
+  $ every 16 ( smash 2 [4,3,2] . degrade )
+  $ foldEvery [4,6] (slow "[3 2 1]" . rev)
+  $ sound
+  $ foldEvery [7,8] (const
+    $ randcat[
+      "{bd bd bd}%8",
+      "[sn:3 bd:2] ~ hh [hh*4]"
+    ]
+  )
+  $ every 2 (shuffle 8)
+  $ cat [
+    "[bd hh] [sn sn:2] [hh bd:2] hh:9",
+    "[bd hh] [sn sn:2] [hh bd:2] [hh:8 hh:9]",
+    "<{bd bd bd}%1, . hh> [sn .] [hh [bd:2 bd:2]] hh:9",
+    "[bd sn:6 ] [ sn sn:2] [hh bd:2] hh:9"
+  ]
+
+d2
+  $ ( "0 0.25" ~>)
+  $ every 4 (striate "4 1 2 3" )
+  $ up
+  ( scale "hexDorian"
+    $ slow 4 $ melody + chordRoots + 12
+  ) # s "c64-broken:3" # gain 0.9
+      -- ) # s "tx81z-2x-bass" # gain 0.5
+
+d3
+  $ n
+  (  scale "hexDorian"
+    $ slow 4 $ melody + chordRoots-- - 12
+  ) # s "superpiano" # gain 0.9 # sustain 8
+
+d4
+  $ foldEvery [7, 6] (palindrome)
+  $ every 2 (slow "[[2 6 2 3]]*32")
+  $ every 4 (const $ up "0")
+  $ up
+  ( scale "hexDorian"
+    $ slow 4 $ ("[0 0.125 0 0.0125]*32" ~>) $ "[ . 3 . . 0 [[3 4 5 6]/4] 2 1]*8" +  melody + chordRoots
+  ) # s "tx81z-tine" # gain 0.5
+
+d5
+  $ up
+  ( scale "hexDorian"
+    $ slow 4 $ "[0]*8" +  melody + chordRoots
+  ) # s "ATC-1" # gain 0.3 # vowel "i"
+
+let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
+
+hush
+d3
+$ append
+-- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+(up ((scale "minor"
+$ stack [
+  slow "<1 1 2 3>" $ "0 2 3",
+  melody1
+]
+) + 5) # sound "rhodes" #n 5)
+(up ((scale "minor"
+$ stack [
+  slow "<1 1 2 3>" $ "0 2 3",
+  melody1
+] + 5
+) + 5) # sound "rhodes" #n 5)
+
+d2
+$ up ((scale "minor" counterMelody1 ) ) #s "tx81z-tine" #legato 1  #gain 1
+
+d1 $ (0.5 ~>) $ sound "tech*3" # gain (range 1 0.5 $ ((run 8)/8)) # nudge "<0.01 0.03 0.04 0.09> 0 0.1"
+
+d3
+-- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+$ up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3" ,
+    melody1,
+    counterMelody1 - 7
+  ]
+) -7 + 24) # sound "rhodes" #n 9
+
+d3
+$ append
+((up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3",
+    melody1
+  ]
+) -7 + 24) # sound "rhodes" #n 5))
+(up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3",
+    melody1
+  ] + 5
+) -7 + 24) # sound "rhodes" #n 5)
+
+
+hush
+
+cps (133/60/2)
+
+-- d9 $ midicmd "midiClock*48" # s "midi"
+-- d9 $ midicmd "stop" # s "midi"
+-- d9 $ midicmd "start" # s "midi"
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9"
+   -- sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6)
+   -- up ((scaleP "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   -- sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6)
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   -- sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",,
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   sound (slow 4 $ "acousticBass:3*3 acousticBass?") # n (run 6),
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+
+d1 $ stack [
+   sound "808bd*2" # gain 1.2,
+   sound $ (0.75 <~ ) $ slow 2 "{808oh? [808oh 808oh? 808oh?*2 [808oh 808oh:1]]/2}%4",
+   sound $ (0.125 <~) $ slow 6 "{808hc:0}%9",
+   sound ". 808sd:6",
+   sound (slow 4 $ "acousticBass:3*3 acousticBass? acousticBass acousticBass") # n (run 6),
+   up ((scale "dorian" "[0,2,6,11]" )+12) #s "rhodes"
+]
+
+
+d1
+  $ iter 4
+  $ stack [
+    sound "808bd*2" # gain 1.2,
+    sound "808oh" # gain 0.9,
+    sound "[. 808sd:19]/2" # gain 1,
+    sound "808mt 808mt 808mt 808lt 808ht 808mt 808lt 808mt" # n (run 8)
+  ]
+
+d4
+$ slow 1
+$ outside 3 (chunk 6 (slow 2))
+$ outside 2 (iter 9)
+$ whenmod 16 14 (iter 4)
+$ stack [
+  (note (scale "spanish" $ "0([3,5],16,<3 4 1 0>)" |+ "-2  ~ [-3 -4] . -5 0 -1 . ~  <0 0*4> ~ " * "-2")) #s "opDrm02" #octave 3 # legato "2 4" #gain 1.1 #pF "brightness" 1 -- #pF "overdrive" 5
+  ,
+  slow 2 $ every 2 (sometimes ghost) $ (note (scale "spanish" $ randcat [ "0@15 5" , "0@31 5", "0@15 [7*2]"])) # s "[808bd,opDrm02]" #octave 3 # legato 1.5 #gain 1.1  #pF "brightness" 0.2
+  ,
+  every 3 (sometimes ghost) $ foldEvery [3,4] (("<0 0.125> 0.25"~>) . fast 2  . (|* gain ( range 0.67 1 (fast 2 $ (0.25 <~) saw)))) $ (note (scale "spanish" $ "{~ 0}%4" |+  " <6 3 7>  ")) # s "<cp cp*3,fmSnare01>" # legato 1.5 #gain 1.1
+  ,
+  (note (scale "spanish" $ "0([6,4],16,[1 2])")) # s "subCym01" # legato "4 4 4 7 4 4 7 4 4" #octave 6 #gain (range 0.88 0.99 $ fast 2 $ (fast 3 $ tri) * (1 - saw))
+  ]

@@ -1,0 +1,55 @@
+hush
+
+let neo = scale "hexPhrygian"
+    mix fx p = ( p + fx p)
+    condFx bools fx p = sew bools (fx p) p
+    growth = whenmodr [1,3] [5,7] [4,3] (mix ((+ "<-1 1>").slow 2))
+    seed = "<0 [0 [-3 [1 0]]]>"
+in
+d2
+$ slow 2
+$ outside 4 (condFx "<1(5,8,3)>" (iter 4.fast 3))
+$ stack [
+  (note
+    $ neo
+    $ mono
+    $ soak 3 ( (condFx "1(5,8,<3 2 1 0>)"(euclid 3 4.slow 3)))
+    $ (+| cat ["4. 1 3 2", "<0 -3>"])
+    $ growth
+    $ seed
+    )
+  # octave 5 # legato 1
+  # s "chBand02" # pF "brightness" (range 0.02 0.5 $ iter 8 $ segment 8 $ tri) -- #pF "overdrive" 3
+  # orbit 1 # gain 0.89
+  ,
+  (note
+    $ neo
+    $ mono
+    -- $ soak 3 ( (condFx "1(5,8,<3 2 1 0>)"(euclid 3 4.slow 3)))
+    $ (+| "2")
+    $ invert
+    $ (+ cat ["4. 1 3 2", "<0 -3>"])
+    $ growth
+    $ seed
+    )
+  # octave 6 # legato 1
+  # s "chBand02" # pF "brightness" (range 0.02 0.005 $ iter 8 $ segment 8 $ tri) -- #pF "overdrive" 3
+  # orbit 2 # gain 0.6 # room 1
+  ,
+  (note
+    $ neo
+    $ (+| "0(<3 3 1,2>,16,<0 3 1 2>)")
+    $ growth
+    $ seed
+    )
+  # octave 4 # legato 3.5
+  # s "[opDrm02]" # pF "brightness" 0.02 -- #pF "attack" saw
+  #orbit 0 # gain 0.88
+  ,
+  s "~ opDrm01"
+  ,
+  s "subCym01(7,8)" # legato (range 1 2 saw)
+]
+
+
+scaleList

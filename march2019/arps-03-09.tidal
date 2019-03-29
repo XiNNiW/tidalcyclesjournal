@@ -1,0 +1,36 @@
+hush
+
+d1
+$ ( note
+  $ scale "spanish"
+  $ (+ "<0 . -5 -3 . -6 . -7 . [0*3] . [-3*3] . -6 . [-7*3]  >")
+  $ cat [
+    "[-2 0 3 5 6 8, 12]*2"
+    ,
+    "[0 3 6 8 9 12, 3]*2"
+    ,
+    "[0 2 7 8 12 10, 4]*2"
+    ,
+    "[2 4 6 8 9 10, 5]*2"
+  ]
+  )
+  # s "fm02"
+  # pF "attack" "[0.01 0.15]*2"
+  # pF "release" "[0.15 0.25]*2"
+  -- # pF "brightness" (slow 9 $ tri)
+  # pF "harmonic" 1.5
+  # delay 0.45
+  # delaytime 0.33333
+  # lock 1
+  # legato 3
+  # octave 4
+
+
+d2
+$ ( note
+  $ scale "spanish"
+  $ (+ "<0 . -5 -3 . -6 . -7 . [0*3] . [-3*3] . -6 . [-7*3]  >")
+  $ fastcat ["0(3,16,<0 2>)"]
+  )
+  # s "pm02"
+  # legato 2

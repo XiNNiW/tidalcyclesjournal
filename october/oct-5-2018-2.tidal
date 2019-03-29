@@ -95,7 +95,7 @@ let melody = "0 3 5 1" + "[0 2 1 3]/3" - "[3 4 [-2 5] 0]/8" - "[12 5] 12"
 let melodyTransform notes = (foldEvery [2, 7, 9, 11] (slow "3 1 2")
   $ slow 3
   -- $ stut 1 0.5 16
-  $ up (scaleP "dorian"
+  $ up (scale "dorian"
     $ notes + 24
   ) )
 
@@ -105,7 +105,7 @@ d6
   $ smash 4 [3 ,2 ,1 ,2]
   $ foldEvery [2, 7, 9, 11] (slow "3 1 2")
   $ slow  3
-  $ up (scaleP "dorian"
+  $ up (scale "dorian"
     $ melody + 7
   )
   # s "ATC-1:14" |*| speed 4 # legato 1
@@ -114,7 +114,7 @@ d7
   -- $ smash (run 8) [1, 2, 1, 2]
   $ foldEvery [2, 7, 9, 11] (slow "3 1 2")
   $ slow 3
-  $ up (scaleP "dorian"
+  $ up (scale "dorian"
     $ melody + 3
   )
   # s "tx81z-tine" |*| speed 4 # legato 1
@@ -125,20 +125,20 @@ d5
   -- $ whenmod 8 7 (superimpose (slow 3 . palindrome. stut' 3 0.88 (palindrome)) )
   $ foldEvery [2, 7, 9, 11] (slow "3 1 2")
   $ stut 1 0.5 16
-  $ note (scaleP "dorian" $ superimpose ((0.125 ~>).rev.slow 3.(+) 5) $ "0 3 5 1" + "[0 2 1 5]/3" - "[3 4 [-2 5] 0]/8")
+  $ note (scale "dorian" $ superimpose ((0.125 ~>).rev.slow 3.(+) 5) $ "0 3 5 1" + "[0 2 1 5]/3" - "[3 4 [-2 5] 0]/8")
   #s "[pe-gtr, midi]" #n 10 -- |*| speed 4
   -- #s "tx81z-tine" |*| speed 4
 
 d8
   $ foldEvery [2, 7, 9, 11] (slow "3 1 2")
-  $ up ((scaleP "dorian" $ "[[<0,7,15> <0,-3,5>]/2 [<8,3,10> ~]/2]" + "[0 2 1 5]/3" - "[3 4 [-2 5] 0]/8") - 7)
+  $ up ((scale "dorian" $ "[[<0,7,15> <0,-3,5>]/2 [<8,3,10> ~]/2]" + "[0 2 1 5]/3" - "[3 4 [-2 5] 0]/8") - 7)
   #s "rhodes" # n 12 |*| speed (-2)
 
 d5
   $ foldEvery [2, 7, 9, 11] (slow "3 1 2")
   $ superimpose ((0.125 ~>).rev.slow 3)
   -- $ stut 1 0.5 16
-  $ up (scaleP "dorian" $ "0 3 5 1" + "[0 2 1 5]/3" - "[3 4 5 0]/8")
+  $ up (scale "dorian" $ "0 3 5 1" + "[0 2 1 5]/3" - "[3 4 5 0]/8")
   #s "AKWFchain" |*| speed 8 # begin 0 #end 0.125
   -- #s "tx81z-tine" |*| speed 4
 

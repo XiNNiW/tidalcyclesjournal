@@ -11,9 +11,9 @@ d1 $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
 d1 $ foldEvery [4,6] (slow "[3 2 1]" . rev) $ sound "[bd hh] [sn sn:2] [hh bd:2] hh:9"
 
 d2
-  $ every 8 (const $ up (toScale Scales.hexDorian $ "4 3 2 1") # s "pe-gtr:9" # gain 1.2)
+  $ every 8 (const $ up (scale "hexDorian" $ "4 3 2 1") # s "pe-gtr:9" # gain 1.2)
   $ foldEvery [4,6] (hurry "[1 2 1 1]/2" . rev . slow "[3 2 1]")
-  $ up (toScale Scales.hexDorian $ "0 ~ [ [ 7 9 ] 2 1 5]/2 " + "[0 7 [3 2]5]/4") # s "pe-gtr:9" # gain 1.2
+  $ up (scale "hexDorian" $ "0 ~ [ [ 7 9 ] 2 1 5]/2 " + "[0 7 [3 2]5]/4") # s "pe-gtr:9" # gain 1.2
 
 hush
 

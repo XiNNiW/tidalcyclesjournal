@@ -10,7 +10,7 @@ hush
 
 d1
 $ slow 64
-$ note ((scaleP "harmonicMajor" $ lindenP 4 ruleSet "0 3" )) #s "pe-gtr:9" # cut 1
+$ note ((scale "harmonicMajor" $ lindenP 4 ruleSet "0 3" )) #s "pe-gtr:9" # cut 1
 
 d1 $ sound "pe-gtr:9"
 

@@ -1,11 +1,11 @@
 --fractal right
-d1 $ slow 2 $ sound (foldr (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
+d1 $ slow 1 $ sound (foldr (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
 
 --equivalent to
 d1 $ slow 2 $ sound "[bd bd] [ [bd sn] [ [bd virus-cp] [808oh*4] ] ]"
 
 --fractal left
-d1 $ slow 2 $ sound (foldl (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
+d1 $ slow 1 $ sound (foldl (append) "808oh*4" ["bd bd", "bd sn", "bd virus-cp"])
 
 --equivalent to
 d1 $ slow 2 $ sound "[ [ [808oh*4] [bd bd] ] [bd sn] ] [bd virus-cp]"

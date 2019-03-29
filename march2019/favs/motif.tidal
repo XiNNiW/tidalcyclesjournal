@@ -1,0 +1,39 @@
+hush
+
+let q1 = "[2 3] . 4 0@2"
+    a1 = "~ [5 2] . 4"
+    a1' = " 6@2 . <7 3> "
+    colors = "<minor dorian minor minor>"
+    prog = "<0 2 4 4>"
+    -- hocket voicePattern fx p = sew bools (fx p) p
+in
+d1 $ ((1/4)<~) $ (note $ scale colors $(+ prog) $ cat [q1, q1, a1, a1']) #s "chBand02"
+# pF "brightness" (slow 4 $ range (-0.7) 0.5 tri)
+# delay 0.25 # delaytime (4/3)
+# gain 0.88 # room 0.7 # orbit 1
+
+
+d2
+$ stack [
+  s "modalBd01*4" #pF "overdrive" 4
+  ,
+  s $  fast 2 $ "<[~ cp] [~ cp] <[~ cp ~ ~] ~> [~ cp]>"
+] # orbit 0
+
+
+let q1 = "[2 3] . 4 0@2"
+    a1 = "~ [5 2] . 4"
+    a1' = " 6@2 . <7 3> "
+    colors = "<minor>"
+    chords = "<[0,4,5,6] [-4,2,3,5,7]>"
+    prog = "<0 2 4 4>"
+in
+d1 $ stack [
+  ((1/4)<~) $ (note $ scale colors $(+ prog) $ rev $ cat [q1,a1,q1, a1,"-3","-2"]) #s "gtr" #gain 0.88
+  ,
+  slow 4 $ (note $ scale colors $ chords ) # s "chBand01"
+]
+
+
+
+scaleList

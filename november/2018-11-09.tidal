@@ -20,8 +20,8 @@ let
   melody = cat [ "[0 0] [2 3 4] [0 6] [5 4 2]", " [0 2] [4 8] [. . 2] [1 -1 0] " ]
   drone = "[-12 , -5]"
 
-d1 $ note (scaleP "dorian" $ slow 6 $ melody ) #s "pe-gtr:8,midi" #midichan 0 #gain 2 #orbit 0
+d1 $ note (scale "dorian" $ slow 6 $ melody ) #s "pe-gtr:8,midi" #midichan 0 #gain 2 #orbit 0
 
-d2 $ rev $ note ((scaleP "dorian" $ slow 2 $ drone + 12)) #s "pe-gtr:8,midi" #midichan 1 #gain 2 #orbit 0
+d2 $ rev $ note ((scale "dorian" $ slow 2 $ drone + 12)) #s "pe-gtr:8,midi" #midichan 1 #gain 2 #orbit 0
 
 hush

@@ -1,0 +1,58 @@
+let
+    foldmod [] _ _ _ p = p
+    foldmod timescales d n fx p = foldmod (tail timescales) d n fx $ outside (head timescales) (whenmod d n fx) $ p
+
+let melody = (`mod`9)
+              $ transform
+              -- $ "[0 2]"
+              $ cat ["<0> 2 5 . -2 . -3. <7>","<[-3 2][-1 5]>"]
+    transform = foldmod [1,4] 4 3 (mix (slow 2.invert.(1 <~).(+ 3))) . whenmod 16 12 (+| ("2 3 5"<>"0 5 8")) . whenmod 9 8 (const silence)
+    foldmod [] _ _ _ p = p
+    foldmod timescales d n fx p = foldmod (tail timescales) d n fx $ outside (head timescales) (whenmod d n fx) $ p
+    -- parts = "<[[0,2] 0@7] [[0,1,2] 0@7]>"
+    pq = scale "pelog"
+in
+d1
+$ slow 4
+$ foldmod [3,1,(2/3)] 4 3 ((iter 8).rev)
+$ stack [
+  (note
+  $ pq
+  $ melody
+  ) #s "[midi]" #midichan (0) #octave 5 #legato 0.5
+  ,
+  (note
+  $ pq
+  $ melody +| "<~ -2 ~ 5 >"
+  ) #s "[midi]" #midichan "[0,2]" #octave 4
+  ,
+  fast 4 $ stack [
+    slow 4 $ s "opDrm02" # pF "brightness" 0.0125 # octave 2 # legato 1.5
+    ,
+    slow 2 $ ghost $ fast 2 $ s (cat ["~","fmSnare01"]) # legato 8
+    ,
+    s "modalBd01(<5 3>,16,<4 2 4 9>)" # legato (smooth "8 4 16") # note (mono $ pq $ melody) # octave 4
+    ]
+  ]
+
+hush
+
+d1
+$ slow 4
+$ (note
+  $ scale "pelog"
+  $ (`mod`14)
+  -- $ off 0 (mix ((+| "<3 4 -3 4> ")))
+  $ foldmod [1,0.5,4] 3 2 (mix (iter 4 .invert.(1 <~)))
+  $ foldmod [1, 3] 5 2 (mix (+ 3))
+  $ "0 1 . -1"
+  )
+#s "[midi]" #midichan "<[[0,2] 0@7] [[0,1,2] 0@7]>" #octave 4 #legato 0.25
+
+scaleList
+
+hush
+
+:t outside
+
+312-603-5879

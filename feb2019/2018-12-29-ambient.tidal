@@ -28,7 +28,7 @@ do {
       $ "~ [0, 3, 6, 9] . [-6, 2, 6, 9]"
     )-5)
     #s "[pm04,midi]" #pF "spread" 0.5
-    #gain 0.8
+    #gain 0.7
     -- # legato "3.5"
     # orbit 3
     # delay 0.5
@@ -41,12 +41,13 @@ do {
     $ every 4 (rot "4 3 1")
     $ note ((scale "hexPhrygian"
       $ every 8 (rot "1 2". (+ 3))
+      $ whenmod 8 6 (const "[0 3 5 9]")
       $ "~ [0 3 6 9] . [-6 2 6 9]" - ( every 4  (("0.25 0.5 0" ~>)) $ ("0.25 0.5" ~>) "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+ 2))+12)
     #s "rhodes:7" #gain 1 # legato "3.5" # orbit 4;
     d5 $ note ((scale "hexPhrygian" $ slow 3 $ "-3 0 2 5")+24-5) #s "pe-gtr:9" #orbit 5;
     d1 $ slow 2 $ stack [
       sound "{~ EP12:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.5 ~] [[~ 0.5] 0.5]}%2" #speed 2 #orbit 1,
-      sound "bd EFM:5" # nudge "0 <0.01 0.025>"
+      sound "[bd,modalBd01] [EFM:5,fmSnare01]" # nudge "0 <0.01 0.025>"
     ]
 }
 

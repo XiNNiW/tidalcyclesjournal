@@ -8,7 +8,7 @@ let toChord chord note = toScale chord note
 
 d1 $ slow 4 $ n (spread toScale [map (+ 3) Chords.minor,map (+ 2) Chords.major] $  "[3 2 1] 4 8 0") # s "superpiano" # gain 1 # sustain 1
 
-d1 $ n (scaleP "minPent" "0 .. 4") # sound "superpiano"
+d1 $ n (scale "minPent" "0 .. 4") # sound "superpiano"
 
 d1 $ slow "4" $ n ("{e4 g4 [es4*3]}%3" + chord "minor major7 major7*2")  # sound "superpiano"
 

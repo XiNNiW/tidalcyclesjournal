@@ -1,0 +1,204 @@
+
+
+let bebop = toScale [0,2,4,5,7,8,9,11]
+    seed = "0 -1 1 4"
+    var1 = "0 2 1 4"
+    var2 = "0 2 1 6"
+    var3 = "0 2 3 6"
+    var4 = "-2 2 3 6"
+    repp i p = replicate i p
+    glue [] = []
+    glue as = head as ++ (glue $ tail as)
+in
+d1 $ (note
+  $ bebop
+  $ cat
+  $ glue
+  $ [ repp 4 seed, repp 4 var1, repp 4 var2, repp 4 var3, repp 4 var4 ]) # s "gtr" # gain 0.8
+
+hush
+
+-- let sectionLength = 5
+--     bebop = toScale [0,2,4,5,7,8,9,11]
+--     structure = cat [
+--       "seed"
+--       ,
+--       "var1"
+--       ,
+--       "var2"
+--       ,
+--       "var3"
+--       ,
+--       "var4"
+--       ,
+--       "[seed:prol,seed]"
+--       ,
+--       "[seed:prol,var1]"
+--       ,
+--       "[seed:prol,var2]"
+--       ,
+--       "[seed:prol,var3]"
+--       ,
+--       "[seed:prol,var4]"
+--       ]
+
+let sectionLength = 5
+    bebop = toScale [0,2,4,5,7,8,9,11]
+    structure = cat [
+      "seed"
+      ,
+      "var1"
+      ,
+      "var2"
+      ,
+      "var3"
+      ,
+      "[seed,var4]"
+      ,
+      "[seedi,var4i]"
+      ,
+      "[seedii,var4ii]"
+      ,
+      "[seediii,var4iii]"
+      ,
+      "[seeiv,var4,var4iv]"
+      ,
+      "[iseeiv,ivar4,ivar4iv]"
+      ,
+      "[iiseeiv,iivar4,iivar4iv]"
+      ,
+      "[iiiseeiv,iiivar4,iiivar4iv]"
+      ,
+      "[ivseeiv,ivvar4,ivvar4iv]"
+      ]
+    patterns = [
+      mkpat "seed" $ (note $ bebop $ "0 -1 1 4" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "var1" $ (note $ bebop $ "0 2 1 4" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "var2" $ (note $ bebop $ "0 2 1 6" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "var3" $ (note $ bebop $ "0 2 3 6" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "var4" $ (note $ bebop $ "-2 2 3 6" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "seedi" $ (note $ bebop $ "0 -1 1 6" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "var4i" $ (note $ bebop $ "-2 2 3 11" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "seedii" $ (note $ bebop $ "0 -1 3 6" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "var4ii" $ (note $ bebop $ "-2 2 12 11" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "seediii" $ (note $ bebop $ "0 2 3 6" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "var4iii" $ (note $ bebop $ "-2 8 12 11" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "seediv" $ (note $ bebop $ "5 2 3 6" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "var4iv" $ (note $ bebop $ "7 8 12 11" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "iseediv" $ (note $ bebop $ "5 2 3 7" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "ivar4" $ (note $ bebop $ "-2 2 3 5" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "ivar4iv" $ (note $ bebop $ "7 8 12 9" ) # s "gtr" #gain 0.8 #octave 6
+      ,
+      mkpat "iiseediv" $ (note $ bebop $ "5 2 4 7" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "iivar4" $ (note $ bebop $ "-2 2 1 5" ) # s "gtr" #gain 0.8 #octave 6,
+      mkpat "iivar4iv" $ (note $ bebop $ "7 8 0 9" ) # s "gtr" #gain 0.8 #octave 6
+      ]
+    fx = [
+      mkfx "prol" $ (slow 5 . (|- note 12))
+      ]
+in
+d1 $ ur sectionLength structure patterns fx
+# cps (70/60/2)
+
+
+
+hush
+
+:t toScale
+
+do {
+  resetCycles;
+  let sectionLength = 4
+      bebop = toScale [2, 4, 5, 7, 9, 11, 12,14]
+      rhytm = toScale [(1/4),(1/3),(1/2),(3/4),1,2,3,4]
+      (!!!) xs n = xs !! (n `mod` length xs)
+      part = toMap ["pm03","modalBd01","pm03","modal03","pm03","modal03","modalBd01","modalBd01"]
+      toMap s = fmap constrain where constrain x = (s !!! x)
+      dlayz = (# delayfeedback 0.5).( # delay 0.75).( # delaytime ((/3)$rhytm $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>"))
+      structure = cat [
+        "a" -- ,"a","a","a"
+        ,
+        "[a,b]" --,"[a,b]","[a,b]","[a,b]"
+        ,
+        "[a,b,c,[~@3 cym:spd]]]" --,"[a,b,c]","[a,b,c]","[a,b,c]"
+        ,
+        "a:spd","[a:spd ,[~@3 cym:spd]]"
+        ,
+        "[a:spd,b:spd,cym,[~ cat]]"
+        ,
+        "[a1:spd,b1:spd,c:spd,cym,boom]","[a1:spd,b1:spd,c:spd,cym,boom,cat]"
+        ,
+        "[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]","[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]"
+        ,
+        "[a,[~@3 cym:spd]]"
+        ,
+        "[a,b,cym]" --,"[a,b]","[a,b]","[a,b]"
+        ,
+        "[a,b,c,[~@3 cym:spd]]" --,"[a,b,c]","[a,b,c]","[a,b,c]"
+        ,
+        "[a:spd,b:spd,cym,boom,cat]"
+        ,
+        "[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]","[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]"
+        ,
+        "[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]","[a1:spd,b1:spd,c:spd,cym,boom,hats,cat]"
+        ,
+        "[a,boom]"
+        ,
+        "[boom,cym]"
+        ,
+        "~"
+        ]
+      patterns = [
+        mkpat "a" $ dlayz $(note $ bebop $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")  #midichan 0 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "b" $ dlayz $(note $ bebop $ "6 <5 5 5 7> <1 1 4 4> <3 0 0 0>")  #midichan 1 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "c" $ dlayz $(note $ bebop $ "2 <7 7 7 6> <4 4 3 3> <0 -2 -2 -2>")  #midichan 2 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "a1" $ dlayz $ (note $ bebop $ "0 <2 2 2 3> <4 4 6 6> <7 8 8 8>") #midichan 0 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "b1" $ dlayz $(note $ bebop $ "6 <5 5 5 4> <1 1 2 2> <3 0 0 0>") #midichan 1 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "c1" $ dlayz $(note $ bebop $ "2 <7 7 7 8> <4 4 6 6> <0 5 5 5>") #midichan 2 # s ("midi"<>(part $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>")) #gain 0.8 #octave 6 #legato 2 # orbit 3
+        ,
+        mkpat "cym" $ dlayz $ stack [ s ("[subCym01,midi]*4") # gain (range 0.78 0.9 $ saw)] #midichan 3
+        ,
+        mkpat "boom" $ dlayz $ s ("[opDrm02,midi]") # octave 3|+ s "midi" #midichan 3
+        ,
+        mkpat "cat" $ dlayz $ fast 2 $ s "~ [fmSnare01,midi]" # octave 3 #gain 1.2 #orbit 1 #midichan 3
+        ,
+        mkpat "hats" $ s "[opDrm03,midi]*8" # gain (range 0.58 0.7 $ iter 4 $ segment 4 $ saw) # orbit 2 #midichan 3
+        ]
+      fx = [
+        mkfx "spd" $ inside 4 $ slow $ rhytm $ "0 <2 2 2 5> <4 4 1 1> <7 3 3 3>"
+        ,
+        mkfx "spd2" $ inside 4 $ slow $ rhytm $ "6 <5 5 5 7> <1 1 4 4> <3 0 0 0>"
+        ]
+  in
+  d1 $ slow 2 $ ur sectionLength structure patterns fx
+  # cps (70/60/2);
+}
+
+
+d1 $ stack [
+  ghost (note $ scale "hexPhrygian" $ "0(<1 3 [2 4] 5>,16,<0,3>)" |+ "<7 5 [2 9] [6 5]>") #s "opDrm02" # octave 3 # legato "<[8 2]>"
+  ,
+  ghost (note $ scale "hexPhrygian" $ "~ 0") #s "opDrm01" # legato 1
+  ,
+  ghost $ slow 4 (note $ scale "hexPhrygian" $ "4*4(<4 5>,8,8)") #s "opDrm03" #octave 8  -- #legato "<8 10 24 [1  1 1 1 5]>"
+  -- ,
+  -- ghost (note $ scale "hexPhrygian" $ "0(<1 2 [2 3]>,8,<0 0 1>)") #s "chBand01" #legato "<8 10 24>"
+  ]
+
+  hush
+
+:t replicate

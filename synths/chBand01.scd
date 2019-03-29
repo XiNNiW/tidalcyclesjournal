@@ -22,19 +22,19 @@ SynthDef(\chBand01, {
 	strike =  EnvGen.ar(Env.perc,gate:gate);//Impulse.ar(0,0,0.5);
 	strike = strike*strike;
 
-	blip = BlitB3Saw.ar(vibFreq);
+	blip = Saw.ar(vibFreq);
 	qmod = SinOsc.ar(smoothFreq);
 	env = EnvGen.ar(Env.perc, timeScale:sustain, doneAction:2);
-	blip = blip.tanh*( env);
+	blip = blip.tanh*env;
 	blip = LPF.ar(blip,(smoothFreq)*(10*brightness*strike*strike*strike+1));
 
 	// oscL = FaustCosChaotic2BPF.ar(blip,K2A.ar(smoothFreq/2),K2A.ar(100.5)*strike,K2A.ar(9.56));
 	oscL = FaustCosChaotic2BPF.ar(
 		blip,
-		brightness*(40/100)*qmod*K2A.ar(smoothFreq/4) + K2A.ar(smoothFreq*harmonic*2-detune),
+		brightness*(40/100)*qmod*K2A.ar(smoothFreq/4) + K2A.ar(smoothFreq*harmonic*2),
 		K2A.ar(resonance),
 		K2A.ar(feedback)*(1-strike),
-		K2A.ar(0)
+		K2A.ar(detune)
 	);
 	// oscL = HPF.ar(oscL,5).tanh;
 	oscL =  oscL;

@@ -29,9 +29,9 @@ do
 d9 $ midicmd "start" # s "midi"
 d3
   $ up
-  (( scaleP pitchClass
+  (( scale pitchClass
   $ palindrome
-  $ preplace (1,8) ryt1
+  -- $ preplace (1,8) ryt1
   $ harmonicModulation1
   -- $ palindrome $ append' melody melody2
   $ cat [
@@ -51,7 +51,7 @@ d4
   $ juxBy 0.5 (palindrome.slow 1.5)
   $ palindrome
   $ up
-  ((scaleP pitchClass
+  ((scale pitchClass
   $ palindrome
   $ harmonicModulation1
   "[0,5, 2,7]"
@@ -68,7 +68,7 @@ d2
  $ smash 64 [1,2,4,4,2,1]
  $ drumPattern
  # speed rand
- #cutoff (scale 1000 6000 (triwave1))
+ #cutoff (range 1000 6000 (tri))
  # orbit 3
 
 d3 $ preplace (1,8) "1(5,8) [1 1]" $ drumPattern

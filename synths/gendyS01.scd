@@ -4,7 +4,7 @@ SynthDef(\gendyS01, {
 	|
 	freq=220, amp=1, gate=1, pan=0,out=0,
 	points=12,brightness=2.0,
-	attack=0.02,decay=0.2,sus=1,release=0.5,sustain
+	attack=0.02,decay=0.2,sus=1,release=0.5,sustain=1
 	|
 	var smoothFreq, vibFreq, osc, mod, panner, env, noise,finalSignal;
 	smoothFreq = Lag.kr(freq);
@@ -14,6 +14,7 @@ SynthDef(\gendyS01, {
 
 	finalSignal = BMoog.ar(in:osc/2,freq:smoothFreq*brightness,q:0.12,mode: 0,saturation: 0.95);
 	env = EnvGen.ar(Env.linen(attack, decay, release, sus, 'lin'), gate, timeScale:sustain, doneAction:2);
+	env=env*env;
 	OffsetOut.ar(out, DirtPan.ar(finalSignal/2, ~dirt.numChannels, pan, env));
 }).add
 );
