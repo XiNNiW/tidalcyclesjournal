@@ -1,0 +1,176 @@
+
+d1 $ note "[0,12,19]" # octave 3 # s "chBand01" #pF "brightness" 1.9 #pF "feedback" 5.3 #pF "resonance" 100
+
+d2 $ stack [
+  s "[enth-bd:3*<2 3> [enth-bd:3*<1 2>]] enth-bd:3*<2 3>  "
+  ,
+  s "~ enth-sn ~ enth-sn"
+]
+
+d1 $ note "[0,12,19]" # octave 3 # s "chBand01" #pF "brightness" 5.9 #pF "feedback" 60.3 #pF "resonance" 100
+
+hush
+
+d1 $ stack [
+  (note $ scale "phrygian" $ "<[-3 2 1 ] [-3 2 1 ] [-3 -4] [-5 -4 -1]>. < [[0 5@3] 3] <[4 2] [4]> >" ) # s "midi" #midichan 0 #octave 5
+  ,
+  slow 2 $ (note $ scale "phrygian" $ "<<[5 6@3] 4> [<6 3>@3 <6 4>] <7 [6 [7 9]]> >" ) # s "midi" #midichan 1 #octave 5
+  ]
+
+setcps (110/60/4)
+
+let terrace entryDelay patterns = seqPLoop $ [terr 0 sequenceLength (head patterns)] ++ (terrace' entryDelay (tail patterns))
+        where
+        terrace' start [] = []
+        terrace' start ps = [(terr start sequenceLength (head ps))] ++ (terrace' (start + entryDelay) (tail ps))
+        sequenceLength = entryDelay * (fromIntegral $ length patterns)
+        terr start stop pattern = (start, stop, pattern)
+in
+d1 $ sound $ terrace 8 ["bd bd bd", "~ sn", "hh*3"]
+
+-- ur as a way of templateing part entry
+let bass =  (note $ "0") #s "midi" #midichan 2 #octave 3
+    riff = (note $ scale "phrygian" $ " < [[0 5@3] 3] <[4 2] [4]> >. <[-3 2 1 ] [-3 2 1 ] [-3 -4] [-5 -4 -1]>" ) # s "midi" #midichan 0 #octave 5
+    melody = slow 2 $ (note $ scale "phrygian" $ "<<[5 6@3] 4> [<6 3>@3 <6 4>] <7 [6 [7 9]]> >" ) # s "midi" #midichan 1 #octave 5
+    upterrace bass riff melody = ur barLength structure pats []
+                          where barLength = 2
+                                pats = [
+                                  mkpat "bass" bass
+                                  ,
+                                  mkpat "m1" riff
+                                  ,
+                                  mkpat "m2" melody
+                                  ]
+                                structure = cat [
+                                  "[m1]"
+                                  ,
+                                  "[m1]"
+                                  ,
+                                  "[m1,m2]"
+                                  ,
+                                  "[m1,m2]"
+                                  ,
+                                  "[bass,m1,m2]"
+                                  ,
+                                  "[bass,m1,m2]"
+                                  ,
+                                  "[bass,m1,m2]"
+                                  ,
+                                  "[bass,m1,m2]"
+                                  ]
+                                patterns = []
+                                fx = []
+in
+d1 $ upterrace bass riff melody
+
+hush
+
+-- ur as a way to create paragraph level structure
+let paragraph question answer = ur barLength structure pats fx
+              where
+              antc = question
+              cons = answer
+              pats = [
+                mkpat "a" antc
+                ,
+                mkpat "b" cons
+                ]
+              structure = cat [
+                "a b"
+                ,
+                "a b:t1"
+                ,
+                "a:t1 b:t2"
+                ,
+                "a:t1 <b:t2 b:t1>"
+                ]
+              fx = [
+                mkfx "t1" (invert.(|-3))
+                ,
+                mkfx "t2" (rev.(+4).slow 2)
+                ]
+              barLength = 2
+    theme = paragraph "0 . 2 3 -1" "-3 4 -1 1"
+in
+d1 $ (note $ scale "phrygian" $ theme) # s "midi" #midichan 0 #octave 5
+-- d1 $ (note $ scale "phrygian" $ outside 2 (paragraph theme) $ "-4  . -3 0 1" + theme) # s "midi" #midichan 1 #octave 5
+
+hush
+
+--ur as a way of templating song structure
+let popform songLength intro verse prechorus chorus bridge = ur songLength structure pats fx
+              where
+              pats = [
+                mkpat "i" intro
+                ,
+                mkpat "v" verse
+                ,
+                mkpat "p" prechorus
+                ,
+                mkpat "c" chorus
+                ,
+                mkpat "b" bridge
+                ]
+              structure = "i@2 v@8 p@2 c@4 v@8 b@3 p@2 c@8 ~@5"
+              fx = []
+    song = popform 42 "<[0. 2 1@3] ~ >" "<~ 0> <1 -1> 2 <3 5 4 2>" "-1 0 1" "3*3 4 3*3 4/3"  "-2 1 1 -2 1"
+in
+d1 $ (note $ scale "phrygian" $ song) # s "midi" #midichan 0 #octave 5 #legato "2 4"
+
+hush
+
+-- in combination??
+--ur as a way of templating song structure
+let popform songLength intro verse prechorus chorus bridge = ur songLength structure pats fx
+              where
+              pats = [
+                mkpat "i" intro
+                ,
+                mkpat "v" verse
+                ,
+                mkpat "p" prechorus
+                ,
+                mkpat "c" chorus
+                ,
+                mkpat "b" bridge
+                ]
+              structure = "i@2 v@8 p@2 c@4 v@8 b@3 p@2 c@8 ~@5"
+              fx = []
+    paragraph question answer = ur barLength structure pats fx
+                  where
+                  antc = question
+                  cons = answer
+                  pats = [
+                    mkpat "a" antc
+                    ,
+                    mkpat "b" cons
+                    ]
+                  structure = cat [
+                    "a b"
+                    ,
+                    "a b:t1"
+                    ,
+                    "a:t1 b:t2"
+                    ,
+                    "a:t1 <b:t2 b:t1>"
+                    ]
+                  fx = [
+                    mkfx "t1" (invert.(|-3))
+                    ,
+                    mkfx "t2" (rev.(+4).slow 2)
+                    ]
+                  barLength = 2
+    intro = scale "phrygian" $  paragraph "<1 [1 0]>" "~ <0 1>"
+    verse = scale "phrygian" $ paragraph "-1 [2 3] . 1@3 0" "-2. -3 -4 <-5 -1>"
+    prechorus = (|- 2) $ scale "mixolydian" $  paragraph "<2 [3 4]>" "~ <2 5>"
+    chorus =  scale "phrygian" $ paragraph "3 3@3 . 3" "-1 0 1"
+    bridge = scale "phrygian" $  paragraph "5 4 3 2" "4 3 1"
+    song = popform 42 intro verse prechorus chorus bridge
+in
+d1 $ (note $ song) # s "midi" #midichan 0 #octave 5 #legato "<1 2> 3"
+
+
+
+
+
+hush

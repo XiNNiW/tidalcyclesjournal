@@ -11,6 +11,7 @@ terrace entryDelay patterns = seqPLoop $ [terr 0 sequenceLength (head patterns)]
         terrace' start [] = []
         terrace' start ps = [(terr start sequenceLength (head ps))] ++ (terrace' (start + entryDelay) (tail ps))
         sequenceLength = entryDelay * (fromIntegral $ length patterns)
+        terr start stop pattern = (start, stop, pattern)
 
 do
 {

@@ -1,4 +1,4 @@
-
+hush
 
 whenmodr speeds numerators denominators modifier pattern
   | done = modifiedpattern
@@ -25,6 +25,8 @@ whenmods' speeds numerators denominators modifier pattern
         rests = if null (tail speeds) then [speed] else (tail speeds)
 
 whenmods speeds numerators denominators newpattern pattern = whenmods' speeds numerators denominators (const newpattern) pattern
+
+hush
 
 --
 -- let whenmods spd d n f p = inside spd (whenmod d n f) p

@@ -8,6 +8,7 @@ $ note (scale "lydian" $ off (0.25) (+ 10) $ "0 . 2. 3 4 . 5 . 1 " )
 
 d1 $ slow 4 $ chop "8" $ s "autoharp-m:24" #speed "-1"
 
+hush
 
 let
 laceWith fx p = interlace p (fx p)
@@ -93,6 +94,8 @@ d2 $ slow 2 $ stack [
   sound "hh*8" # nudge "0.01 0.02 0.04 0.03"
 ]
 
+hush
+
 d1
 -- $ striate 128
 -- $ chop 8
@@ -149,7 +152,9 @@ let chordRoots = "[0 2 3 4 5 6 7 8]/4"
 
 d1
   -- $ every 32 (spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")])
+  $ fast 2
   $ every 16 ( smash 2 [4,3,2] . degrade )
+  $ foldmod [4,3,1] 5 2 (inside 2 rev . slow "3 2 1" )
   $ foldEvery [4,6] (slow "[3 2 1]" . rev)
   $ sound
   $ foldEvery [7,8] (const
@@ -198,7 +203,10 @@ d5
 
 let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
 
+counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 3 . ~] 3 5 > <<6 -1 6 0> [6 <5 [5 3] [5 3] [5 3]>]>]"
+
 hush
+
 d3
 $ append
 -- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
@@ -311,4 +319,8 @@ $ stack [
   every 3 (sometimes ghost) $ foldEvery [3,4] (("<0 0.125> 0.25"~>) . fast 2  . (|* gain ( range 0.67 1 (fast 2 $ (0.25 <~) saw)))) $ (note (scale "spanish" $ "{~ 0}%4" |+  " <6 3 7>  ")) # s "<cp cp*3,fmSnare01>" # legato 1.5 #gain 1.1
   ,
   (note (scale "spanish" $ "0([6,4],16,[1 2])")) # s "subCym01" # legato "4 4 4 7 4 4 7 4 4" #octave 6 #gain (range 0.88 0.99 $ fast 2 $ (fast 3 $ tri) * (1 - saw))
+  ,
+  note (scale "spanish"  $ slow 8 $ rev $ run 16) #s "gtr"
   ]
+
+hush

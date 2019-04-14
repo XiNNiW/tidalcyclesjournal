@@ -1,0 +1,51 @@
+let melody1 = "< 9 8 <14 15 11 7> <[5 4 7] [8 7 13] [8 6 10] 7> >"
+
+counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 3 . ~] 3 5 > <<6 -1 6 0> [6 <5 [5 3] [5 3] [5 3]>]>]"
+
+hush
+
+d3
+$ append
+-- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+(up ((scale "minor"
+$ stack [
+  slow "<1 1 2 3>" $ "0 2 3",
+  melody1
+]
+) + 5) # sound "rhodes" #n 5)
+(up ((scale "minor"
+$ stack [
+  slow "<1 1 2 3>" $ "0 2 3",
+  melody1
+] + 5
+) + 5) # sound "rhodes" #n 5)
+
+d2
+$ up ((scale "minor" counterMelody1 ) ) #s "tx81z-tine" #legato 1  #gain 1
+
+d1 $ (0.5 ~>) $ sound "tech*3" # gain (range 1 0.5 $ ((run 8)/8)) # nudge "<0.01 0.03 0.04 0.09> 0 0.1"
+
+d3
+-- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
+$ up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3" ,
+    melody1,
+    counterMelody1 - 7
+  ]
+) -7 + 24) # sound "rhodes" #n 9
+
+d3
+$ append
+((up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3",
+    melody1
+  ]
+) -7 + 24) # sound "rhodes" #n 5))
+(up ((scale "minor"
+  $ stack [
+    slow "<1 1 2 3>" $ "0 2 3",
+    melody1
+  ] + 5
+) -7 + 24) # sound "rhodes" #n 5)

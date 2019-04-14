@@ -1,0 +1,31 @@
+setcps 1
+
+let bassline = (run "<3 2 1 3 2 1>") + (slow 6 $ run "<6 3>") |* "<1 2 3 3 2 1>" |% "<9 3 2 5 2 9>"
+in
+d1
+-- $ slow "<4 5 3 2 1>""
+-- $ rev
+$ slow 2
+$ ghostBy (slow 6 $ 4 * scan 6)
+$ stack [
+  (note $ (toScale [0,3,5,7,10] ) $ cat ["~ ","3 2 5 . 9"] |- bassline) # s "modal03"
+  ,
+  off "<0.25>" (outside 2 (iter "<3 2 >") .rev. chop "<8 5 2 6 1 3>")
+  $ stack [
+  slow 6 $ s "<opDrm02 ~ ~ >" #octave "<2 1 0 3 2 4>" # pF "brightness" 0.75
+  ,
+  -- n "<1 4 3 4 1>(<2 1 3 0 1 1>,4,0)" + "0(2,<8 5 2 3 2 1 3>,<0 2 3 0 2 3>)" #s "enth-bd" # speed 1.65
+  -- ,
+  ghostBy "<6 2 12 6 2 16>" $ n "<6>(<1 0>,8,5)" + "0(1,<8 5 2 3 2 1 3>,<5 3 1 3 3 1>)" #s "enth-cp" # speed (range 0.5 0.85 $ slow 3 $ saw )
+  ,
+  s ( cat ["~" ,"~ cp"]) # speed (range 0.5 0.85 $ slow 4 $ saw )
+  ,
+  s "subCym01*<2 2 3 2 4 4>" # gain (range 0.5 0.85 $ slow 3 $ saw )
+  ]
+  ,
+  (note $ (toScale [0,3,5,7,10] ) $ "<~ [<-2 0 -3 0 -2 0>,1,<5 4 3 5 4 3>]>" |* "<1 1 -1 -1 1>" |+ ("0(3,8)" + bassline)) # "pm03" #room 0.5 -- #pF "brightness" (range 0.01 0.5 $ slow 3 saw)
+  ,
+  (note $ (toScale [0,1,3,5,7,8,9,10]) $ mono $ "<0(<1 3 1>,8) <-3 [~ [-3 -4 -1]]>>" |+ "0(3,8)" +  bassline) # "fm02" #pF "brightness" (range 0.01 0.5 $ slow 3 saw)
+]
+
+hush

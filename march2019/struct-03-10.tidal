@@ -1,3 +1,5 @@
+setcps (110/60/4)
+
 let backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
 in
 d1
@@ -58,5 +60,40 @@ $ (note
 # pF "brightness" 8
 
 d2 $ whenmod 16 12 (const silence) $ (note $ scale "dorian" $ "<0 . 2 3 . -2 1 . -6>") # s "modal02" #octave 4 -- # pF "attack" 0.001 #pF "sus" 1 #pF "release" 1
+
+let
+one p = stut' 2 (0.125/2) (|* gain "1") $ p
+backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
+tailfx fx = inside 2 (every 2 (fx))
+headfx fx = inside 2 ((1 ~>).every 2 (fx))
+in
+d1
+$ stack [
+  whenmod 7 9 (backrush 32)
+  -- $ whenmod 8 6 (chunk 8 (backrush 32.sometimes (# speed rand)))
+  -- $ headfx (sometimes $ one)
+  $ tailfx (foldEvery [3,4] (0.25 ~>))
+  $ whenmod 2 3 (sometimes $ scramble 8)
+  $ every 2 (tailfx ghost)
+  $ whenmod 6 7 ( every 2 (inside 4 (chunk 4 (iter 4.(0.25 ~>)))))
+  $ whenmod 4 19 (chunk 16 (iter 4.(0.25 ~>)))
+  $ whenmod 8 7 (tailfx $ backrush $ choose [3,8,16])
+  $ tailfx degrade
+  $ stack [
+    every 4 (slow 2) $ ("0 0.25" ~>)
+    $ sound "<TRX>*<16>" # n ((+ "<2 4 2 6>")$run 16) # lpf (range 15000 2000 $ ((0.25 ~>) $ tri) * fast 4 saw)
+    ,
+    n "0(<1 3 5 <2 5>>, 16, 0)" #s "<PI [TRX]>" #speed 0.75
+    ,
+    sometimes ghost $ s "~ cp:<1 0>" # orbit 2 # room "0.1 [0.35 0.1]"
+    -- ,
+    -- jux (|+ speed rand) $ rotR 3 $ slow 8 $ sound "<czDrum>" # speed "-1" # orbit 2
+  ]
+  ,
+  sometimes one
+  $ foldEvery [7,11] (slow 2)
+  $ s "EFM:2*8"
+  # gain (range 0.9 0.88 $ fast 6 $ ((0.25 ~>) $ tri) * fast 4 saw)
+]
 
 hush
