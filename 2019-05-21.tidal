@@ -1,0 +1,21 @@
+
+
+let bounce = (stut 5 0.5 (range "1" (0.3333^4) $ fmap (toRational . exp . (/8) . (1-)) (  saw)))
+in
+d1 $ stack [
+   s "md-vive*<3 2>? ~"
+  ,
+  sometimes bounce $ s "~ md-vive:5"
+  ] #gain 1
+
+:t bounce
+
+  hush
+
+
+
+d1 $ spaceOut (map (toRational . exp . (/8) . (1-)) [1..40]) $ s "cp"
+
+0.125*0.125*0.125
+
+:t rangex

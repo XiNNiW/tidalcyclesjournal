@@ -28,7 +28,7 @@ $ stack [
     -- $ (+ 2)
     $ "<0 [0 [-3 -1]]>"
     )
-  # s "chBand01" # octave 5 # gain 1 # legato "2" # pF "brightness" (range 0.5 (-0.5) saw) #orbit 2
+  # s "chBand01" # octave 5 # gain 0.5 # legato "2" # pF "brightness" (range 0.5 (-0.5) saw) #orbit 2
   ,
   (note
     $ mixb6

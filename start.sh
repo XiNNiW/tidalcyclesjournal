@@ -1,1 +1,1 @@
-sclang "tidal-startup.scd"
+sclang "tidal-startup.scd" $PWD

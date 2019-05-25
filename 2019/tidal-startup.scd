@@ -13,22 +13,32 @@ This is an example startup file. You can load it from your startup file
 s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
 s.options.memSize = 8192 * 16; // increase this if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 32; // increase this if you are getting drop outs and the message "too many nodes"
-s.options.numOutputBusChannels = 12; // set this to your hardware output channel size, if necessary
+s.options.numOutputBusChannels = 10; // set this to your hardware output channel size, if necessary
 s.options.numInputBusChannels = 2; // set this to your hardware output channel size, if necessary
 // s.options.maxLogins = 8;
-
 // boot the server and start SuperDirt
 s.waitForBoot {
-
 	~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
 	~dirt.loadSoundFiles;   // load samples (path containing a wildcard can be passed in)
-	~dirt.loadSoundFiles(thisProcess.argv[0]++"/samples/*");
-	~dirt.loadSynthDefs(thisProcess.argv[0]++"/synths/");
-
+	~dirt.loadSoundFiles("~/Music/tidal-cycles/samples/*");
+	~dirt.loadSynthDefs("~/Music/tidal-cycles/synths/");
+	//~dirt.loadGlobalEffects("~/Music/tidal-cycles/synths/")
+	// for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
+	// ~dirt.startSendRMS;
 	s.sync; // wait for samples to be read
-	~dirt.start(57120, [0, 2, 4, 6, 8, 10, 12]);   // start listening on port 57120, create two busses each sending audio to channel 0
+	~dirt.start(57120, [0, 2, 4, 6, 8, 10, 12,14]);   // start listening on port 57120, create two busses each sending audio to channel 0
+
+	// optional, needed for the sclang tests only:
+	// (
+	//
+	// 	~d1 = ~dirt.orbits[0]; // one orbit
+	// 	~d2 = ~dirt.orbits[1];
+	//
+	// );
 
 	s.latency = 2; // increase this if you get "late" messages
+
+
 
 	// version 0.2
 
@@ -38,6 +48,7 @@ s.waitForBoot {
 	MIDIClient.list; // to check, which are there, you can query them
 
 	// create a midi out connection
+	// ~midiOut = MIDIOut.newByName("FastLane USB", "Port A"); // substitute your own device here
 	~midiOutput = MIDIOut.newByName("Virtual Raw MIDI 2-0","VirMIDI 2-0");
 	~dirt.soundLibrary.addMIDI(\midi, ~midiOutput);
 	~midiOutput.latency = 0.01;

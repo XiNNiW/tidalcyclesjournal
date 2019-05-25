@@ -17,7 +17,6 @@ import Sound.Tidal.Chords
 
 
 -- total latency = oLatency + cFrameTimespan
-
 tidal <- startTidal (superdirtTarget {oLatency = 0.3, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20})
 -- tidal <- startTidal (superdirtTarget {oLatency = 0.02}) (defaultConfig {cFrameTimespan = 1/20, cTempoAddr = "192.168.0.105"})
 
@@ -28,29 +27,28 @@ let mute = streamMute tidal
 let unmute = streamUnmute tidal
 let solo = streamSolo tidal
 let unsolo = streamUnsolo tidal
-let once = streamOnce tidal
-let asap = once
+let once = streamOnce tidal False
+let asap = streamOnce tidal True
 let nudgeAll = streamNudgeAll tidal
 let all = streamAll tidal
 let resetCycles = streamResetCycles tidal
 let setcps = asap . cps
-let xfade i = transition tidal True (Sound.Tidal.Transition.xfadeIn 4) i
-let xfadeIn i t = transition tidal True (Sound.Tidal.Transition.xfadeIn t) i
-let histpan i t = transition tidal True (Sound.Tidal.Transition.histpan t) i
-let wait i t = transition tidal True (Sound.Tidal.Transition.wait t) i
-let waitT i f t = transition tidal True (Sound.Tidal.Transition.waitT f t) i
-let jump i = transition tidal True (Sound.Tidal.Transition.jump) i
-let jumpIn i t = transition tidal True (Sound.Tidal.Transition.jumpIn t) i
-let jumpIn' i t = transition tidal True (Sound.Tidal.Transition.jumpIn' t) i
-let jumpMod i t = transition tidal True (Sound.Tidal.Transition.jumpMod t) i
-let mortal i lifespan release = transition tidal True (Sound.Tidal.Transition.mortal lifespan release) i
-let interpolate i = transition tidal True (Sound.Tidal.Transition.interpolate) i
-let interpolateIn i t = transition tidal True (Sound.Tidal.Transition.interpolateIn t) i
-let clutch i = transition tidal True (Sound.Tidal.Transition.clutch) i
-let clutchIn i t = transition tidal True (Sound.Tidal.Transition.clutchIn t) i
-let anticipate i = transition tidal True (Sound.Tidal.Transition.anticipate) i
-let anticipateIn i t = transition tidal True (Sound.Tidal.Transition.anticipateIn t) i
-let forId i t = transition tidal False (Sound.Tidal.Transition.mortalOverlay t) i
+let xfade i = transition tidal (Sound.Tidal.Transition.xfadeIn 4) i
+let xfadeIn i t = transition tidal (Sound.Tidal.Transition.xfadeIn t) i
+let histpan i t = transition tidal (Sound.Tidal.Transition.histpan t) i
+let wait i t = transition tidal (Sound.Tidal.Transition.wait t) i
+let waitT i f t = transition tidal (Sound.Tidal.Transition.waitT f t) i
+let jump i = transition tidal (Sound.Tidal.Transition.jump) i
+let jumpIn i t = transition tidal (Sound.Tidal.Transition.jumpIn t) i
+let jumpIn' i t = transition tidal (Sound.Tidal.Transition.jumpIn' t) i
+let jumpMod i t = transition tidal (Sound.Tidal.Transition.jumpMod t) i
+let mortal i lifespan release = transition tidal (Sound.Tidal.Transition.mortal lifespan release) i
+let interpolate i = transition tidal (Sound.Tidal.Transition.interpolate) i
+let interpolateIn i t = transition tidal (Sound.Tidal.Transition.interpolateIn t) i
+let clutch i = transition tidal (Sound.Tidal.Transition.clutch) i
+let clutchIn i t = transition tidal (Sound.Tidal.Transition.clutchIn t) i
+let anticipate i = transition tidal (Sound.Tidal.Transition.anticipate) i
+let anticipateIn i t = transition tidal (Sound.Tidal.Transition.anticipateIn t) i
 let d1 = p 1
 let d2 = p 2
 let d3 = p 3
@@ -68,8 +66,6 @@ let d14 = p 14
 let d15 = p 15
 let d16 = p 16
 
-
-e = euclidFull
 
 -- snowball :: (Pattern a -> Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Int -> Pattern a -> Pattern a
 -- snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
@@ -169,15 +165,6 @@ whenmodr speeds numerators denominators modifier pattern = if (done) then (modif
 :{
 isoe :: Pattern Int -> Pattern Int -> Pattern Time -> Pattern a -> Pattern a
 isoe n d s p = slow ((fmap toTime d)/s) $ euclid n d $ p
-:}
-
-:{
-parade :: Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
-parade depth offset fx p = splitQueries $ p {query = q}
-          where q st = query (head $ rotateList (currentCycleCount + offset) $ take depth $ iterate fx p) st
-                          where currentCycleCount = (floor $ start $ arc st)
-                rotateList _ [] = []
-                rotateList n xs = zipWith const (drop n (cycle xs)) xs
 :}
 
 m = (const silence)

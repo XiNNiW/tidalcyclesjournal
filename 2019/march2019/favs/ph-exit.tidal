@@ -1,5 +1,7 @@
 hush
 
+setcps (1)
+
 let melody1 = slow 4
                 $ cat [
                   "[ [-1 -2] ~ . -4 . 1 . ~ ]",

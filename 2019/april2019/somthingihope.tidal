@@ -1,0 +1,51 @@
+
+hush
+
+
+d1
+$ (condFx "1(<0 5 2 3>,8)" (chop "<4 8>"))
+-- $ foldmod [1,3,5] 5 3 ( condFx "1(3,8,4)" rev)
+$ (slow "1 2 1 <4 3>")
+$ foldEvery [3,4] ( 0.25 ~>)
+$ fix (sometimes (stutWith 3 0.125 (|* gain 0.75))) (n "[0,2,5,7]")
+$ fix ghost (n "[0,5]")
+-- $ outside 4 (condFx "1(5,8)" (fix ghost (n "[0,5]")))
+$ stack [
+  n (run 16)
+  ,
+  n "2*4"
+]
+# s "EFM(3,8)"
+
+let melody = slow 4  "0 . 2 3 . -1 <5 7>"
+in
+d2
+-- $ foldmod [1,3,5] 5 3 (slow "3 2 1 1".chop 2)
+$ stack [
+  (note (scale "hexPhrygian" $ ("<[-2 1 2 3] ~>") + (melody))) #s "ping"
+  ,
+  (note (scale "hexPhrygian" $ (melody))) #s "ping"
+]
+
+let melody = slow 4  "0 . 2 3 . -1 <5 7>" + 2
+in
+d2 $ stack [
+  (note (scale "hexPhrygian" $ ("<[-2 1 2 . 3] ~ [-2 2 . 3] ~>") + (melody))) #s "ping"
+  ,
+  (note (scale "hexPhrygian" $ (melody))) #s "ping"
+]
+
+d1
+$ foldmod [1,3,5] 5 3 (slow "3 2 1 4". condFx "1(3,8,4)" rev. (condFx "1(5,8)" (chop "<4 8>")))
+$ (slow "1 2 1 <4 3>")
+$ foldEvery [3,4] ( 0.25 ~>)
+$ fix ghost (n "[0,5]")
+-- $ outside 4 (condFx "1(5,8)" (fix ghost (n "[0,5]")))
+$ n (run 16)
+# s "EFM"
+
+d1
+$ foldmod [1,3,5] 5 3 (slow "3 2 1 4". condFx "1(3,8,4)" rev. condFx "1(5,8)" (chop "<4 8>"))
+$ (slow "1 2 1 4")
+$ n (run 16)
+# s "pss"

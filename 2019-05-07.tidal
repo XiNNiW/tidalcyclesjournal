@@ -1,0 +1,32 @@
+
+d1  $ stack [
+  splice 16 (iter 4 $ (irand 8)+(fast ( irand 2 + 1) $ run 8)) $ s "breaks165" #cut 1 #shape 0.5
+  ,
+  s "bd(<1 3>,8)" # speed isaw
+  ,
+  n (slow 2 $ run 2) #s "bass2" # cut 2 #speed 0.5
+  ,
+  slow 4 $ s "amb-chord:7" #cut 4 #gain 1.2 #delay 1.25 #delayfeedback 0.5 #orbit 1
+  ]
+
+let lfo sp low high = slow sp $ range low high $ tri
+in
+d1 $ stack [
+  stut 6 0.55 (1/16) $ outside 2 (struct "<t(3,8) t(5,8) t(11,16) t(7,16)>") $ s "invaders:6" # cut 1 #shape (lfo 6 0.2 0.5)
+  ,
+  jux (|+ speed 0.01) $ every 2 (chop 12.zoom (0.25,0.75).chop 4) $ s "blue:3" #speed (-1) #unit "c"
+  ,
+  s "bd:5*4" #shape 0.3
+  ,
+  splice 8 (every 2 (inside 2 (rev.iter 2)) $ run 8) $ s "breaks125" #unit "c"
+  ] #cps 0.5
+
+
+
+d1 $ fit' 1 4 (run 4) "[0 3*2 2 1 0 3*2 2 [1*8 ~]]/2" $ chop 4 $ (sound "breaks152" # unit "c") #cps 0.125
+
+:t stutWith
+
+note ("1*8" *  saw)
+
+hush

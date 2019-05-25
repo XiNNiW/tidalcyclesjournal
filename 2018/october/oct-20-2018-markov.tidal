@@ -2,6 +2,8 @@ import Data.Maybe
 
 import System.Random
 
+import Data.List
+
 evaluateMarkovChain :: [[Double]] -> [Double] -> [Int] -> [Int]
 evaluateMarkovChain transitionMatrix randomNumbers currentChain =
   (
@@ -40,7 +42,7 @@ take 10 (randomRs (0.0,1.0) g)
 
 do
 g <- newStdGen
-d1 $ note ((scaleP "lydian" $ makeMarkovPattern 64 1 (randomRs (0.0,1.0) g) transitions)) #s "pe-gtr:10" # gain 1
+d1 $ note ((scale "lydian" $ makeMarkovPattern 64 1 (randomRs (0.0,1.0) g) transitions)) #s "gtr" # gain 1
 
 
 patternStates :: [String]
@@ -49,6 +51,6 @@ patternStates = ["0 2 3 4", "0 . 0 3","[4*3] 5","7 9","3"]
 chooseMarkovStates :: (Parseable a, Enumerable a) => [String] -> [Int] -> Pattern a
 chooseMarkovStates states chain = cat $ fmap (p) $ fmap (states!!) chain
 
-d1 $ note ((scaleP "lydian" $ chooseMarkovStates patternStates (makeMarkovChain 6 0 (randomRs (0.0,1.0) g) transitions) )) #s "pe-gtr:10" # gain 1
+d1 $ note ((scaleP "lydian" $ chooseMarkovStates patternStates (makeMarkovChain 6 0 (randomRs (0.0,1.0) g) transitions) )) #s "gtr" # gain 1
 
 hush
