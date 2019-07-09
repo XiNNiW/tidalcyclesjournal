@@ -33,9 +33,9 @@ in
 d1 $ stack [
   ((1/4)<~) $ (note $ scale colors $(+ prog) $ rev $ cat [q1,a1,q1, a1,"-3","-2"]) #s "gtr" #gain 0.88
   ,
-  slow 4 $ (note $ scale colors $ chords ) # s "chBand01"
+  slow 4 $ (note $ scale colors $ chords ) # s "chBand01" #gain 0.7 #room 0.5 #size saw
 ]
 
-
+hush
 
 scaleList

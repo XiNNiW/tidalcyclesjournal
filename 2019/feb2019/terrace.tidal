@@ -3,6 +3,8 @@ terr :: Time -> Time -> Pattern a -> (Time,Time,Pattern a)
 
 terr start stop pattern = (start, stop, pattern)
 
+hush
+
 --
 terrace :: Time -> [Pattern a] -> Pattern ControlMap
 

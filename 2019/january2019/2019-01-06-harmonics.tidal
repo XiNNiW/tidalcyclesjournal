@@ -1,7 +1,7 @@
 hush
 
 -- 5ths and 4ths
-d1
+d4
 $ slow 8
 $ note ((
   "<5 7>"*(fast (run 16) $ run 16))-24
@@ -24,11 +24,10 @@ $ note ((
   # legato 1 -- #pF "attack" 0.25 #pF "decay" 0.5
 
 let midiToFreq n = 440*((2**(1/12))^n)
-
-let getOvertone root n = log(((midiToFreq root)*n)/440)/log(2**(1/12))
+    getOvertone root n = log(((midiToFreq root)*n)/440)/log(2**(1/12))
 
 -- o tones
-d1 $ slow 8 $ note ((fast (run 16) $ getOvertone 0 (run 16)))
+d5 $ slow 8 $ note ((+ 1)$(fast (run 16) $ getOvertone 0 (run 16)))
 #s "pm04"
 #delay 0.8
 # delayfeedback 0.25
@@ -41,17 +40,18 @@ d1 $ slow 8 $ note ((fast (run 16) $ getOvertone 0 (run 16)))
 #pF "brightness" (rand)
 #pF "stiffness" (rand)
 #pF "distance" (rand)
+# gain 0.7
 
 
 -- u tones
-d1 $ slow 8 $ note ((fast (16 - (run 16)) $ getOvertone 0 (1/(run 16)))+48) #s "scream01" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9
+d1 $ slow 8 $ note ((fast (16 - (run 16)) $ getOvertone 0 (1/(run 16)))+48) #s "pm04" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9 #gain 0.5
 
 hush
 
-d1 $ slow 8 $ note (( "<3 4>"*(fast (run 16) $ run 16))-24) #s "pm04" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9
+d1 $ slow 8 $ note (( "<3 4>"*(fast (run 16) $ run 16))-24) #s "pm04" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9 #gain 0.7
 
-d1 $ slow 8 $ note (( "<10 11>"*(fast (run 16) $ run 16))-24) #s "pm03" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9
+d1 $ slow 8 $ note (( "<10 11>"*(fast (run 16) $ run 16))-24) #s "pm03" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9 #gain 0.5
 
-d1 $ slow 8 $ note (( "<8 9>"*(fast (run 16) $ run 16))-24) #s "pm03" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9
+d1 $ slow 8 $ note (( "<8 9>"*(fast (run 16) $ run 16))-24) #s "pm03" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9 #gain 0.5
 
 d2 $ stack [  slow 8 $ fast (run 16) $ every 2 (often (ghost)) $ sound "~ sn:3", sound "bd ~" ]

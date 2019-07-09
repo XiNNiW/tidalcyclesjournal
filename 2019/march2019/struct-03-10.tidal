@@ -1,5 +1,7 @@
 setcps (110/60/4)
 
+hush
+
 let backrush speed = within (0.75, 1)(rev.stut 4 0.66 (1/speed))
 in
 d1

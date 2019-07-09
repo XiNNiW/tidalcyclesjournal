@@ -9,7 +9,7 @@ do {
     p "clock" $ fast 2 $ midicmd "midiClock*48" #s "midi";
     once $ midicmd "start" #s "midi";
     d1 $ stack [
-      sometimes ghost $ sound "[virus-bd,midi](<[3 7] 3> , 16, <0 [0 2] [1 0] [5 7]>)" # n "<[8 < 7 5> 8 8] 4>" #midichan 5
+      sometimes ghost $ sound "[opDrm02,midi](<[3 7] 3> , 16, <0 [0 2] [1 0] [5 7]>)" # n "<[8 < 7 5> 8 8] 4>" #midichan 5 #octave 3 #legato "<[8 3 4] [6 3] [3 5]>"
       ,
       every 2 (sometimes (off 0.25 rev ). ghost)$ sound "~ [fmSnare01,midi]" #gain 1.2 #pF "distance" 0.4 #pF "index" 6 #pF "stiffness" 0.02 #orbit 1 #midichan 6
     ];

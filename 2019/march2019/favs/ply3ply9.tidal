@@ -7,6 +7,7 @@ hush
 do
   {
     resetCycles;
+    setcps (70/2/60);
     d1
     -- $ slow 1
     -- $ outside 3 (chunk 6 (slow 2))
@@ -58,7 +59,7 @@ d2
 $ slow 2
 $ whenmod 8 4 (const silence)
 $ (note (scale "spanish" $ "<2 0 [-2 -4] -3> 2 3 <5 6 [4 5] [7 9]>"))
-# s "[karplus01,midi]" # octave 6 # legato 4 #midichan 2
+# s "[karplus01,midi]" # octave 6 # legato 4 #midichan 2 #room 0.33 #size (slow 3 $ saw)
 
 d4 $ slow 4 $ (note (scale "spanish" $ " <6 3 [~ 6@7] 3 7 [4 5] [~ 3 4]>  ")) # s "[chBand01,midi]" # octave "[4]" # legato 4 # orbit 3 #midichan 3
 

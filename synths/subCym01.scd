@@ -9,7 +9,9 @@ SynthDef(\subCym01, {
 	|
 
 	var noise = PinkNoise.ar(1);
-	var pulses = Pulse.ar([freq*(1.37),freq*(-1.22),freq*(1.411),freq*(-1.054),freq*(1.033),freq]);
+	var pulses = Pulse.ar(
+		[freq*(1.37),freq*(-1.22),freq*(1.411),freq*(-1.054),freq*(1.033),freq]
+	);
 	var env1 = EnvGen.ar(Env.perc(0.01,1,curve:'cub'),timeScale:sustain);
 	var env2 = EnvGen.ar(Env.perc(0.0002,0.1175,curve:'cub'),timeScale:sustain);
 	var env3 = EnvGen.ar(Env.perc(0.002,0.125,curve:'cub'),timeScale:sustain);
@@ -19,10 +21,22 @@ SynthDef(\subCym01, {
 	var mids = HPF.ar(bp1,7000)*env2;
 	var lows = HPF.ar(bp2,2000)*env3;
 
-	var env = EnvGen.ar(Env.perc(0.0001,1,curve:'cub'),gate:gate,timeScale:sustain,doneAction:2);
+	var env = EnvGen.ar(
+		Env.perc(0.0001,1,curve:'cub'),
+		gate:gate,timeScale:sustain,
+		doneAction:2
+	);
 	var mix = highs+mids*0.68+lows;
 
-	OffsetOut.ar(out, DirtPan.ar(((overdrive+1)*(mix)).tanh, ~dirt.numChannels, pan, env*env))
+	OffsetOut.ar(
+		out,
+		DirtPan.ar(
+			((overdrive+1)*(mix)).tanh,
+			~dirt.numChannels,
+			pan,
+			env*env
+		)
+	)
 }).add
 )
 

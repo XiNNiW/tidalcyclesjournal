@@ -10,9 +10,30 @@ $ juxBy 0 (iter 16 . (# speed 2 ))
 $ splice 32 ((run 16 +(slow (run 8) (run 8)) + (16*(run "4 5 1"))))
 $ s "md-break:3" # unit "c" #cut 1 #gain 1.2
 
+d2
+$ (|* speed "-1")
+$ striate "3 1 8 12"
+$ foldmod [1,2,3] 6 4 (rot 1)
+$ chop 3
+$ slice 4 "<[0 1] 2 <3 4>>"
+$ s "mono-loop:2(3,5)"
+# legato 1
+# octave "[4,6]"
+
+d2
+$ (|* speed "-1")
+$ striate "3 1 8 12"
+$ whenmodr [1,2,3] [6,5] [4,3] (rot 1)
+$ chop 3
+$ slice 4 "<[0 1] 2 <3 4>>"
+$ s "mono-loop:2(3,5)"
+# legato 1
+# octave "[4,6]"
+
 d1
 -- $ whenmod 7 5 (rev.striate "1 <3 8> . 8 12 3 2")
-$ splice 64 ("[4@2 3 2 1 0] 1 [2] [4 6] 2 [19 2 3] 1 2*3" + (16*(run "4 5 1")))
+$ splice
+64 ("[4@2 3 2 1 0] 1 [2] [4 6] 2 [19 2 3] 1 2*3" + (16*(run "4 5 1")))
 $ s "md-break" # unit "c" #cut 1 #gain 1.2
 
 d2 $ slow 2 $ iter 4 $ slice 16 (run 8) $ s "glass-box" #cut 2 # delay 1 #orbit 1
@@ -52,15 +73,7 @@ $ slow 2
 $ whenmodr [1,2,3] [6,5] [4,3] (rot 2)
 $ foldwhen [5,3,9] [4,2] ((fast 3).(|+ n 1)) $ s "808"
 
-d2
-$ (|* speed "-1")
-$ striate "3 1 8 12"
-$ whenmodr [1,2,3] [6,5] [4,3] (rot 1)
-$ chop 3
-$ slice 4 "<[0 1] 2 <3 4>>"
-$ s "mono-loop:2(3,5)"
-# legato 1
-# octave "[4,6]"
+
 
 d2 $ note (scale "phrygian" $ (whenmodr [1,3,2] [3,5] [2,1] (condFx "1(5,8)" ( (+ "~ <2 3>")))) $ "0(<3 4 7 5>,12,<0 1 2 4>)") #s "chBand01"
 
@@ -74,15 +87,7 @@ d2 $ stack [
   ]
 
 
-  d2
-  $ (|* speed "-1")
-  $ striate "3 1 8 12"
-  $ foldmod [1,2,3] 6 4 (rot 1)
-  $ chop 3
-  $ slice 4 "<[0 1] 2 <3 4>>"
-  $ s "mono-loop:2(3,5)"
-  # legato 1
-  # octave "[4,6]"
+
 
 
 d1

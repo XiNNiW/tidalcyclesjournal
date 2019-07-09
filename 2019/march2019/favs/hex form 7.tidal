@@ -33,7 +33,7 @@ do {
     $ (#nudge "[0.001 0.01]*4")
     $ foldEvery [2,3,11,7] (often (0.125 <~))
     $ iter 4
-    $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1.2 # orbit 0
+    $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1 # orbit 0
   ;
   d2
     $ foldEvery [3,4,11] (sometimes (degradeBy 0.3))

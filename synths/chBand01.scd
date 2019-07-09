@@ -1,5 +1,15 @@
 
 (
+var controlBus = Bus.control(s,7);
+SynthDef(\chBand01c, {
+	|
+	sustain, feedback, brightness, q, saturation,
+	vibDepth,vibRate
+	|
+	Out.kr(controlBus,[sustain,feedback, brightness,q,saturation,vibDepth,vibRate]);
+
+}).add;
+
 SynthDef(\chBand01, {
 	|
 	freq=440, amp=1, gate=1, pan=0,out=0,
@@ -12,6 +22,10 @@ SynthDef(\chBand01, {
 	var f = 800;
 	var blip;
 	var qmod;
+	var externalControls = In.kr( controlBus, 7);
+
+	feedback = feedback + Lag.kr(externalControls[1]);
+
 
 	freq=freq;
 	smoothFreq = Lag.kr(freq,100);

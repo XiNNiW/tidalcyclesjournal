@@ -5,6 +5,7 @@
 
 import Sound.Tidal.Context
 import Sound.Tidal.Chords
+import Sound.Tidal.Utils
 
 -- :module Sound.Tidal.Context
 -- -- -- :set prompt-cont ""
@@ -69,7 +70,8 @@ let d15 = p 15
 let d16 = p 16
 
 
-e = euclidFull
+bpm a = setcps (a/60/4)
+-- e = euclidFull
 
 -- snowball :: (Pattern a -> Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Int -> Pattern a -> Pattern a
 -- snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
@@ -106,6 +108,12 @@ chordList = unwords $ map fst (chordTable :: [(String, [Int])])
 :{
 slowrun :: (Real a, Enum a)=>Pattern a -> Pattern a
 slowrun n = slow (fmap toTime n) $ run ( n)
+:}
+
+:{
+chooseBy :: Pattern Double -> [a] -> Pattern a
+chooseBy _ [] = silence
+chooseBy f xs = (xs !!!) . floor <$> range 0 (fromIntegral $ length xs) f
 :}
 
 ghostBy a p = tParam ghost' (a) p

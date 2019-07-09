@@ -22,8 +22,15 @@ s.waitForBoot {
 
 	~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
 	~dirt.loadSoundFiles;   // load samples (path containing a wildcard can be passed in)
-	~dirt.loadSoundFiles(thisProcess.argv[0]++"/samples/*");
-	~dirt.loadSynthDefs(thisProcess.argv[0]++"/synths/");
+
+	if (thisProcess.argv[0].isNil,{
+		~dirt.loadSoundFiles("~/Music/tidal-cycles/samples/*");
+		~dirt.loadSynthDefs("~/Music/tidal-cycles/synths/");
+	}, {
+		~dirt.loadSoundFiles(thisProcess.argv[0]++"/samples/*");
+		~dirt.loadSynthDefs(thisProcess.argv[0]++"/synths/");
+	});
+
 
 	s.sync; // wait for samples to be read
 	~dirt.start(57120, [0, 2, 4, 6, 8, 10, 12]);   // start listening on port 57120, create two busses each sending audio to channel 0

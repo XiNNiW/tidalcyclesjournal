@@ -20,7 +20,7 @@ chordProg = cat ["g'sevenSus2","~","ds'6by9","c'min7","g'sevenSus4","~","c'nineS
 
 modeProg = cat ["g'minPent","g'minPent","g'minPent","g'minPent","g'minPent","f'majPent","f'majPent","f'majPent"]
 
-d2 $ note (("0(3,8)" + (mono $ chordProg))-12) #s "pizz" # orbit 3
+d2 $ note (("0(3,8)" + (mono $ chordProg))-12) #s "fm02" # orbit 3
 -- d3 $ n (chordProg) #s "moogbass" #gain 0.8 # orbit 2
 
 d4 $ n (chordProg) #s "superpiano" #gain 1 # orbit 4
