@@ -13,8 +13,8 @@ let melody1 = slow 4
 in
 do {
   setcps(1.2);
-  d5 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ melody1 ) #s "[midi,pe-gtr:9]" #gain 1.5 #orbit 0 #midichan 0;
-  d6 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ counterMelody1 ) #s "pe-gtr:9" #gain 1.5 #orbit 0 #midichan 0;
+  d5 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ melody1 ) #s "[midi,karplus01,fm02]" #gain 0.9 #orbit 0 #pF "harmonic" 2 #pF "brightness" 0.3 #midichan 0 #room 0.4; -- #size 0.5;
+  d6 $ swingBy (1/5) 10 $ note ( scale "phrygian" $ counterMelody1 ) #s "karplus01" #gain 0.9 #orbit 0 #midichan 0 #room 0.5 #size (trigger 5 $ saw);
   d1 $ swingBy (1/5) 10 $ sound "[ <[808bd] bd> 909? ~ ~  . <bd [<[[bd*2? ~ bd bd?] ~] [<bd ~>]> 808bd?]>]" #n (run 8) #orbit 0;
   d2 $ swingBy (1/5) 10 $ every ((irand 5)+1) (const $ sound "~ sd" #orbit 1)  $ sound "[ ~ sd]" #n (run 8) #orbit 0;
   d3 $ swingBy (1/5) 10 $ sound "lighter*8" #n (run 8) # gain  ("[8 .. 10] [9 .. 10]" /10 *0.88) #nudge 0.008 #orbit 0;

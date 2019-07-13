@@ -118,6 +118,10 @@ chooseBy f xs = (xs !!!) . floor <$> range 0 (fromIntegral $ length xs) f
 
 ghostBy a p = tParam ghost' (a) p
 
+ghostByWith = ghost''
+
+ghostWith fx = ghostByWith 0.125 (fx.((|*| gain (pure 0.7)) . (# end (pure 0.2)) . (|*| speed (pure 1.25))))
+
 replicator text1 = [putStr (text1) | x <- replicate 500 text1]
 
 flood text2 = sequence_(replicator text2)

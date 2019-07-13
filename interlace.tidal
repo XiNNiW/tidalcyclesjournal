@@ -1,0 +1,180 @@
+
+bpm 133
+
+hush
+
+scaleList
+
+d1 $ silence
+
+let
+laceWith fx p = interlace p (fx p)
+in
+d2
+$ slow 4
+$ laceWith (slow 3. rev. (#s "pm03"). (# octave 5) . (# leslie rand))
+$ whenmod 7 6 ( every 2 (inside 4 (chunk 4 (iter 4.(0.25 ~>)))))
+$ note (
+  (+3)
+  $ scale "hexPhrygian"
+  $ soak 3 (off 0.25 (+ "<3 [3 2]> -2").slow 2)
+  $ "<0 [1 0] 2 [3 -1]>"+3
+)
+# s "modal02" # octave 5 #orbit 4
+# pF "harmonic" (5/4) #pF "brightness" (range 2 0.5 $ slow 3.33 tri) #pF "spread" 1
+# room 0.5 #size (slow 4 $ saw ) # gain 0.6
+# delaytime "<0.125 0.6666>" #delay 0.75 # delayfeedback "0.7 0.5" # lock 1
+
+d4 $ silence
+
+hush
+
+-- d1 $ s "sd(<3 5>,8,<1 2 3>)"
+
+d3
+$ whenmod 48 24 (const silence)
+$ note (
+  (+3)
+  $ scale "hexPhrygian"
+  $ off 0.75 ((|+ 2).(slow 2))
+  $ (+ 3)
+  $ "<-2 1 ~ 6 2 4>" + slow 4 "0 3 5 . 8"
+)
+# s "[modal02,fm02]" # octave 4 # orbit 5
+# legato "2@2 1 3"
+# pF "harmonic" 1.5 # pF "brightness" 0.15
+# room 0.5 # size (slow 4 $ sine) #gain 0.6
+# delay 0.8 # delayfeedback 0.5 # delaytime (3/8) # lock 1
+
+let midiToFreq n = 440*((2**(1/12))^n)
+    getOvertone root n = log(((midiToFreq root)*n)/440)/log(2**(1/12))
+in
+-- o tones
+d5
+$ whenmod 64 16 (const $ silence)
+$ note (
+  (+ 3)
+  $(|+ (scale "hexPhrygian"
+    $"<0 [1 0] 2 [3 -1]>"+3)
+  )
+  $ slow 8
+  $ (fast (run 16) $ getOvertone 0 (run 16))
+)
+# s "<fm01 pm04 modal02>"
+-- # legato 3
+# pF "brightness" 0.1
+# orbit 4
+# octave 4
+# delay 0.8
+# delayfeedback 0.25
+# delaytime 1.5
+# lpf 8000
+# hpf 1200
+# room 0.25
+# size 0.9
+# vowel "<e i o a>"
+#pF "harmonic" 0.5
+#pF "brightness" (rand)
+#pF "stiffness" (rand)
+#pF "distance" (rand)
+# gain 0.7
+
+
+
+d1
+-- $ every 16 (striate 8)
+-- $ chop 16
+-- $ fast 2
+$ whenmod 64 48 (const $ silence)
+$ whenmod 6 4 (inside 2 (every 2 ((1/8)~>)))
+$ fix (# nudge "[0.005 0.01]*8") (s "[subCym01,808:4]")
+$ whenmod 8 7 (inside 2 (whenmod 2 4 (chop 16)))
+$ whenmod 12 8 (sometimes $ const $ s "subCym01*4" #legato 8 #gain (range 0.7 1 $ saw))
+$ whenmod 48 16 (off 0.125 (const $ s "808:4*4" #orbit 2 #crush 4 #gain (fast 2 $range 0.88 1 $ saw)))
+$ off 0.75 (const $ slow 4 $ s "sn" #speed "-4" #unit "c")
+$ off 0.5 (const $ sometimes ghost $ s "~ <sn:4 [~ sn:4] sn:4>")
+$ (0.25 <~)
+-- $ whenmod 64 48 ((# room 0.15 ). (# delay 0.88) . (|* speed 0.88))
+$ every 2 (chunk 4 (every 3 $ rev.iter 8))
+$ whenmod 10 8 (rev.ghost.slow 3)
+-- $ foldEvery [2,3] (("<0.25 0.5> 0 <0.5 0.25 1> 0.125" <~))
+$ every 3 (every 2 $ slow 2.iter 4)
+$ stack
+[
+whenmod 48 36 (rev.ghost.slow 3) $
+somecycles (const $ s "808:4*16" #crush 4 # orbit 2 #gain saw) $
+every 4 (slow 3) $
+sometimes ghost $ n (run 8) #s "808" #crush 4
+# orbit 2
+,
+whenmod 64 48 (const $ degrade $ cat [silence, s "~ [~ 808:3]" # speed 0.75 #shape 0.2])$
+every 4 (slow 2) $
+(off ("<0.75 0.25 0.5>"-0.125) (sometimes one. hurry 2. degrade .(#gain 0.8))) $ s "bass0@7 [~ bd?]"
+#orbit 0
+,
+s "~ <808:3 ~ [~ 808:3@3] ~>" #shape 0.2 #speed 0.75
+#orbit 1
+,
+whenmod 64 32 (const silence)$
+whenmod 16 12 (fast 2) $
+s "subCym01*2" #gain 0.6 #legato 6 #octave 6 #orbit 3
+] # room 0.1 # delaytime 0.75 #lock 1
+
+
+hush
+
+d1
+-- $ whenmod 64 48 ((# room 0.5 ). (# delay 0.88) . (|* speed 0.88))
+$ whenmod 8 7 (inside 4 (whenmod 2 4 (striate "<[8@6 3]>")))
+$ chunk 4 (rev.iter 8)
+$ whenmod 10 8 (rev.ghost.slow 3)
+$ foldEvery [2,3] (("<0.25 0.5> 0 <0.5 0.25 1> 0.125" <~))
+$ every 3 (iter 4)
+$ stack
+[
+-- whenmod 48 36 (rev.ghost.slow 3) $
+sometimes ghost $ n (run 8) #s "808" #crush 4
+,
+-- whenmod 64 48 (const silence)$
+(off ("<0.75 0.25 0.5>"-0.125) (sometimes one. hurry 2. degrade .(#gain 0.8))) $ s "bass0@7 [~ bd?]"
+,
+s "~ <808:3 ~>" #shape 0.2 #speed 0.75
+,
+-- whenmod 48 32 (const silence)$
+s "subCym01*2" #gain 0.6 #legato 6 #octave 6
+] # room 0.1
+
+hush
+
+-- u tones
+d5
+$ slow 8 $ note ((+ 3)$(|+ (scale "hexPhrygian"$"<0 [1 0] 2 [3 -1]>"+3))$(fast (16 - (run 16)) $ getOvertone 0 (1/(run 16)))+48) #s "pm04" #delay 0.8 # delayfeedback 0.25 # delaytime 1.5 # lpf 10000 # room 0.25 # size 0.9 #gain 0.5
+
+-- 5ths and 4ths
+d4
+$ slow 8
+$ note (
+  (+ 3)$(|+ (scale "hexPhrygian"$"<0 [1 0] 2 [3 -1]>"+3))
+  (
+  "<7 5>"*(fast (run 16) $ run 16))-24
+  )
+  # s "pm03"
+  # delay 0.8
+  # delayfeedback 0.25
+  # delaytime 1.5
+  # lpf 10000
+  # room 0.125
+  # size 0.2
+  #vowel "a e i o u"
+  #pF "fb" "-0.2"
+  #pF "sustain" 1
+  #pF "harmonic" 1.75
+  #pF "brightness" 0.35
+  #pF "stiffness" (rand)
+  #pF "distance" (rand)
+  #gain 0.5
+  # legato 1 -- #pF "attack" 0.25 #pF "decay" 0.5
+
+hush
+
+:t distrib

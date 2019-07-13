@@ -1,0 +1,74 @@
+
+:{
+
+  ring :: [a] -> Pattern b -> Pattern a
+  ring xs structure = withEvents getRingValues structure
+                      where getRingValues events = map (\(Event whole part v , x)-> Event whole part x) (zip events (cycle xs))
+
+
+
+:}
+
+
+zip [9,8] (cycle [1,2,3,4,5])
+
+:t fmap
+
+hush
+
+:t map
+
+let
+    -- morph choices = chooseBy (sig fromRational) choices
+    morph choices = chooseBy perlin choices
+    ns = [0,3,2,7,8]
+in
+d1
+$ whenmod 24 16 (slow ("1*2" |+ choose [1,2,3]))
+-- $ fast 2
+$ whenmod 8 7 (rev.ghost.slow 3)
+$ stack [
+  slow 4
+  $ ghost
+  $ note ("[0,5,17,10,14]" |+  morph ns ) #s "chBand01" #octave 4 #gain 0.88 #pF "feedback" saw # pF "vibRate" "<16 12 8 6 >" #orbit 3
+  ,
+  -- note ("0*16" |+ (slow 16 $ morph ns))
+  note ( "0(<3 5>,8,<0 10 1>)" |+ morph ns)
+  #s "fm02" #octave (euclid 2 8 $ morph [4,2,3])
+  #legato 4
+  #pF "brightness" (range 1 10 $ fast 16 $ rand)
+  -- #room (range 0.01 0.7 $ rand)
+  #delay rand #lock 1 # delaytime (3/12)
+  #pF "saturation" 2 # orbit 2
+  #lpf 1000
+  ,
+  sometimes (stutWith (morph [1,2,3]) (morph [(1/8),(1/16)]) (|+ n 1)  )
+  $ stack [
+    s "mod-bd:2*4" #shape (range 0.2 0.7 $ fast (range 1 2 $ rand ) saw)
+    ,
+    every 2 (inside 2 (every 2 (# room 1))) $ ghost $ s "~ dnb-sn:8" #orbit 1
+  ]
+]
+
+:t withEvents
+
+hush
+
+-- event === (((0,1),(0,1)),"bd")
+--
+-- query === arc -> [event a]
+--
+-- pattern === {nature,query}
+--
+-- i want a function that takes an array of values, a pattern and returns a pattern with those values distributed over the events
+
+
+                        -- where cyclexs = {(xs!!!)}
+
+x
+
+:t sig
+
+hush
+
+ d3 $ every 4 ((0.25 <~) . (fast  8  . (# speed "<2*2   1.5*2   1*2   0.8*2 >"))) $ sound " [~ sd ]" # speed (range 1 0.7 $ saw)

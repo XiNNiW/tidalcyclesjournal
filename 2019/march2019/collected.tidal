@@ -116,10 +116,13 @@ d3 $  note (scale "hexPhrygian" $ "<~ [~ [0,2,5,7]] ~ [~ [0,2,5,8]]>" |+ "<0 1 2
 let
   melody = cat [ "[0 0] [2 3 4] [0 6] [5 4 2]", " [0 2] [4 8] [. . 2] [1 -1 0] " ]
   drone = "[-12 , -5]"
-
-d1 $ note (scale "dorian" $ slow 6 $ melody ) #s "pe-gtr:8,midi" #midichan 0 #gain 2 #orbit 0
-
-d2 $ rev $ note ((scale "dorian" $ slow 2 $ drone + 12)) #s "pe-gtr:6,midi" #midichan 1 #gain 1 #orbit 0
+in
+d1
+$ stack [
+  note (scale "dorian" $ slow 6 $ melody ) #s "pe-gtr:8,midi" #midichan 0 #gain 2 #orbit 4
+  ,
+  rev $ note ((scale "dorian" $ slow 2 $ drone + 12)) #s "pe-gtr:6,midi" #midichan 1 #gain 1 #orbit 3
+]
 
 hush
 
@@ -207,6 +210,7 @@ counterMelody1 = slow 4 "<6 [[6 5 3 ~] ~] [6 ~ [4 3]] [6 5 4 3]> [<[5 3 ~*2] [5 
 
 hush
 
+
 d3
 $ append
 -- $ foldEvery [2,3] (superimpose ((0.75 ~>).slow "<2 3>" . palindrome . (|*| speed 2))  )
@@ -221,10 +225,10 @@ $ stack [
   slow "<1 1 2 3>" $ "0 2 3",
   melody1
 ] + 5
-) + 5) # sound "rhodes" #n 5)
+) + 5) # sound "rhodes" #n 5) #gain 1.2
 
 d2
-$ up ((scale "minor" counterMelody1 ) ) #s "tx81z-tine" #legato 1  #gain 1
+$ up ((scale "minor" counterMelody1 ) ) #s "fm02" #legato 1  #gain 1
 
 d1 $ (0.5 ~>) $ sound "tech*3" # gain (range 1 0.5 $ ((run 8)/8)) # nudge "<0.01 0.03 0.04 0.09> 0 0.1"
 

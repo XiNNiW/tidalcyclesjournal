@@ -1,5 +1,5 @@
 -- chapter 1
-setcps(98/60/2)
+
 
 hush
 
@@ -9,6 +9,7 @@ do {
 }
 
 do {
+    setcps(98/60/2);
     once $ midicmd "start" #s "midi"
     ;
     p "clock" $ midicmd "midiClock*48" #s "midi"

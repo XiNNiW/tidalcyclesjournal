@@ -1,0 +1,45 @@
+
+hush
+
+setcps(1)
+
+d1
+$ juxBy 0 (("0.75 0.25" ~>).slow 3.inside 2 (rev.(|+ n 1)))
+-- $ soak 4 (euclid "<3 4>" "< 8>".slow 2)
+-- $ juxBy 1 (rev . striate 12)
+$ stack [
+  inside 8 (every 4 (ghost.sometimes (rev))) $ sound "<EP12*8>" #n (run 8),
+  stut 3 0.3 (rand) $ sound "[PI*1]"
+]
+
+hush
+
+--THIS
+d2
+$ whenmod 12 7 (iter 32 .chop 8 . (|* speed "-0.5"))
+$ every 3 (rev. (|* speed "-1"))
+$ (|* speed "-0.25") $ note ("<0 0 0 0 2 -5 12>")
+# s "mono-loop:<2 2 4 2 3 3 2 1>" #orbit 1
+# cut 1 #end (slow 8 $ smooth "2 0")
+# unit "c"
+# delay 1 # delayfeedback 0.33 # delaytime 0.66 #lock 1
+# leslie rand
+# room 0.5 #size saw
+
+d3 $ note ("0 0 . 0 . 0 0 " +4) # s "pm03" #octave 4
+
+hush
+
+d1
+$ slow 2
+$ outside 4 (palindrome)
+$ note ( scale "dorian " $ snowball 2 (+) (fast 2 . slow 3 . (* "<0.125 -0.25>"))  $ run "<12 19>")
+# sound "pm04"
+
+
+--
+scaleList
+
+d2 $ note ((scale "hexPhrygian" $ snowball 4 (-) (slow 2.rot 1)   $ "0 . ~ -1 . -3 2 . 1" + "<0 0 2 -3>")) # s "karplus01" #lpf 2000 # cut 1
+
+d1 $ sound "{707(3,8),707:8(1,6,3),808:11(3,4,1)}"

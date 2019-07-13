@@ -1,0 +1,60 @@
+hush
+
+let measures n p ms = (n, p):ms
+    loopend n p = measures n p []
+    songLoop ms = seqPLoop $ structureSong 0 ms
+    structureSong st [] = []
+    structureSong st (p:ps) =  (st,(st+(fst p)),snd p) : (structureSong ((fst p)+st) ps )
+    modal02 = s "modal02" #room 0.5 #pF "brightness" rand
+    modal03 = s "modal03" #room 1 #pF "brightness" rand #gain 0.87
+in
+d1
+$ (
+  songLoop
+  $ measures 2 (
+    stack [
+      note (scale "dorian" $  "{[-7 -3 -1 0 4], [2 0 -3 -6] }%2") # modal02
+      ,
+      note (scale "dorian" $  "<0 3>") # modal03 #octave "[4,5]"
+    ]
+  )
+  $ measures 2 (
+    stack [
+      note (scale "dorian" $  "{[-7 -3 -2 0 4], [2 0 -3 -6] }%2") # modal02
+      ,
+      note (scale "dorian" $  "<1 2>") # modal03 #octave "[4,5]"
+    ]
+  )
+  $ measures 2 (
+    stack [
+      note (scale "dorian" $  "{[-7 -3 -1 0 4], [2 0 -3 -6] }%2" + 3) # modal02
+    ]
+  )
+  $ measures 2 (
+    stack [
+      note (scale "dorian" $  "{[-7 -3 -1 0 4], [2 0 -3 -8] }%2" + 3) # modal02
+    ]
+  )
+  $ measures 2 (
+    stack [
+      note (scale "lydian" $  "{[-7 -3 -1 0 4], [2 0 -3 -6] }%2") # modal02
+      ,
+      note (scale "lydian" $  "<1 2>") # modal03 #octave "[4,5]"
+    ]
+  )
+  []
+)
+
+d1 $ (#n (run 16)) $ euclid (irand 11) 16 $ s "dub-bd"
+
+d1 $ (# n (run 16)) $ slow 2 $ e (irand 3) 16 (choose [0,2,3]) $ s "[mod-bd sd]" #hpf ( smooth $ "0 2 . 0 1" * 500)
+
+d1 $
+
+:t lindenmayer
+
+hush
+
+:t fix
+
+d1 $ note ( "1 2 3 4") # s "gtr"

@@ -1,0 +1,63 @@
+hush
+
+bpm a = setcps (a/60/4)
+
+bpm 120
+
+let notmod a b = Sound.Tidal.Core.when (\t -> (t `mod` a) < b )
+    elsemod a b iffx elsefx = whenmod a b (iffx) . notmod a b (elsefx)
+in
+d2
+$ note (scale "hexPhrygian"
+   $ elsemod   10 9 (off (1/16) (stutWith 5 ((1/4)*"1") (+ 0)))
+   ( elsemod   8 7  (off (2/16) (stutWith 4 ((1/4)*"3*3 2") (+ 1)))
+     $ elsemod 6 5  (off (5/16) (stutWith 3 ((1/4)*"5*3 4") (|-| 1)))
+     $ elsemod 4 3  (off (6/16) (stutWith 2 ((1/4)*"7*3 6") (|-| 2)))
+     $ whenmod 2 1  (off (8/16) (stutWith 1 ((1/4)*"9") (|+| 2)))
+   )
+   $"<0 [~ -2] [0 1] 2>" + 2
+)
+#s "[modal02,karplus01]" #orbit 1
+-- # delay (fast 16 $rand) #lock 1 #delaytime 0.125 # delayfeedback "0.88"
+
+let stackBy funcs p = stack $ fmap ($ p) funcs
+    notmod a b = Sound.Tidal.Core.when (\t -> (t `mod` a) < b )
+    elsemod a b iffx elsefx = whenmod a b (iffx) . notmod a b (elsefx)
+in
+d1
+$ outside 2 (
+  chunk 4
+  $ elsemod   10 9 (backrush 8)
+  ( elsemod   8 7  (ghost.slow 3.inside 4 ( every 3 (#speed "-1")))
+    $ elsemod 6 5  (inside 3 $ every 2 rev)
+    $ elsemod 4 3  (outside 2 $ every 3 brak)
+    $ whenmod 2 1  ((foldEvery [5,7,3] (3 <~)).inside 2 (iter 8) )
+  )
+)
+$ (foldEvery [3,4] ((1/8) <~))
+$ stackBy [
+  off (1/4) ((# gain (fast 2 $ range 0.78 0.9 $ saw)).(>| s "808:7(<7 4 [16 3] 5 [16 3]>,16,<0 2>)").(#legato 2)),
+  off (1/2) (sometimes ghost.euclid "<1 2 3>" 8.(# s "<opDrm02>" ).(#legato 2).(# octave 3)),
+  off (1/16)(sometimes ghost.often (const silence))
+  ]
+$ ((1/2) ~>)
+$ whenmod 6 5 (rev . ghost . slow 8 . (#legato 0.125) )
+$ whenmod 4 3 (rev . slow 3 . ghost . (#legato 0.25))
+$ s "opDrm01" #legato 0.5
+
+let notmod a b = Sound.Tidal.Core.when (\t -> (t `mod` a) < b )
+    elsemod a b iffx elsefx = whenmod a b (iffx) . notmod a b (elsefx)
+in
+clutchIn 3 4
+$ slow 2
+$ every 2 (# s "modal03")
+$ note (scale "hexPhrygian"
+   $ elsemod   10 9 (off (1/16)(stutWith 5 ((1/4)*"1") (+ 0)))
+   ( elsemod   8 7  (off (2/16) (stutWith 4 ((1/4)*"3*3 2") (+ 1)))
+     $ elsemod 6 5  (off (5/16) (stutWith 3 ((1/4)*"5*3 4") (|-| 1)))
+     $ elsemod 4 3  (off (6/16) (stutWith 2 ((1/4)*"7*3 6") (|-| 2)))
+     $ whenmod 2 1  (off (8/16) (stutWith 1 ((1/4)*"9") (|+| 2)))
+   )
+   $"<0 [~ -2] [0 1] 2>" - 5
+)
+#s "modal02" #orbit 1

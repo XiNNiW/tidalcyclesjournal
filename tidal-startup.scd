@@ -16,6 +16,8 @@ s.options.maxNodes = 1024 * 32; // increase this if you are getting drop outs an
 s.options.numOutputBusChannels = 12; // set this to your hardware output channel size, if necessary
 s.options.numInputBusChannels = 2; // set this to your hardware output channel size, if necessary
 // s.options.maxLogins = 8;
+s.options.memSize = 200536;
+
 
 // boot the server and start SuperDirt
 s.waitForBoot {

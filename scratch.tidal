@@ -1,0 +1,9 @@
+hush
+
+d1 $ s "bd*4" #shape (slow 3 $ saw)
+
+d2 $ fast "<2 2 4 4>" $ s "hh*4"
+
+d3 $ fast 2 $ s "~ sd"
+
+d4 $ note (scale "minor" $ run 8) # "bass3"

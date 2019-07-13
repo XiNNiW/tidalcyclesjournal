@@ -1,0 +1,33 @@
+
+d1
+$ whenmod 4 3 (ghost.slow 3.ghost) $ stack [
+  s "bd bd(<2 3>,8)/3 bd*2 bd/3"
+  ,
+  sometimes (fast 2) $ every 3 (sometimes ghost) $ s "~ sd"
+  ]
+
+
+d2 $ silence -- "bass(3,8)"
+
+d3 $ every 4 (rev) $ (note $ off 0.5 ((+19)) $ off 0.25 ((slow 2).(+12)) $ "c2 e3*2 d2(3,8)/2 d3 g3 ") # s "arpy"
+
+
+
+hush
+
+:t foldmod
+
+
+d1 $ whenmod 4 3 ( bite 8 "[5 0] [1 5] 2 3 1 [5 4] 1 3") $ foldEvery [3,4] (0.125 ~>) $ n (run 16) # s "ab"
+
+d2
+$ every 4 (#size 1)
+$ note (scale "minor" $ (|- 3) $ off 0.25 (+ 3) $ "0 . [[0 1]*2 ] . [0 -1]/2"+(rot (slow 4 (run 4))"-5 2 4 . 3 7"))
+# octave 4
+# s "chBand01" #pF "feedback" (4*rand)
+# room 0.2
+# size 0.8
+
+d3 $ note (cat ["~", "0 -2*2 2 1"]) #s "opDrm02" #gain 0.7 #orbit 1 #legato "2 1"
+
+d1 $ within (0.5 , 1) (sometimes ghost) $ n ("0*2 0(3,8)") #s "909" #orbit 1 #lpf 2000 #speed rand

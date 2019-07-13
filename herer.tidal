@@ -1,0 +1,5 @@
+
+hush
+-- d1 $ every 4 (slow 3 . ghost) $ s "[bd*4,[~ hh]*4]"
+
+d2 $ note (off 0.5 (+ "12")$off 0.25 (+ "7") $ "12 0 . 7 2 9") # s "bass3"

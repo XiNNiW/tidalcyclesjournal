@@ -1,0 +1,45 @@
+
+let rules = "a: b a, b: a*2 ~"
+
+in
+
+d1 $ stutWith 3 (range (0.25^3) 0.25  $ saw) ((|+ n 1).(|* gain 0.89)) $ s "mod-bd@3 dub-bd:7"
+
+let songLen = 16
+    structure = (lindenmayer 3 rules "a ~") :: Pattern String
+    rules = "a: b a, b: a*2 ~"
+    patterns = [
+      mkpat "a" (s "dub-bd"),
+      mkpat "b" (s "dub-sn")
+      ]
+    fx = []
+in
+d1 $ ur songLen structure patterns fx
+
+hush
+
+
+
+let chordScale chordString = (lookup chordString table)
+                            where table = [
+                              ("e'min", ((|+ 'e').(scale "aeolian")))
+                            ]
+
+import Data.Maybe
+
+let cScale name = ((scale name).transform)
+                where orderByChordTones = ((|% 7) .(|* 2))
+                      octaveScaling a = ( a `div` anOctave) * anOctave
+                      transform a = (octaveScaling a + orderByChordTones a)
+                      aThird = 2
+                      anOctave = 7
+
+
+let cScale name = ((scale name).transform)
+                where orderByChordTones = ((|% 7) .(|* 2))
+                      octaveScaling a = ( a `div` anOctave) * anOctave
+                      transform a = (a |* 2)
+                      aThird = 2
+                      anOctave = 7
+in
+d1 $ note (cScale "<minor lydian>" $ "[0,1,2,<4 3 7 3>]" + "<0 2 3 4>") # s "gtr" #gain 0.5

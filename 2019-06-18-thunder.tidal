@@ -1,0 +1,17 @@
+d1
+$ slow 3
+$ stack [
+  s "fbsin" #pF "feedback" 0.1,
+  slow 2 $ s "fbsinc" #pF "feedback" (slow "<3 2 1 3 4>" $ saw) #pF "brightness" (slow "<5 3 1 3 4>" $ 10 * rand) #pF "q" (slow "<5 3 1 3 4>" $ 1 * rand)
+  ]
+  #room 0.7 # size 0.8 # delay 0.84 #lock 1 # delaytime 3
+
+d1
+$ slow 3
+$ stack [
+  s "chBand01" #octave 2 #pF "feedback" 0.1,
+  slow 2 $ s "chBand01c*16" #pF "feedback" (slow "<3 2 1 3 4>" $ 30* saw) #pF "brightness" (slow "<3 2 1 3 4>" $ 10* rand)
+  ]
+  #room 0.7 # size 0.8 # delay 0.84 #lock 1 # delaytime 3
+
+hush

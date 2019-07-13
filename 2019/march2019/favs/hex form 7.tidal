@@ -25,6 +25,8 @@ do {
   ;
   once $ midicmd "start" # s "midi"
   ;
+  bpm (133*2)
+  ;
   d1
     $ foldEvery [2,3] (0.25 ~>)
     $ every 8 ( scramble 4 . rarely (chop 16) . (0.25 <~) )

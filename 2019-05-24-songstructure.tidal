@@ -1,0 +1,85 @@
+hush
+
+let measures n p ms = (n, p):ms
+    loopend n p = measures n p []
+    songLoop ms = seqPLoop $ structureSong 0 ms
+    structureSong st [] = []
+    structureSong st (p:ps) =  (st,(st+(fst p)),snd p) : (structureSong ((fst p)+st) ps )
+in
+d1
+$ songLoop
+$ measures 8 (
+  every 4 (bite 16 "{0 5 1}%16")
+  $ s "bd(<[9 3 1][11 2@2]>,16,<0 4 [0 4 0 5]>)"
+  # speed (range 0.77 1.2 $ rand) # cut 1
+  # shape 0.3
+  )
+$ measures 8 (
+  every 4 (bite 16 "{0 5 1}%16")
+  $ stack [
+    s "bd(<[9 3 1][11 2@2]>,16,<0 4 [0 4 0 5]>)"
+    # speed (range 0.77 1.2 $ rand) # cut 1
+    ,
+    sometimes ghost
+    $ s "{~ sd:6}"
+  ]
+  # shape 0.3
+  )
+$ measures 8 (
+  (127 ~>)
+  $ every 4 (bite 16 "{0 5 1}%16")
+  $ stack [
+    s "bd(<[9 3 1][11 2@2]>,16,<0 4 [0 4 0 5]>)"
+    # speed (range 0.77 1.2 $ rand) # cut 1
+    ,
+    sometimes ghost
+    $ s "{~ sd:6}"
+    ,
+    sometimes ghost
+    $ sometimes one
+    $ s "{~ md-vive:4}%8"
+  ]
+  # shape 0.3
+  )
+$ measures 8 (
+  every 8 (bite 16 "{0 3 . 2 5 1}%8")
+  $ stack [
+    slow 2 $ s "bd(<[9 3 1][11 2@2]>,16,<0 4 [0 4 0 5]>)"
+    # speed (range 0.77 1.2 $ rand) # cut 1
+    ,
+    sometimes ghost
+    $ s "{~ sd:6}"
+    ,
+    sometimes ghost
+    $ sometimes one
+    $ s "{~ md-vive:4}%8"
+    ,
+    rarely one
+    $ note (scale "hexDorian" $ "{0 4  . 2 5 . 2 . 0}" |+ "{4 2 5 2 4}%3") #octave 3 # "fm02"
+  ]
+  # shape 0.3
+  )
+$ measures 8 (
+  (127 ~>)
+  $ every 8 (bite 16 "{0 3 . 2 5 1}%8")
+  $ stack [
+    slow 2 $ s "bd(<[9 3 1][11 2@2]>,16,<0 4 [0 4 0 5]>)"
+    # speed (range 0.77 1.2 $ rand) # cut 1
+    ,
+    sometimes ghost
+    $ s "{~ sd:6}"
+    ,
+    sometimes ghost
+    $ sometimes one
+    $ s "{~ md-vive:4}%8"
+    ,
+    note ("[0,7,11,14]"+2+ "<0 2 5 0>")#s "modal02"
+    ,
+    rarely one
+    $ note (scale "hexDorian" $ "{0 4  . 2 5 . 2 . 0}" |+ "{4 2 5 2 4}%3") #octave 3 # "fm02"
+  ]
+  # shape 0.3
+  )
+  []
+
+hush

@@ -1,0 +1,62 @@
+hush
+
+setcps 0.5
+
+d1
+$ whenmod 10 8 (rev . ghost . slow 3)
+$ foldEvery [2,3] ((1/8)<~)
+$ stack [
+  sound "rc*4" #gain (range 0.77 0.9 $ saw)
+  ,
+  sound "bd*2 [[~ bd/5] bd] . bd ~ " #gain 1  #octave 2 #shape 0.6
+  ,
+  s "~ sn . [~ sn/3] sn [~ sn] ~  " #gain 1 #note (scale "minPent" $ irand 9) #octave 3
+  ,
+  sometimes ghost $ s "[~ hh] hh hh [~ hh] [~ hh] [~ hh] hh [~ hh]" |* gain "[0.9 0.99]"
+  #gain (range 0.9 1 $ fast 2 $ saw)
+] #room 0.12
+
+d2
+$ foldEvery [5,3] (|* pF "pw" rand)
+$ ((1/4) <~)
+$ ghost
+$ note (
+  -- off (3/16) (+| "<0 -12 12>(7,16,<0 2 6 12>)") $
+  -- off (7/16) (+| "<0 -12 12>(5,16,<0 2 6 12>)") $
+  "c5(<3 5>,8,<0 3>)" + "0 1 0 12 . -12 0 3 5"
+  )
+#s "bass"
+#octave 3
+#orbit 1 #room 0.13 #pF "port" (range 0 100 $ rand)
+#pF "cutoff" (range 200 1200 $ rand)
+#pF "q" (range 0 3.5 $ (slow 8 $ tri))
+#pF "pw" (slow 4 $ saw)
+#pF "oscmix" 0.33
+#gain 1
+#shape (slow 4 $ saw)
+#delay 0.02
+#delaytime  0.3333
+#delayfeedback 0.5
+
+d3
+$ slow 4
+$ note ("<c5 [~ e6@7] ds5 [e5 g5]>") # octave "<5 4 3>"
+# s "pad" #gain 1 #legato 0.5 #orbit 2 #room 1
+# delay 0.88
+
+d4
+-- $ whenmod 16 8 (const $ silence)
+$ ((1/2)~>)
+$ slow 4 $ note ("[0 3 . 7 . 9 14 . <5 4>]")
+#octave "<6 6 5 4>" #s "bell"
+-- #pF "op1-index" rand
+#pF "op2-index" saw
+#pF "op2-ratio" (3/2)
+#orbit 3 #gain 0.8 #room 0.22 #delay 1
+
+
+hush
+
+setcps 1
+
+hush
