@@ -1,0 +1,15 @@
+
+d1
+-- $ off 0.5 (>| s "opDrm01")
+$ whenmod 14 8 (inside 2 (whenmod 24 7 (chunk 4 (iter 8))))
+$ off 0.125 (slow 2.(ply "6").(# gain 0.5))
+$ off 0 ((0.125~>).(>| s "subCym01*8"))
+$ stack [
+  s "~ opDrm01"
+  ,
+  s "opDrm02(3 5, 8)" #octave 2 #legato 1.5
+] # lpf 3000
+
+
+
+hush

@@ -71,5 +71,5 @@ $ every 3 (inside 4 (every 2 (sometimes ghost)))
 $ stack [
   n ( iter 4 $ every 3 (inside 2 rev) $ run 16) #s "xvd" #gain 1.4 #speed 1.25
   ,
-  note (scale "minor" $ "~ <0 5 -1 0>" ) #s "midi" #gain 1.25
+  note (scale "minor" $ "~ <0 5 -1 0>" ) #s "midi" #gain 1.25 #midichan 0 #ccn 0 #ccv 1
   ]

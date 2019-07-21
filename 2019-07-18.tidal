@@ -1,0 +1,72 @@
+let wave = (slow (range 1 4 $ fast 2 $ saw) $ saw)
+    swave = (range 0 1 $ wave)
+in
+do {
+d1
+-- $ whenmod 56 32 (iter 8.stut 3 0.125 0.5.slow 2)
+$ slow (chooseBy swave [1,1,0.5,2,3])
+$ stack [
+  juxBy 0 (hurry 2) $
+  s "EFM:0(3,6,9)"
+  # speed (range 0.5 1 $ slow 7 $ sine)
+  # lpf (range 3000 150 $ wave)
+  # orbit 0
+  ,
+  juxBy (range "-0.6" "0.6" $ wave) (hurry 2) $
+  n "5" #s "TRX"
+  # orbit 1
+  ,
+  inside 2 (whenmod 7 4 $ slow 2) $
+  sometimes (stut 2 0.7 (3/16)) $
+  n "~ [~ 3] 6" #s "TRX"
+  #gain 0.9
+  -- #speed wave
+  # orbit 2
+  ,
+  inside 2 (whenmod 7 4 $ slow 2) $
+  juxBy (range "0.2" "-0.2" $ wave) (hurry 2) $
+  -- s "TRX:4(2,12,6)"
+  s "[~ ~ TRX:4]*<2 1 1 2 1 2 1 2>"
+  #speed (range 0.75 1.25 $ tri)
+  #crush (range 4 16 $ wave)
+  # leslie 1
+  # orbit 1
+  ] -- # octer 0.3
+;
+d2
+$ mono
+$ slow (chooseBy swave [1,0.5,0.25,3])
+$ ((2/3) ~>)
+$ (stut 4 1 (1/3))
+$ fast 1.5
+$ juxBy 0 (|+ note 12)
+$ s "fm02"
+# note (
+  (slow 1.5 $ slow 1.5 $ "<0*3 [4 8*3] -2*3 [5 2*3]>")
+  +
+  (fast 2 $ chooseBy (fast (chooseBy swave [2,3,1,0.5]) swave) [0,14,7,11,12,17])
+  )
+# pF "brightness" (range 0 1 $ wave)
+# pF "harmonic" 1
+# legato (chooseBy (fast 2 $wave) [1,1.5,2.25,0.5])
+# octave (chooseBy wave [3,4]) #lpf 2000
+# cut 2
+# orbit 3
+;
+d3
+$ slow 1.5
+$ whenmod 11 8 (# silence)
+$ juxBy (range 0.3 0.75 $ wave) (|- note 12)
+$ s "fm02"
+#note "[<4 [0 2]>,11,<7 [16 19]>]"
+#octave 6
++| note "<0 [4 8] -2 [5 2]>"
+#pF "harmonic" 1
+#attack 1
+#pF "brightness" 0.1
+#gain 0.7
+#orbit 4
+#room 0.2
+}
+
+hush

@@ -1,38 +1,44 @@
 hush
 
+setbpm 160
 
 --thunder
 d2
 $ slow 3
 $ stack [
   s "chBand01" #octave 2 #pF "feedback" 0.1,
-  slow 2 $ s "chBand01c*16" #pF "feedback" (slow "<3 2 1 3 4>" $ 30* saw) #pF "brightness" (slow "<3 2 1 3 4>" $ 10* rand)
+  slow 2 $ s "chBand01c*16"
+  #pF "feedback" (slow "<3 2 1 3 4>" $ 30* saw)
+  #pF "brightness" (slow "<3 2 1 3 4>" $ 10* rand)
   ]
-  #room 0.7 # size 0.8 # delay 0.84 #lock 1 # delaytime 3 #cps (160/60/4) #gain 1.1
+  #room 0.7 # size 0.8 # delay 0.84 #lock 1 # delaytime 3 #gain 1.1
+
+hush
 
 -- start with ____
-bpm 133
+setbpm 133
 
 xfade 1
--- $ every 8 (backrush 8.rev . slow 3 . ghost)
 -- $ sometimes (backrush 16)
-$ (#lpf 10)
-$ every 3 (bite 8 " 0 2 3 . 1 3 . 4. 4")
--- $ foldEvery [3,4] (0.125 ~>)
+-- $ (#lpf 10)
+$ whenmod 56 24 (inside 2 ( whenmod 7 5 (chunk 4 (iter 8))))
+-- $ foldEvery [3,4] (sometimes (bite 8 "0 2 3 . 1 3 . 4. 4"))
+-- $ foldEvery [3,4] ((128 <~).sometimes (0.25 ~>))
+$ every 8 (someCycles (rev . ghost . slow 3 ))
 $ stack [
-  sometimes ghost
-  $ "0(3,16,<[0 1] 3 0 5>)"
+  sometimes ghost $
+  note "0(<3 2 7 3 >,16,<[0 1] 3 0 5>)"
   # s "opDrm02"
-  #octave (choose [1,2,3]) #legato 5
+  # octave (choose [1,2,3]) #legato 5
   # pF "brightness" saw
   # room 0.005
-  #lpf 2000
+  # lpf 2000
   ,
   often (ghostWith (|+ note "<7 9 11 -7 -9 -11>"))
   $ every 4 (someCycles (rev.slow 3.ghost))
   $ note ("[~ <0 3 5 10>]*2")
   # s "[fmSnare01,opDrm01]" #orbit 1 #gain 1
-  # octave 7 #legato (range 1 2 $ slow 4 saw)
+  # octave 7 #legato (range 1 3 $ slow 4 saw)
   # pF "brightness" (slow 4 $ saw)
   # pF "harmonic" (slow 4 $ tri)
   # room 0.25 #size (range 0.2 1 $ (1 ~>) $ slow 2 saw)
@@ -72,9 +78,10 @@ $ note ("0(7,16, 0 1 3 5)")
 
 xfade 5
 $ whenmod 24 8 (const $ silence)
+$ (|- note 12)
 $ note (scale "dorian" $ "<0 0 0 [7 . 2 -3]>"+ 2*(trigger 1 $fast "2 0.5 <2 0.25> [0.5 1]" $ run 8))
 # s "pm04" #pF "brightness" 0.5 #pF "harmonic" 1 #legato 1 #attack 0 #hold 1 #decay 0.5
-# delay 0.5 #delaytime (2/3)
+# delay 0.5 #delaytime (2/3) #gain 0.6
 -- improvise
 
 -- track 1
@@ -88,6 +95,8 @@ d1 $ silence
 d2 $ silence
 
 xfade 3 $ silence
+
+xfade 2 $ silence
 
 xfade 5 $ silence
 
@@ -162,22 +171,19 @@ $ note (
 
 -- DRUMS
 d1
--- $ every 16 (striate 8)
--- $ chop 16
--- $ fast 2
 $ whenmod 64 48 (const $ silence)
 $ whenmod 6 4 (inside 2 (every 2 ((1/8)~>)))
 $ fix (# nudge "[0.005 0.01]*8") (s "[subCym01,808:4]")
--- $ whenmod 8 7 (inside 2 (whenmod 2 4 (chop 16)))
--- $ whenmod 12 8 (sometimes $ const $ s "subCym01*4" #legato 8 #gain (range 0.7 1 $ saw))
+$ whenmod 8 7 (inside 2 (whenmod 2 4 (chop 16)))
+$ whenmod 12 8 (sometimes $ const $ s "subCym01*4" #legato 8 #gain (range 0.7 1 $ saw))
 $ whenmod 48 16 (off 0.125 (const $ s "808:4*4" #orbit 2 #crush 4 #shape 0.5 #gain (fast 2 $range 0.88 1 $ saw)))
--- $ off 0.75 (const $ slow 4 $ s "sn" #speed "-4" #unit "c")
--- $ off 0.5 (const $ sometimes ghost $ s "~ <sn:4 [~ sn:4] sn:4>" #shape 0.5 )
+$ off 0.75 (const $ slow 4 $ s "sn" #speed "-4" #unit "c")
+$ off 0.5 (const $ sometimes ghost $ s "~ <sn:4 [~ sn:4] sn:4>" #shape 0.5 )
 $ (0.25 <~)
 -- $ whenmod 64 48 ((# room 0.15 ). (# delay 0.88) . (|* speed 0.88))
 $ every 2 (chunk 4 (every 3 $ rev.iter 8))
 $ whenmod 10 8 (rev.ghost.slow 3)
--- $ foldEvery [2,3] (("<0.25 0.5> 0 <0.5 0.25 1> 0.125" <~))
+$ foldEvery [2,3] (("<0.25 0.5> 0 <0.5 0.25 1> 0.125" <~))
 $ every 3 (every 2 $ slow 2.iter 4)
 $ stack
 [
@@ -190,7 +196,7 @@ sometimes ghost $ n (run 8) #s "808" #crush 4
 whenmod 64 48 (const $ degrade $ cat [silence, s "~ [~ 808:3]" # speed 0.75 #shape 0.2])$
 every 4 (slow 2) $
 (off ("<0.75 0.25 0.5>"-0.125) (sometimes one. hurry 2. degrade .(#gain 0.8))) $ s "bass0@7 [~ bd?]"
-#orbit 0 #shape 0.5 #lpf (range 500 7000 $ rand) #lpq (range 0.5 0 (rand))
+#orbit 0 #shape 0.3 #lpf (range 500 7000 $ rand) #lpq (range 0.3 0 (rand)) #octer 1
 ,
 s "~ <808:3 ~ [~ 808:3@3] ~>" #shape 0.2 #speed 0.75
 #orbit 1
@@ -206,6 +212,8 @@ anticipate 1 $ silence
 
 d1 $ silence
 
+hush
+
 xfade 3 $ silence
 
 xfade 5 $ silence
@@ -213,6 +221,7 @@ xfade 5 $ silence
 d1
 -- $ every 8 ( within (0,0.5) ((# gain (fast 2 $ saw)).palindrome. striate "[32@3 [16 8]]*2".(#speed "-0.5").(#comb 440).(#pan ( fast 2 $ isaw))))
 $ fix (# speed (range 0.99 1.11 $ rand)) (s "909")
+$ inside 2 (whenmod 56 7 (chunk 4 (iter 8)))
 $ every 16 (const $ s "909*16" # gain saw)
 $ every 4 (bite 16 "{0 5 1}%16")
 $ foldEvery [12,8,14] ((linger "<0.75 0.25 0.5>").(|* speed 0.88))
@@ -238,7 +247,7 @@ $ stack [
 -- slow 2 $ note (arpeggiate $ "<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>")
 -- #s "chBand01" #orbit 3 #octave 4
 -- ,
-ghost $ euclid 8 8 $ slow 2 $ note ("<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>")
+ghost $ euclid 7 8 $ slow 2 $ note (arpeggiate $"<e'maj7 e'sixby9 gs'maj9 [~ fs'min7]>")
 # s "pm04" #orbit 3
 # gain 0.8
 ]
@@ -272,9 +281,11 @@ unmute 4
 
 unmute 1
 
+hush
 
 let melody =
-      off 0.25 (slow 8 . (+ (-6)) )
+      whenmod 32 8 ((|+ "<4 0 -4>").soak 4 ((flip mod 14).(slow "2 1").(+ 4)))
+      $ off 0.25 (slow 8 . (+ (-6)) )
       $ off 0.125 (slow 4.rev.(+2))
       $ fast 2
       $ cat [
@@ -289,19 +300,20 @@ do {
   ;
   once $ midicmd "start" # s "midi"
   ;
-  bpm (133*2)
+  setbpm (133*2)
   ;
   d1
     -- $ every 8 ( scramble 4 . rarely (chop 16) . (0.25 <~) )
-    $ chop 32
+    -- $ chop 32
     $ every 4 (chunk 4 (iter 8))
+    -- $ whenmod 24 4 ( inside 2 (whenmod 74 5 (chunk 4 (iter 8))))
     $ foldEvery [2,3] (0.25 ~>)
     $ chunk 4 (slow 2 . sometimes (rev) . sometimes ( (0.25 <~)))
     $ foldEvery [7, 12] (slow 3) $ superimpose (const $ sound "909:6*2")
-    -- $ (#nudge "[0.001 0.01]*4")
+    $ (#nudge "[0.001 0.01]*4")
     $ foldEvery [2,3,11,7] (often (0.125 <~))
     $ iter 8
-    $ n ("0*16") #s "[future, midi]" #midichan 0 # gain 1
+    $ n (run 8) #s "[future, midi]" #midichan 0 # gain 1
     # orbit 0 #shape 0.8 #coarse 1 #speed (range 1.1 0.8 $ rand)
   ;
   d2
@@ -317,13 +329,14 @@ do {
   ;
   d3
     $ slow 8
+    -- $ whenmod 32 16 (const silence)
     $ off 0 (|+ note 12)
     $ note ((scale "hexMajor7" (
       melody
       )) |+ 12)
     #s "[pe-gtr:5,midi]"
     # gain 1.2 #orbit 2
-    # midichan 1 #octer (range 0.5 0.9 $ slow 9  $saw) #room 0.4 #phasr 1 #size (range 0.9 1 $ saw)
+    # midichan 1 #octer (range 0.5 0.9 $ slow 9  $ saw) #room 0.4 #phasr 1 #size (range 0.9 1 $ saw)
   ;
   d4
   $ off 0 ((#s "pm04") .(# gain 0.6))
@@ -434,6 +447,7 @@ d1
 -- $ foldmod [1,3] 5 4 (outside 3 (iter 4.palindrome))
 -- $ iter 8
 -- $ chunk 8 (iter 4)
+$ whenmod 56 24 (inside 2 ( whenmod 7 5 (chunk 4 (iter 8))))
 $ stack [
   ghost
   $ cat [
@@ -524,15 +538,19 @@ xfade 4 $ silence
 
 solo 5
 
+
+:t timeLoop
+
 --exochord
 
 do {
     p "clock" $ fast 2 $ midicmd "midiClock*48" #s "midi";
     once $ midicmd "start" #s "midi";
-    bpm 135;
+    setbpm 135;
     d1
-    $ (#lpf 1000)
-    $ chunk 4 (iter 8)
+    -- $ (#lpf 1000)
+    -- $ inside 2 ( chunk 4 (iter 8))
+    $ whenmod 24 16 (inside 2 (whenmod 56 24 (chunk 4 (iter 8))))
     $ stack [
       sometimes ghost $ sound "[opDrm02,midi](<[3 7] 3> , 16, <0 [0 2] [1 0] [5 7]>)" # n "<[8 < 7 5> 8 8] 4>" #midichan 5 #octave 3 #legato "<[8 3 4] [6 3] [3 5]>"
       ,
@@ -544,6 +562,7 @@ do {
         modulate m = (soak 4 ((|- (scale "augmented" (slow 3 $ run 4))) . every 2 (invert)) ) $ m
     in
     d2
+    -- $ inside 2 (chunk 4 (iter 8))
     $ stack [
       cat [
         (s "[modal02,midi]") # legato 1 #attack 0.001 #release 0.99 # delay 0.44 #delayfb 0.333 # delaytime 0.333 #gain 0.9 #room 1 #orbit 2 |+ s "midi" #midichan 0
@@ -567,6 +586,14 @@ do {
     ];
 }
 
+
+-- let invert n =  ((|+ 12). (|* (-1)) ) $ n
+--     wrap n = (|% 12) n
+--     melody = "[[0 -12], <2 2>, <7 11>, <9 4>] ~"
+--     modulate m = (soak 4 ((|- (scale "augmented" (slow 3 $ run 4))) . every 2 (invert)) ) $ m
+-- in
+-- d2 $ stut 3 0.5 0.5 $ note ((modulate (melody+(mono $ fast 2 $ inside 2 (chunk 4 (iter 8))melody)))) # s "modal02"
+
 solo 1
 
 -- ambient rhodes 1
@@ -574,18 +601,19 @@ hush
 
 
 do {
-    setcps(98/60/2);
+    hush;
+    setbpm (98);
     once $ midicmd "start" #s "midi"
     ;
     p "clock" $ midicmd "midiClock*48" #s "midi"
     ;
     d3
-    $ slow 8
+    $ slow 4--8
     -- $ every 4 (rot "0.25 0.5 0.25")
     $ note (scale "hexPhrygian" "4 . 0 2 . 2 3 5 . [0 ~*3[ ~*6 1 0]]"+24)
     #s "rhodes:5" #gain 1 # legato "3.5" # orbit 2;
     d2
-    $ slow 8
+    $ slow 4--8
     $ (# nudge rand)
     $ note ((scale "hexPhrygian"
       $ every 8 (rot "1 2". (+ 3))
@@ -603,19 +631,26 @@ do {
     # room 1
     # size (fast 8 $saw);
     d4
-    $ slow 8
+    $ slow 4--8
     $ every 4 (rot "4 3 1")
     $ note ((scale "hexPhrygian"
       $ every 8 (rot "1 2". (+ 3))
       $ "~ [0 3 6 9] . [-6 2 6 9]" - ( every 4  (("0.25 0.5 0" ~>)) $ ("0.25 0.5" ~>) "4 . 0 2 . 2 3 4 . [0 ~*3[ ~*6 1 0]]"+ 2))+12)
     #s "rhodes:7" #gain 1 # legato "3.5" # orbit 4;
-    d5 $ note ((scale "hexPhrygian" $ slow 3 $ "-3 0 2 5")+24-5) #s "pe-gtr:9" #orbit 5 #pF "brightness" 0.33 #pF "harmonic" 0.5;
-    d1 $ slow 2 $ stack [
-      sound "{~ subCym01:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.7 ~] [[~ 0.8] 0.8]}%2" #legato 6 #orbit 1,
+    d5
+    $ fast 2
+    $ note ((scale "hexPhrygian" $ slow 3 $ "-3 0 2 5")+24-5) #s "pe-gtr:9" #orbit 5 #pF "brightness" 0.33 #pF "harmonic" 0.5;
+    d1
+    -- $ slow 2
+    $ stack [
+      sound "{~ subCym01:2(<5 6 4 3 2 1>,7)}%3" #gain "{[~ ~ 0.7 ~] [[~ 0.8] 0.8]}%2" #legato (range 6 8 $ saw) #orbit 1,
       sound "~ fmSnare01" # nudge "0 <0.01 0.025>",
       sound "opDrm02 ~" # nudge "0 <0.01 0.025>" #octave 3 #pF "brightness" 0.8 #lpf 1200
-    ]
+    ];
+    d6 $ note(scale "hexPhrygian" $ 0) #s "gabor" #orbit 3 #gain 0.7 #room 0.6 ;
 }
+
+hush
 
 d5 $ every 2 (const silence) $ note ((scale "hexPhrygian" $ (|+ snowball 4  (overlay) (slow 3.fast 2. (+ "-5")) "0(<2 3 5>,8,<0 2 3 5>) ") $ slow 3 $ "-3 0 2 5" )+24-5) #s "pe-gtr:9" #orbit 5
 

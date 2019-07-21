@@ -70,14 +70,17 @@ let d15 = p 15
 let d16 = p 16
 
 
-bpm a = setcps (a/60/4)
+setbpm a = setcps (a/60/4)
 -- e = euclidFull
+
+bpm a = cps (a/60/4)
 
 -- snowball :: (Pattern a -> Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Int -> Pattern a -> Pattern a
 -- snowball depth combinationFunction f pattern = cat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
 
 fastsnowball depth combinationFunction f pattern = fastcat $ take depth $ scanl combinationFunction pattern $ iterate f pattern
 
+cycleChooseBy = segment 1 . cycleChooseBy
 
 -- soak :: Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
 -- soak depth f pattern = cat $ take depth $ iterate f pattern

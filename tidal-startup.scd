@@ -37,7 +37,7 @@ s.waitForBoot {
 	s.sync; // wait for samples to be read
 	~dirt.start(57120, [0, 2, 4, 6, 8, 10, 12]);   // start listening on port 57120, create two busses each sending audio to channel 0
 
-	s.latency = 2; // increase this if you get "late" messages
+	s.latency = 1.5; // increase this if you get "late" messages
 
 	// version 0.2
 
@@ -50,6 +50,12 @@ s.waitForBoot {
 	~midiOutput = MIDIOut.newByName("Virtual Raw MIDI 2-0","VirMIDI 2-0");
 	~dirt.soundLibrary.addMIDI(\midi, ~midiOutput);
 	~midiOutput.latency = 0.01;
+
+
+
+	//~midiHardwareOut = MIDIOut.newByName("USB Device 0x1935:0x01", "USB Device 0x1935:0x01 MIDI 1");
+	//~dirt.soundLibrary.addMIDI(\midi_tm1, ~midiHardwareOut);
+	//~midiHardwareOut.latency = 0.01;
 
 	 // you may want to adjust the latency here
 	// ~midiOut.latency = 0.1;

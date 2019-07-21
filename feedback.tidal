@@ -1,0 +1,122 @@
+hush
+
+import qualified Sound.Tidal.Tempo as T
+
+import qualified Sound.OSC.FD as O
+
+import Control.Concurrent.MVar
+
+import Control.Concurrent
+
+onTick :: MVar (Pattern (IO b)) -> MVar T.Tempo -> T.State -> IO ()
+onTick pMV tempoMV st = do tempo <- readMVar tempoMV
+                           p <- readMVar pMV
+                           now <- O.time
+                           let es = filter eventHasOnset $ queryArc p (T.nowArc st)
+                               on e = (sched tempo $ start $ whole e)
+                           mapM_ (\e -> do threadDelay (floor $ (on e - now) * 1000000)
+                                           value e
+                                 ) es
+                           return ()
+
+                             :t patternIO
+
+patternIO :: IO (Pattern (IO ()) -> IO ())
+patternIO = do pMV <- newMVar empty
+               (tempoMV, _) <- T.clocked defaultConfig (onTick pMV)
+               return $ \x -> do swapMVar pMV x
+                                 return ()
+
+
+p1 <- patternIO
+
+
+let setI = streamSetI tidal
+    setF = streamSetF tidal
+    setS = streamSetS tidal
+    setR = streamSetI tidal
+    setB = streamSetB tidal
+    wave = cF 0.5 "wave"
+    setWave = setF "wave"
+    myChoose = chooseBy wave
+    myCycleChoose = segment 1 . chooseBy wave
+    myWChoose = wchooseBy wave
+--
+-- :t cF
+--
+-- :t streamSetF tidal
+in
+do {
+  -- setWave ((cos $ ((1/16)*pi*cos((fast 6 $ saw)))+2*pi*saw+pi/16 ))
+  -- p1 $ euclid 8 8 $ pure $ setWave ((cos $ ((1/16)*pi*wave)+2*pi*saw+pi/16 ))
+  setWave (slow ((segment 1)$(chooseBy wave [1,2,32,8])) (cos $ ((1/16)*pi*cos(fast 6 $ wave))+2*pi*saw+pi/16 ))
+  ;
+  d6 $ s "midi*128" #midichan 0 #ccv (range 0 127 $ slow 4 $ wave) # ccn 1;
+  d7 $ note ("0") #octave 3 # s "midi" #midichan 0;
+  d1
+  $ degradeBy (range 1 0 $ wave)
+  $ ((((irand 8)/8)*cycleChoose [0,0,3,1]) ~>)
+  $ s "EFM*16"
+  # gain (range 0.7 1 $ wave)
+  # release (range 2 0.1 $ wave*wave)
+  # octer (range 0 1 $ wave)
+  # speed (range 1 0 $ wave)
+  ;
+  d2
+  $ slow (choose [1,2,3])
+  $ degradeBy (range 0 1 $ wave)
+  $ s "EFM:3*16"
+  # gain (range 0.6 1 $ wave)
+  # release (range 0.3 1 $ 1-wave)
+  # leslie (range 0 1 $ wave)
+  # delay (range 0.6 0 $ wave)
+  # lock 1
+  # delaytime (3/16)
+  # delayfeedback 0.6
+  #orbit 1
+  ;
+  d3
+  $ sometimesBy (range 0.1 1$fast 3 $ wave) ghost
+  $ fast (cycleChoose [1,1,1,2])
+  $ ((((irand 8)/8)*cycleChoose [0,0,3,1]) ~>)
+  $ s "sd:7"
+  # gain 0.8
+  # octer 0.2
+  # speed (range 1 0.75 $ slow 4 $ wave)
+  # room (range 0 0.3 $ wave)
+  # orbit 2
+  ;
+  d4
+  $ slow 4
+  $ s "[chBand01,super808]"
+  # note (scale "minor"$ chooseBy (range 0 1 $ wave) [4,2,6,3,7])
+  # octave "[3]"
+  -- # note (chooseBy (range 0 1 $ wave) [0,2,4,7,11,9,5])
+  # pF "brightness" (range 1 5 $ wave*rand)
+  -- # pF "feedback" (range 10 1 $ wave)
+  # delay 0.7
+  # delaytime 0.5
+  # delayfeedback 0.7
+  # leslie (range 0 1 $ wave)
+  # room 1
+  # phasr 0.3
+  # octer (range 1 0 $ wave)
+  # gain 0.6
+  # orbit 3
+  -- ;
+  -- d5
+  -- $ whenmod 56 16 (const silence)
+  -- $ fast (chooseBy wave [1,2,0.5])
+  -- $ s "fm02*8"
+  -- #legato 2
+  -- #gain (range 0.6 0.3 $ slow 2 $ wave)
+  -- #release (range 4 0.3 $ wave)
+  -- #note (
+  --   scale "minor"$((flip mod 14).(* 2))$
+  --   fast 8$
+  --   chooseBy (range 0 1$wave+(slow 2 wave)) [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+  --   )
+  -- #orbit 4;
+}
+
+hush

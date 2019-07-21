@@ -1,0 +1,562 @@
+
+
+-- d1 $ s "<bd [bd@2 bd@7 ~@4 bd@4]> sn"
+
+hush
+
+
+
+let baseChannel = 9
+    machinedrum = s "midi" #midichan baseChannel
+    mdNote p = midinote (mdScale $ p) #machinedrum
+    bdlevel v = ccv v  # ccn 8   #midichan baseChannel
+    sdlevel v = ccv v  # ccn 9   #midichan baseChannel
+    htlevel v = ccv v  # ccn 10  #midichan baseChannel
+    mtlevel v = ccv v  # ccn 11  #midichan baseChannel
+    bdmute v = ccv v   # ccn 12  #midichan baseChannel
+    sdmute v = ccv v   # ccn 13  #midichan baseChannel
+    htmute v = ccv v   # ccn 14  #midichan baseChannel
+    mtmute v = ccv v   # ccn 15  #midichan baseChannel
+    bdparam1 v = ccv v # ccn 16  #midichan baseChannel
+    bdparam2 v = ccv v # ccn 17  #midichan baseChannel
+    bdparam3 v = ccv v # ccn 18  #midichan baseChannel
+    bdparam4 v = ccv v # ccn 19  #midichan baseChannel
+    bdparam5 v = ccv v # ccn 20  #midichan baseChannel
+    bdparam6 v = ccv v # ccn 21  #midichan baseChannel
+    bdparam7 v = ccv v # ccn 22  #midichan baseChannel
+    bdparam8 v = ccv v # ccn 23  #midichan baseChannel
+    bdamd v = ccv v    # ccn 24  #midichan baseChannel
+    bdamf v = ccv v    # ccn 25  #midichan baseChannel
+    bdeqf v = ccv v    # ccn 26  #midichan baseChannel
+    bdeqq v = ccv v    # ccn 27  #midichan baseChannel
+    bdfltf v = ccv v   # ccn 28  #midichan baseChannel
+    bdfltw v = ccv v   # ccn 29  #midichan baseChannel
+    bdfltq v = ccv v   # ccn 30  #midichan baseChannel
+    bdssr v = ccv v    # ccn 31  #midichan baseChannel
+    bddist v = ccv v   # ccn 32  #midichan baseChannel
+    bdvol v = ccv v    # ccn 33  #midichan baseChannel
+    bdpan v = ccv v    # ccn 34  #midichan baseChannel
+    bddel v = ccv v    # ccn 35  #midichan baseChannel
+    bdrev v = ccv v    # ccn 36  #midichan baseChannel
+    bdlfos v = ccv v   # ccn 37  #midichan baseChannel
+    bdlfod v = ccv v   # ccn 38  #midichan baseChannel
+    bdlfom v = ccv v   # ccn 39  #midichan baseChannel
+    bdpitch = bdparam1
+    bddecay = bdparam2
+    sdparam1 v = ccv v # ccn 40  #midichan baseChannel
+    sdparam2 v = ccv v # ccn 41  #midichan baseChannel
+    sdparam3 v = ccv v # ccn 42  #midichan baseChannel
+    sdparam4 v = ccv v # ccn 43  #midichan baseChannel
+    sdparam5 v = ccv v # ccn 44  #midichan baseChannel
+    sdparam6 v = ccv v # ccn 45  #midichan baseChannel
+    sdparam7 v = ccv v # ccn 46  #midichan baseChannel
+    sdparam8 v = ccv v # ccn 47  #midichan baseChannel
+    sdamd v = ccv v    # ccn 48  #midichan baseChannel
+    sdamf v = ccv v    # ccn 49  #midichan baseChannel
+    sdeqf v = ccv v    # ccn 50  #midichan baseChannel
+    sdeqq v = ccv v    # ccn 51  #midichan baseChannel
+    sdfltf v = ccv v   # ccn 52  #midichan baseChannel
+    sdfltw v = ccv v   # ccn 53  #midichan baseChannel
+    sdfltq v = ccv v   # ccn 54  #midichan baseChannel
+    sdssr v = ccv v    # ccn 55  #midichan baseChannel
+    sddist v = ccv v   # ccn 56  #midichan baseChannel
+    sdvol v = ccv v    # ccn 57  #midichan baseChannel
+    sdpan v = ccv v    # ccn 58  #midichan baseChannel
+    sddel v = ccv v    # ccn 59  #midichan baseChannel
+    sdrev v = ccv v    # ccn 60  #midichan baseChannel
+    sdlfos v = ccv v   # ccn 61  #midichan baseChannel
+    sdlfod v = ccv v   # ccn 62  #midichan baseChannel
+    sdlfom v = ccv v   # ccn 63  #midichan baseChannel
+    sdpitch = sdparam1
+    sddecay = sdparam2
+    htparam1 v = ccv v # ccn 72  #midichan baseChannel
+    htparam2 v = ccv v # ccn 73  #midichan baseChannel
+    htparam3 v = ccv v # ccn 74  #midichan baseChannel
+    htparam4 v = ccv v # ccn 75  #midichan baseChannel
+    htparam5 v = ccv v # ccn 76  #midichan baseChannel
+    htparam6 v = ccv v # ccn 77  #midichan baseChannel
+    htparam7 v = ccv v # ccn 78  #midichan baseChannel
+    htparam8 v = ccv v # ccn 79  #midichan baseChannel
+    htamd v = ccv v    # ccn 80  #midichan baseChannel
+    htamf v = ccv v    # ccn 81  #midichan baseChannel
+    hteqf v = ccv v    # ccn 82  #midichan baseChannel
+    hteqq v = ccv v    # ccn 83  #midichan baseChannel
+    htfltf v = ccv v   # ccn 84  #midichan baseChannel
+    htfltw v = ccv v   # ccn 85  #midichan baseChannel
+    htfltq v = ccv v   # ccn 86  #midichan baseChannel
+    htssr v = ccv v    # ccn 87  #midichan baseChannel
+    htdist v = ccv v   # ccn 88  #midichan baseChannel
+    htvol v = ccv v    # ccn 89  #midichan baseChannel
+    htpan v = ccv v    # ccn 90  #midichan baseChannel
+    htdel v = ccv v    # ccn 91  #midichan baseChannel
+    htrev v = ccv v    # ccn 92  #midichan baseChannel
+    htlfos v = ccv v   # ccn 93  #midichan baseChannel
+    htlfod v = ccv v   # ccn 94  #midichan baseChannel
+    htlfom v = ccv v   # ccn 95  #midichan baseChannel
+    htpitch = bdparam1
+    htdecay = bdparam2
+    mtparam1 v = ccv v # ccn 96  #midichan baseChannel
+    mtparam2 v = ccv v # ccn 97  #midichan baseChannel
+    mtparam3 v = ccv v # ccn 98  #midichan baseChannel
+    mtparam4 v = ccv v # ccn 99  #midichan baseChannel
+    mtparam5 v = ccv v # ccn 100 #midichan baseChannel
+    mtparam6 v = ccv v # ccn 101 #midichan baseChannel
+    mtparam7 v = ccv v # ccn 102 #midichan baseChannel
+    mtparam8 v = ccv v # ccn 103 #midichan baseChannel
+    mtamd v = ccv v    # ccn 104 #midichan baseChannel
+    mtamf v = ccv v    # ccn 105 #midichan baseChannel
+    mteqf v = ccv v    # ccn 106 #midichan baseChannel
+    mteqq v = ccv v    # ccn 107 #midichan baseChannel
+    mtfltf v = ccv v   # ccn 108 #midichan baseChannel
+    mtfltw v = ccv v   # ccn 109 #midichan baseChannel
+    mtfltq v = ccv v   # ccn 110 #midichan baseChannel
+    mtssr v = ccv v    # ccn 111 #midichan baseChannel
+    mtdist v = ccv v   # ccn 112 #midichan baseChannel
+    mtvol v = ccv v    # ccn 113 #midichan baseChannel
+    mtpan v = ccv v    # ccn 114 #midichan baseChannel
+    mtdel v = ccv v    # ccn 115 #midichan baseChannel
+    mtrev v = ccv v    # ccn 116 #midichan baseChannel
+    mtlfos v = ccv v   # ccn 117 #midichan baseChannel
+    mtlfod v = ccv v   # ccn 118 #midichan baseChannel
+    mtlfom v = ccv v   # ccn 119 #midichan baseChannel
+    mtpitch = bdparam1
+    mtdecay = bdparam2
+    -----------------------------------------
+    ltlevel v = ccv v  # ccn 8   #midichan (baseChannel + 1)
+    cplevel v = ccv v  # ccn 9   #midichan (baseChannel + 1)
+    rslevel v = ccv v  # ccn 10  #midichan (baseChannel + 1)
+    cblevel v = ccv v  # ccn 11  #midichan (baseChannel + 1)
+    ltmute v = ccv v   # ccn 12  #midichan (baseChannel + 1)
+    cpmute v = ccv v   # ccn 13  #midichan (baseChannel + 1)
+    rsmute v = ccv v   # ccn 14  #midichan (baseChannel + 1)
+    cbmute v = ccv v   # ccn 15  #midichan (baseChannel + 1)
+    ltparam1 v = ccv v # ccn 16  #midichan (baseChannel + 1)
+    ltparam2 v = ccv v # ccn 17  #midichan (baseChannel + 1)
+    ltparam3 v = ccv v # ccn 18  #midichan (baseChannel + 1)
+    ltparam4 v = ccv v # ccn 19  #midichan (baseChannel + 1)
+    ltparam5 v = ccv v # ccn 20  #midichan (baseChannel + 1)
+    ltparam6 v = ccv v # ccn 21  #midichan (baseChannel + 1)
+    ltparam7 v = ccv v # ccn 22  #midichan (baseChannel + 1)
+    ltparam8 v = ccv v # ccn 23  #midichan (baseChannel + 1)
+    ltamd v = ccv v    # ccn 24  #midichan (baseChannel + 1)
+    ltamf v = ccv v    # ccn 25  #midichan (baseChannel + 1)
+    lteqf v = ccv v    # ccn 26  #midichan (baseChannel + 1)
+    lteqq v = ccv v    # ccn 27  #midichan (baseChannel + 1)
+    ltfltf v = ccv v   # ccn 28  #midichan (baseChannel + 1)
+    ltfltw v = ccv v   # ccn 29  #midichan (baseChannel + 1)
+    ltfltq v = ccv v   # ccn 30  #midichan (baseChannel + 1)
+    ltssr v = ccv v    # ccn 31  #midichan (baseChannel + 1)
+    ltdist v = ccv v   # ccn 32  #midichan (baseChannel + 1)
+    ltvol v = ccv v    # ccn 33  #midichan (baseChannel + 1)
+    ltpan v = ccv v    # ccn 34  #midichan (baseChannel + 1)
+    ltdel v = ccv v    # ccn 35  #midichan (baseChannel + 1)
+    ltrev v = ccv v    # ccn 36  #midichan (baseChannel + 1)
+    ltlfos v = ccv v   # ccn 37  #midichan (baseChannel + 1)
+    ltlfod v = ccv v   # ccn 38  #midichan (baseChannel + 1)
+    ltlfom v = ccv v   # ccn 39  #midichan (baseChannel + 1)
+    cpparam1 v = ccv v # ccn 40  #midichan (baseChannel + 1)
+    cpparam2 v = ccv v # ccn 41  #midichan (baseChannel + 1)
+    cpparam3 v = ccv v # ccn 42  #midichan (baseChannel + 1)
+    cpparam4 v = ccv v # ccn 43  #midichan (baseChannel + 1)
+    cpparam5 v = ccv v # ccn 44  #midichan (baseChannel + 1)
+    cpparam6 v = ccv v # ccn 45  #midichan (baseChannel + 1)
+    cpparam7 v = ccv v # ccn 46  #midichan (baseChannel + 1)
+    cpparam8 v = ccv v # ccn 47  #midichan (baseChannel + 1)
+    cpamd v = ccv v    # ccn 48  #midichan (baseChannel + 1)
+    cpamf v = ccv v    # ccn 49  #midichan (baseChannel + 1)
+    cpeqf v = ccv v    # ccn 50  #midichan (baseChannel + 1)
+    cpeqq v = ccv v    # ccn 51  #midichan (baseChannel + 1)
+    cpfltf v = ccv v   # ccn 52  #midichan (baseChannel + 1)
+    cpfltw v = ccv v   # ccn 53  #midichan (baseChannel + 1)
+    cpfltq v = ccv v   # ccn 54  #midichan (baseChannel + 1)
+    cpssr v = ccv v    # ccn 55  #midichan (baseChannel + 1)
+    cpdist v = ccv v   # ccn 56  #midichan (baseChannel + 1)
+    cpvol v = ccv v    # ccn 57  #midichan (baseChannel + 1)
+    cppan v = ccv v    # ccn 58  #midichan (baseChannel + 1)
+    cpdel v = ccv v    # ccn 59  #midichan (baseChannel + 1)
+    cprev v = ccv v    # ccn 60  #midichan (baseChannel + 1)
+    cplfos v = ccv v   # ccn 61  #midichan (baseChannel + 1)
+    cplfod v = ccv v   # ccn 62  #midichan (baseChannel + 1)
+    cplfom v = ccv v   # ccn 63  #midichan (baseChannel + 1)
+    rsparam1 v = ccv v # ccn 72  #midichan (baseChannel + 1)
+    rsparam2 v = ccv v # ccn 73  #midichan (baseChannel + 1)
+    rsparam3 v = ccv v # ccn 74  #midichan (baseChannel + 1)
+    rsparam4 v = ccv v # ccn 75  #midichan (baseChannel + 1)
+    rsparam5 v = ccv v # ccn 76  #midichan (baseChannel + 1)
+    rsparam6 v = ccv v # ccn 77  #midichan (baseChannel + 1)
+    rsparam7 v = ccv v # ccn 78  #midichan (baseChannel + 1)
+    rsparam8 v = ccv v # ccn 79  #midichan (baseChannel + 1)
+    rsamd v = ccv v    # ccn 80  #midichan (baseChannel + 1)
+    rsamf v = ccv v    # ccn 81  #midichan (baseChannel + 1)
+    rseqf v = ccv v    # ccn 82  #midichan (baseChannel + 1)
+    rseqq v = ccv v    # ccn 83  #midichan (baseChannel + 1)
+    rsfltf v = ccv v   # ccn 84  #midichan (baseChannel + 1)
+    rsfltw v = ccv v   # ccn 85  #midichan (baseChannel + 1)
+    rsfltq v = ccv v   # ccn 86  #midichan (baseChannel + 1)
+    rsssr v = ccv v    # ccn 87  #midichan (baseChannel + 1)
+    rsdist v = ccv v   # ccn 88  #midichan (baseChannel + 1)
+    rsvol v = ccv v    # ccn 89  #midichan (baseChannel + 1)
+    rspan v = ccv v    # ccn 90  #midichan (baseChannel + 1)
+    rsdel v = ccv v    # ccn 91  #midichan (baseChannel + 1)
+    rsrev v = ccv v    # ccn 92  #midichan (baseChannel + 1)
+    rslfos v = ccv v   # ccn 93  #midichan (baseChannel + 1)
+    rslfod v = ccv v   # ccn 94  #midichan (baseChannel + 1)
+    rslfom v = ccv v   # ccn 95  #midichan (baseChannel + 1)
+    cbparam1 v = ccv v # ccn 96  #midichan (baseChannel + 1)
+    cbparam2 v = ccv v # ccn 97  #midichan (baseChannel + 1)
+    cbparam3 v = ccv v # ccn 98  #midichan (baseChannel + 1)
+    cbparam4 v = ccv v # ccn 99  #midichan (baseChannel + 1)
+    cbparam5 v = ccv v # ccn 100 #midichan (baseChannel + 1)
+    cbparam6 v = ccv v # ccn 101 #midichan (baseChannel + 1)
+    cbparam7 v = ccv v # ccn 102 #midichan (baseChannel + 1)
+    cbparam8 v = ccv v # ccn 103 #midichan (baseChannel + 1)
+    cbamd v = ccv v    # ccn 104 #midichan (baseChannel + 1)
+    cbamf v = ccv v    # ccn 105 #midichan (baseChannel + 1)
+    cbeqf v = ccv v    # ccn 106 #midichan (baseChannel + 1)
+    cbeqq v = ccv v    # ccn 107 #midichan (baseChannel + 1)
+    cbfltf v = ccv v   # ccn 108 #midichan (baseChannel + 1)
+    cbfltw v = ccv v   # ccn 109 #midichan (baseChannel + 1)
+    cbfltq v = ccv v   # ccn 110 #midichan (baseChannel + 1)
+    cbssr v = ccv v    # ccn 111 #midichan (baseChannel + 1)
+    cbdist v = ccv v   # ccn 112 #midichan (baseChannel + 1)
+    cbvol v = ccv v    # ccn 113 #midichan (baseChannel + 1)
+    cbpan v = ccv v    # ccn 114 #midichan (baseChannel + 1)
+    cbdel v = ccv v    # ccn 115 #midichan (baseChannel + 1)
+    cbrev v = ccv v    # ccn 116 #midichan (baseChannel + 1)
+    cblfos v = ccv v   # ccn 117 #midichan (baseChannel + 1)
+    cblfod v = ccv v   # ccn 118 #midichan (baseChannel + 1)
+    cblfom v = ccv v   # ccn 119 #midichan (baseChannel + 1)
+    -----------------------------------------
+    chlevel v = ccv v  # ccn 8   #midichan (baseChannel + 2)
+    ohlevel v = ccv v  # ccn 9   #midichan (baseChannel + 2)
+    rclevel v = ccv v  # ccn 10  #midichan (baseChannel + 2)
+    cclevel v = ccv v  # ccn 11  #midichan (baseChannel + 2)
+    chmute v = ccv v   # ccn 12  #midichan (baseChannel + 2)
+    ohmute v = ccv v   # ccn 13  #midichan (baseChannel + 2)
+    rcmute v = ccv v   # ccn 14  #midichan (baseChannel + 2)
+    ccmute v = ccv v   # ccn 15  #midichan (baseChannel + 2)
+    chparam1 v = ccv v # ccn 16  #midichan (baseChannel + 2)
+    chparam2 v = ccv v # ccn 17  #midichan (baseChannel + 2)
+    chparam3 v = ccv v # ccn 18  #midichan (baseChannel + 2)
+    chparam4 v = ccv v # ccn 19  #midichan (baseChannel + 2)
+    chparam5 v = ccv v # ccn 20  #midichan (baseChannel + 2)
+    chparam6 v = ccv v # ccn 21  #midichan (baseChannel + 2)
+    chparam7 v = ccv v # ccn 22  #midichan (baseChannel + 2)
+    chparam8 v = ccv v # ccn 23  #midichan (baseChannel + 2)
+    chamd v = ccv v    # ccn 24  #midichan (baseChannel + 2)
+    chamf v = ccv v    # ccn 25  #midichan (baseChannel + 2)
+    cheqf v = ccv v    # ccn 26  #midichan (baseChannel + 2)
+    cheqq v = ccv v    # ccn 27  #midichan (baseChannel + 2)
+    chfltf v = ccv v   # ccn 28  #midichan (baseChannel + 2)
+    chfltw v = ccv v   # ccn 29  #midichan (baseChannel + 2)
+    chfltq v = ccv v   # ccn 30  #midichan (baseChannel + 2)
+    chssr v = ccv v    # ccn 31  #midichan (baseChannel + 2)
+    chdist v = ccv v   # ccn 32  #midichan (baseChannel + 2)
+    chvol v = ccv v    # ccn 33  #midichan (baseChannel + 2)
+    chpan v = ccv v    # ccn 34  #midichan (baseChannel + 2)
+    chdel v = ccv v    # ccn 35  #midichan (baseChannel + 2)
+    chrev v = ccv v    # ccn 36  #midichan (baseChannel + 2)
+    chlfos v = ccv v   # ccn 37  #midichan (baseChannel + 2)
+    chlfod v = ccv v   # ccn 38  #midichan (baseChannel + 2)
+    chlfom v = ccv v   # ccn 39  #midichan (baseChannel + 2)
+    ohparam1 v = ccv v # ccn 40  #midichan (baseChannel + 2)
+    ohparam2 v = ccv v # ccn 41  #midichan (baseChannel + 2)
+    ohparam3 v = ccv v # ccn 42  #midichan (baseChannel + 2)
+    ohparam4 v = ccv v # ccn 43  #midichan (baseChannel + 2)
+    ohparam5 v = ccv v # ccn 44  #midichan (baseChannel + 2)
+    ohparam6 v = ccv v # ccn 45  #midichan (baseChannel + 2)
+    ohparam7 v = ccv v # ccn 46  #midichan (baseChannel + 2)
+    ohparam8 v = ccv v # ccn 47  #midichan (baseChannel + 2)
+    ohamd v = ccv v    # ccn 48  #midichan (baseChannel + 2)
+    ohamf v = ccv v    # ccn 49  #midichan (baseChannel + 2)
+    oheqf v = ccv v    # ccn 50  #midichan (baseChannel + 2)
+    oheqq v = ccv v    # ccn 51  #midichan (baseChannel + 2)
+    ohfltf v = ccv v   # ccn 52  #midichan (baseChannel + 2)
+    ohfltw v = ccv v   # ccn 53  #midichan (baseChannel + 2)
+    ohfltq v = ccv v   # ccn 54  #midichan (baseChannel + 2)
+    ohssr v = ccv v    # ccn 55  #midichan (baseChannel + 2)
+    ohdist v = ccv v   # ccn 56  #midichan (baseChannel + 2)
+    ohvol v = ccv v    # ccn 57  #midichan (baseChannel + 2)
+    ohpan v = ccv v    # ccn 58  #midichan (baseChannel + 2)
+    ohdel v = ccv v    # ccn 59  #midichan (baseChannel + 2)
+    ohrev v = ccv v    # ccn 60  #midichan (baseChannel + 2)
+    ohlfos v = ccv v   # ccn 61  #midichan (baseChannel + 2)
+    ohlfod v = ccv v   # ccn 62  #midichan (baseChannel + 2)
+    ohlfom v = ccv v   # ccn 63  #midichan (baseChannel + 2)
+    rcparam1 v = ccv v # ccn 72  #midichan (baseChannel + 2)
+    rcparam2 v = ccv v # ccn 73  #midichan (baseChannel + 2)
+    rcparam3 v = ccv v # ccn 74  #midichan (baseChannel + 2)
+    rcparam4 v = ccv v # ccn 75  #midichan (baseChannel + 2)
+    rcparam5 v = ccv v # ccn 76  #midichan (baseChannel + 2)
+    rcparam6 v = ccv v # ccn 77  #midichan (baseChannel + 2)
+    rcparam7 v = ccv v # ccn 78  #midichan (baseChannel + 2)
+    rcparam8 v = ccv v # ccn 79  #midichan (baseChannel + 2)
+    rcamd v = ccv v    # ccn 80  #midichan (baseChannel + 2)
+    rcamf v = ccv v    # ccn 81  #midichan (baseChannel + 2)
+    rceqf v = ccv v    # ccn 82  #midichan (baseChannel + 2)
+    rceqq v = ccv v    # ccn 83  #midichan (baseChannel + 2)
+    rcfltf v = ccv v   # ccn 84  #midichan (baseChannel + 2)
+    rcfltw v = ccv v   # ccn 85  #midichan (baseChannel + 2)
+    rcfltq v = ccv v   # ccn 86  #midichan (baseChannel + 2)
+    rcssr v = ccv v    # ccn 87  #midichan (baseChannel + 2)
+    rcdist v = ccv v   # ccn 88  #midichan (baseChannel + 2)
+    rcvol v = ccv v    # ccn 89  #midichan (baseChannel + 2)
+    rcpan v = ccv v    # ccn 90  #midichan (baseChannel + 2)
+    rcdel v = ccv v    # ccn 91  #midichan (baseChannel + 2)
+    rcrev v = ccv v    # ccn 92  #midichan (baseChannel + 2)
+    rclfos v = ccv v   # ccn 93  #midichan (baseChannel + 2)
+    rclfod v = ccv v   # ccn 94  #midichan (baseChannel + 2)
+    rclfom v = ccv v   # ccn 95  #midichan (baseChannel + 2)
+    ccparam1 v = ccv v # ccn 96  #midichan (baseChannel + 2)
+    ccparam2 v = ccv v # ccn 97  #midichan (baseChannel + 2)
+    ccparam3 v = ccv v # ccn 98  #midichan (baseChannel + 2)
+    ccparam4 v = ccv v # ccn 99  #midichan (baseChannel + 2)
+    ccparam5 v = ccv v # ccn 100 #midichan (baseChannel + 2)
+    ccparam6 v = ccv v # ccn 101 #midichan (baseChannel + 2)
+    ccparam7 v = ccv v # ccn 102 #midichan (baseChannel + 2)
+    ccparam8 v = ccv v # ccn 103 #midichan (baseChannel + 2)
+    ccamd v = ccv v    # ccn 104 #midichan (baseChannel + 2)
+    ccamf v = ccv v    # ccn 105 #midichan (baseChannel + 2)
+    cceqf v = ccv v    # ccn 106 #midichan (baseChannel + 2)
+    cceqq v = ccv v    # ccn 107 #midichan (baseChannel + 2)
+    ccfltf v = ccv v   # ccn 108 #midichan (baseChannel + 2)
+    ccfltw v = ccv v   # ccn 109 #midichan (baseChannel + 2)
+    ccfltq v = ccv v   # ccn 110 #midichan (baseChannel + 2)
+    ccssr v = ccv v    # ccn 111 #midichan (baseChannel + 2)
+    ccdist v = ccv v   # ccn 112 #midichan (baseChannel + 2)
+    ccvol v = ccv v    # ccn 113 #midichan (baseChannel + 2)
+    ccpan v = ccv v    # ccn 114 #midichan (baseChannel + 2)
+    ccdel v = ccv v    # ccn 115 #midichan (baseChannel + 2)
+    ccrev v = ccv v    # ccn 116 #midichan (baseChannel + 2)
+    cclfos v = ccv v   # ccn 117 #midichan (baseChannel + 2)
+    cclfod v = ccv v   # ccn 118 #midichan (baseChannel + 2)
+    cclfom v = ccv v   # ccn 119 #midichan (baseChannel + 2)
+    ---------------------------------------(baseChannel + 2)
+    m1level v = ccv v  # ccn 8   #midichan (baseChannel + 3)
+    m2level v = ccv v  # ccn 9   #midichan (baseChannel + 3)
+    m3level v = ccv v  # ccn 10  #midichan (baseChannel + 3)
+    m4level v = ccv v  # ccn 11  #midichan (baseChannel + 3)
+    m1mute v = ccv v   # ccn 12  #midichan (baseChannel + 3)
+    m2mute v = ccv v   # ccn 13  #midichan (baseChannel + 3)
+    m3mute v = ccv v   # ccn 14  #midichan (baseChannel + 3)
+    m4mute v = ccv v   # ccn 15  #midichan (baseChannel + 3)
+    m1param1 v = ccv v # ccn 16  #midichan (baseChannel + 3)
+    m1param2 v = ccv v # ccn 17  #midichan (baseChannel + 3)
+    m1param3 v = ccv v # ccn 18  #midichan (baseChannel + 3)
+    m1param4 v = ccv v # ccn 19  #midichan (baseChannel + 3)
+    m1param5 v = ccv v # ccn 20  #midichan (baseChannel + 3)
+    m1param6 v = ccv v # ccn 21  #midichan (baseChannel + 3)
+    m1param7 v = ccv v # ccn 22  #midichan (baseChannel + 3)
+    m1param8 v = ccv v # ccn 23  #midichan (baseChannel + 3)
+    m1amd v = ccv v    # ccn 24  #midichan (baseChannel + 3)
+    m1amf v = ccv v    # ccn 25  #midichan (baseChannel + 3)
+    m1eqf v = ccv v    # ccn 26  #midichan (baseChannel + 3)
+    m1eqq v = ccv v    # ccn 27  #midichan (baseChannel + 3)
+    m1fltf v = ccv v   # ccn 28  #midichan (baseChannel + 3)
+    m1fltw v = ccv v   # ccn 29  #midichan (baseChannel + 3)
+    m1fltq v = ccv v   # ccn 30  #midichan (baseChannel + 3)
+    m1ssr v = ccv v    # ccn 31  #midichan (baseChannel + 3)
+    m1dist v = ccv v   # ccn 32  #midichan (baseChannel + 3)
+    m1vol v = ccv v    # ccn 33  #midichan (baseChannel + 3)
+    m1pan v = ccv v    # ccn 34  #midichan (baseChannel + 3)
+    m1del v = ccv v    # ccn 35  #midichan (baseChannel + 3)
+    m1rev v = ccv v    # ccn 36  #midichan (baseChannel + 3)
+    m1lfos v = ccv v   # ccn 37  #midichan (baseChannel + 3)
+    m1lfod v = ccv v   # ccn 38  #midichan (baseChannel + 3)
+    m1lfom v = ccv v   # ccn 39  #midichan (baseChannel + 3)
+    m2param1 v = ccv v # ccn 40  #midichan (baseChannel + 3)
+    m2param2 v = ccv v # ccn 41  #midichan (baseChannel + 3)
+    m2param3 v = ccv v # ccn 42  #midichan (baseChannel + 3)
+    m2param4 v = ccv v # ccn 43  #midichan (baseChannel + 3)
+    m2param5 v = ccv v # ccn 44  #midichan (baseChannel + 3)
+    m2param6 v = ccv v # ccn 45  #midichan (baseChannel + 3)
+    m2param7 v = ccv v # ccn 46  #midichan (baseChannel + 3)
+    m2param8 v = ccv v # ccn 47  #midichan (baseChannel + 3)
+    m2amd v = ccv v    # ccn 48  #midichan (baseChannel + 3)
+    m2amf v = ccv v    # ccn 49  #midichan (baseChannel + 3)
+    m2eqf v = ccv v    # ccn 50  #midichan (baseChannel + 3)
+    m2eqq v = ccv v    # ccn 51  #midichan (baseChannel + 3)
+    m2fltf v = ccv v   # ccn 52  #midichan (baseChannel + 3)
+    m2fltw v = ccv v   # ccn 53  #midichan (baseChannel + 3)
+    m2fltq v = ccv v   # ccn 54  #midichan (baseChannel + 3)
+    m2ssr v = ccv v    # ccn 55  #midichan (baseChannel + 3)
+    m2dist v = ccv v   # ccn 56  #midichan (baseChannel + 3)
+    m2vol v = ccv v    # ccn 57  #midichan (baseChannel + 3)
+    m2pan v = ccv v    # ccn 58  #midichan (baseChannel + 3)
+    m2del v = ccv v    # ccn 59  #midichan (baseChannel + 3)
+    m2rev v = ccv v    # ccn 60  #midichan (baseChannel + 3)
+    m2lfos v = ccv v   # ccn 61  #midichan (baseChannel + 3)
+    m2lfod v = ccv v   # ccn 62  #midichan (baseChannel + 3)
+    m2lfom v = ccv v   # ccn 63  #midichan (baseChannel + 3)
+    m3param1 v = ccv v # ccn 72  #midichan (baseChannel + 3)
+    m3param2 v = ccv v # ccn 73  #midichan (baseChannel + 3)
+    m3param3 v = ccv v # ccn 74  #midichan (baseChannel + 3)
+    m3param4 v = ccv v # ccn 75  #midichan (baseChannel + 3)
+    m3param5 v = ccv v # ccn 76  #midichan (baseChannel + 3)
+    m3param6 v = ccv v # ccn 77  #midichan (baseChannel + 3)
+    m3param7 v = ccv v # ccn 78  #midichan (baseChannel + 3)
+    m3param8 v = ccv v # ccn 79  #midichan (baseChannel + 3)
+    m3amd v = ccv v    # ccn 80  #midichan (baseChannel + 3)
+    m3amf v = ccv v    # ccn 81  #midichan (baseChannel + 3)
+    m3eqf v = ccv v    # ccn 82  #midichan (baseChannel + 3)
+    m3eqq v = ccv v    # ccn 83  #midichan (baseChannel + 3)
+    m3fltf v = ccv v   # ccn 84  #midichan (baseChannel + 3)
+    m3fltw v = ccv v   # ccn 85  #midichan (baseChannel + 3)
+    m3fltq v = ccv v   # ccn 86  #midichan (baseChannel + 3)
+    m3ssr v = ccv v    # ccn 87  #midichan (baseChannel + 3)
+    m3dist v = ccv v   # ccn 88  #midichan (baseChannel + 3)
+    m3vol v = ccv v    # ccn 89  #midichan (baseChannel + 3)
+    m3pan v = ccv v    # ccn 90  #midichan (baseChannel + 3)
+    m3del v = ccv v    # ccn 91  #midichan (baseChannel + 3)
+    m3rev v = ccv v    # ccn 92  #midichan (baseChannel + 3)
+    m3lfos v = ccv v   # ccn 93  #midichan (baseChannel + 3)
+    m3lfod v = ccv v   # ccn 94  #midichan (baseChannel + 3)
+    m3lfom v = ccv v   # ccn 95  #midichan (baseChannel + 3)
+    m4param1 v = ccv v # ccn 96  #midichan (baseChannel + 3)
+    m4param2 v = ccv v # ccn 97  #midichan (baseChannel + 3)
+    m4param3 v = ccv v # ccn 98  #midichan (baseChannel + 3)
+    m4param4 v = ccv v # ccn 99  #midichan (baseChannel + 3)
+    m4param5 v = ccv v # ccn 100 #midichan (baseChannel + 3)
+    m4param6 v = ccv v # ccn 101 #midichan (baseChannel + 3)
+    m4param7 v = ccv v # ccn 102 #midichan (baseChannel + 3)
+    m4param8 v = ccv v # ccn 103 #midichan (baseChannel + 3)
+    m4amd v = ccv v    # ccn 104 #midichan (baseChannel + 3)
+    m4amf v = ccv v    # ccn 105 #midichan (baseChannel + 3)
+    m4eqf v = ccv v    # ccn 106 #midichan (baseChannel + 3)
+    m4eqq v = ccv v    # ccn 107 #midichan (baseChannel + 3)
+    m4fltf v = ccv v   # ccn 108 #midichan (baseChannel + 3)
+    m4fltw v = ccv v   # ccn 109 #midichan (baseChannel + 3)
+    m4fltq v = ccv v   # ccn 110 #midichan (baseChannel + 3)
+    m4ssr v = ccv v    # ccn 111 #midichan (baseChannel + 3)
+    m4dist v = ccv v   # ccn 112 #midichan (baseChannel + 3)
+    m4vol v = ccv v    # ccn 113 #midichan (baseChannel + 3)
+    m4pan v = ccv v    # ccn 114 #midichan (baseChannel + 3)
+    m4del v = ccv v    # ccn 115 #midichan (baseChannel + 3)
+    m4rev v = ccv v    # ccn 116 #midichan (baseChannel + 3)
+    m4lfos v = ccv v   # ccn 117 #midichan (baseChannel + 3)
+    m4lfod v = ccv v   # ccn 118 #midichan (baseChannel + 3)
+    m4lfom v = ccv v   # ccn 119 #midichan (baseChannel + 3)
+in
+do {
+  p "clock" $ fast 2 $ midicmd "midiClock*48" #s "midi";
+  once $ midicmd "start" #s "midi";
+  d1
+  -- $ every 4 (sometimes one.rev.slow 3.stut 3 0.125 0.7)
+  -- $ whenmod 56 16 (inside 2 (whenmod 17 3 (chunk 4 (iter 8))))
+  -- $ foldEvery [4,3] (0.25 <~)
+  $ iter 8
+  $ stack [
+    mdNote ("[bd*4,[~@3 sd ~@2 sd@2],ht(3,16,1),mt(2,16,3),lt(1,16,4),cp(<3 5>,16,5),rs(2,16,11),cb(1,16,13),ch(11,16,2),oh(2,16,10),rc(4,8),cc,m1(9,16,2),m2(5,8),m3(13,16),m4]")
+    ,
+    (#sdparam1 (slow 3 $ 127 * saw)) $ fast 64 $ machinedrum,
+    (#sdparam2 (slow 3 $ 127 * sine))$ fast 128 $ machinedrum
+  ];
+
+}
+
+hush
+
+
+-- $ stack [
+--   degradeBy "0 1 0 1" $ midinote ("36(<5,3,<9 0>>,16,<0 5 43>)") #machinedrum #cut 1
+--   ,
+--   degradeBy "1 0 1 0" $ midinote ("[~ 38]*2") #machinedrum
+--   ,
+--   degradeBy "0.5 0.1 0.5 0" $ midinote (38+(slow 3 $run 8)+2*(run 8)) #machinedrum
+--   ]
+
+import Data.Maybe
+
+hush
+
+mdScale :: Num a => Pattern String -> Pattern a
+mdScale p = (\n -> fromMaybe 0 $ lookup n notemap) <$> p
+        where notemap = [
+                          ("bd",36),
+                          ("sd",38),
+                          ("ht",40),
+                          ("mt",41),
+                          ("lt",43),
+                          ("cp",45),
+                          ("rs",47),
+                          ("cb",48),
+                          ("ch",50),
+                          ("oh",52),
+                          ("rc",53),
+                          ("cc",55),
+                          ("m1",57),
+                          ("m2",59),
+                          ("m3",60),
+                          ("m4",62)
+                        ]
+
+
+let monomachine track = s "midi" #midichan (track )
+    mjoyup v track = ccv v     # ccn 1 #midichan track
+    mjoydwn v track = ccv v    # ccn 2 #midichan track
+    mtrackmute v track = ccv v # ccn 3 #midichan track
+    mlevel v track = ccv v     # ccn 7 #midichan track
+    mamppan v track = ccv v    # ccn 10 #midichan track
+    mparam1 v track = ccv v    # ccn 48 #midichan track
+    mparam2 v track = ccv v    # ccn 49 #midichan track
+    mparam3 v track = ccv v    # ccn 50 #midichan track
+    mparam4 v track = ccv v    # ccn 51 #midichan track
+    mparam5 v track = ccv v    # ccn 52 #midichan track
+    mparam6 v track = ccv v    # ccn 53 #midichan track
+    mparam7 v track = ccv v    # ccn 54 #midichan track
+    mparam8 v track = ccv v    # ccn 55 #midichan track
+    matk v track = ccv v       # ccn 56 #midichan track
+    mhld v track = ccv v       # ccn 57 #midichan track
+    mdec v track = ccv v       # ccn 58 #midichan track
+    mrel v track = ccv v       # ccn 59 #midichan track
+    mdist v track = ccv v       # ccn 60 #midichan track
+    mvol v track = ccv v       # ccn 61 #midichan track
+    mpan v track = ccv v       # ccn 62 #midichan track
+    mport v track = ccv v       # ccn 63 #midichan track
+    mfltb v track = ccv v       # ccn 72 #midichan track
+    mfltw v track = ccv v       # ccn 73 #midichan track
+    mhpq v track = ccv v       # ccn 74 #midichan track
+    mlpq v track = ccv v       # ccn 75 #midichan track
+    mfatk v track = ccv v       # ccn 76 #midichan track
+    mfdec v track = ccv v       # ccn 77 #midichan track
+    mbofs v track = ccv v       # ccn 78 #midichan track
+    mwofs v track = ccv v       # ccn 79 #midichan track
+    meqf v track = ccv v       # ccn 80 #midichan track
+    meqg v track = ccv v       # ccn 81 #midichan track
+    mssr v track = ccv v       # ccn 82 #midichan track
+    mdtim v track = ccv v       # ccn 83 #midichan track
+    mdsnd v track = ccv v       # ccn 84 #midichan track
+    mdfb v track = ccv v       # ccn 85 #midichan track
+    mdbas v track = ccv v       # ccn 86 #midichan track
+    mdwid v track = ccv v       # ccn 87 #midichan track
+    mlfo1page v track = ccv v    # ccn 88 #midichan track
+    mlfo1dest v track = ccv v    # ccn 89 #midichan track
+    mlfo1trig v track = ccv v    # ccn 90 #midichan track
+    mlfo1wave v track = ccv v    # ccn 91 #midichan track
+    mlfo1mult v track = ccv v    # ccn 92 #midichan track
+    mlfo1speed v track = ccv v    # ccn 93 #midichan track
+    mlfo1interlace v track = ccv v    # ccn 94 #midichan track
+    mlfo1depth v track = ccv v    # ccn 95 #midichan track
+    ----------------------------------------------------
+    mlfo2page v track = ccv v    # ccn 104 #midichan track
+    mlfo2dest v track = ccv v    # ccn 105 #midichan track
+    mlfo2trig v track = ccv v    # ccn 106 #midichan track
+    mlfo2wave v track = ccv v    # ccn 107 #midichan track
+    mlfo2mult v track = ccv v    # ccn 108 #midichan track
+    mlfo2speed v track = ccv v    # ccn 109 #midichan track
+    mlfo2interlace v track = ccv v    # ccn 110 #midichan track
+    mlfo2depth v track = ccv v    # ccn 111 #midichan track
+    --------------------------------------------------
+    mlfo3page v track = ccv v    # ccn 112 #midichan track
+    mlfo3dest v track = ccv v    # ccn 113 #midichan track
+    mlfo3trig v track = ccv v    # ccn 114 #midichan track
+    mlfo3wave v track = ccv v    # ccn 115 #midichan track
+    mlfo3mult v track = ccv v    # ccn 116 #midichan track
+    mlfo3speed v track = ccv v    # ccn 117 #midichan track
+    mlfo3interlace v track = ccv v    # ccn 118 #midichan track
+    mlfo3depth v track = ccv v    # ccn 119 #midichan track
+    mpanic v track = ccv v      # ccn 120 #midichan track
+in
+d2 $ midinote("[24@<2 3> 36]*4"+ (scale "minor" $ 2*(irand 16))-12) #monomachine 2 #legato "4 1 2"
+
+hush

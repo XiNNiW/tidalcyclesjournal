@@ -2,4 +2,6 @@
 hush
 -- d1 $ every 4 (slow 3 . ghost) $ s "[bd*4,[~ hh]*4]"
 
-d2 $ note (off 0.5 (+ "12")$off 0.25 (+ "7") $ "12 0 . 7 2 9") # s "bass3"
+d2 $ note (off 0.5 (+ "12") $ off 0.25 (+ "7") $ "12 0 . 7 2 9") # s "bass3" #lpf (range 200 4000 $ slow 4 $ sine)
+
+d1 $  jux (hurry 2) $ mono $ s "PI(<3, 5>,12,<0 , 5 2>)" #lpf (range 5000 500 $ isaw)

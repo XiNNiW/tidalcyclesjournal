@@ -69,5 +69,5 @@ SynthDef(\fm02, {
 }).add
 )
 
-// Synth(\opDrm03);
+// Synth(\fm02);
 

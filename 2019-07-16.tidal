@@ -1,0 +1,106 @@
+-- inspired by ben davis
+
+hush
+-- d1
+-- $ hurry (cycleChoose [2,4,3])
+-- $ slow 4
+-- $ s "EFM(<3,4,5>,16,<0 5>)" #cut 2
+
+let setI = streamSetI tidal
+    setF = streamSetF tidal
+    setS = streamSetS tidal
+    setR = streamSetI tidal
+    setB = streamSetB tidal
+    choice = cF 1 "choice"
+    setChoice = setF "choice"
+    myChoose = chooseBy choice
+    myCycleChoose = segment 1 . chooseBy choice
+    myWChoose = wchooseBy choice
+in
+do {
+  setcps 0.58;
+  setChoice (
+    slow 4 $
+    range 0 1 $
+    0.5*sine + 0.5*cos(slow (myChoose [1.5,2,3,0.5]) $
+    sine*choice+0.5*choice*choice)
+    );
+  d1
+  -- $ hurry (cycleChoose [2,4,3])
+  -- $ slow 64
+  $ degradeBy "0 0.4 0.2 0.9 0.4 0.5 0.7 0.95 0 0.3 0.5 0.1 0.9 0.6 0.2 0.7"
+  $ s "EFM*16"
+  # gain ("1 0.8 0.8 1 0.4 0.8 1 0.8 1 1 0.8 0.7 0.8 0.8 1 0.8")
+  #cut 2 # crush 12 #speed 0.7;
+  d2
+  $ fast (wchoose[(1,0.9),(2,0.1),(4,0.1)])
+  $ stack [
+    degradeBy "0.95@8 1 0.95@7" $ s "sn:7*16"
+    #gain (range 0.1 0.7$ rand)
+    #release (range 0.1 0.5 $ slow 8 $ sine)
+    #speed (range 4.0 0.7 $ slow 9 $ sine)
+    #pan rand
+    ,
+    degradeBy 0.95 $ (((cycleChoose [2,4])/16)~>) $ s "cp:3"
+    #speed (range 0.3 3.6 $ rand)
+    #pan rand
+    ,
+    s "~ cp:3" #release 0.2 #speed (range 0.5 0.7 $ slow 8 $ sine)
+    ] # crush 12;
+  d3 $ often (scramble 8) $ randcat [
+    s "sn:8 <cp hh:2 hh:8> <cp hh:3 hh:7> hh:3"
+    ,
+    s "hh:8*3 cp hh:3*3 sn"
+    ,
+    s "hh:8*3 cp cp:2 sn:7"
+    ,
+    s "perc:2*3"
+  ] # cut 1
+  # lpf (range 500 3000 $ slow 1.5 $ sine)
+  # resonance (range 0 0.16 $ rand)
+  # release (range 0.1 0.3 $ rand)
+  # gain 0.95
+  # orbit 1
+  ;
+  d4
+  $ sometimes( hurry (cycleChoose [2,4])) $ slow 64 $ s "modal01*16"
+  # note 0 #octave "[1,2,3]" #legato 8 #release 8
+  # crush 12
+  # cut 1 #shape 0.5 #octer 0.7 #gain 1.2
+  ;
+  d5
+  $ (# up (myChoose [0,2,4,7,11,5,4,9,14]))
+  $ fast "<1 1 1 1 2 4 1 1 1 3>"
+  $ slow 4
+  $ degradeBy 0.3
+  $ every 3 (hurry 2)
+  $ struct "<t*16 t*16 t*16 <t*12 t*16>>"
+  $ s "modal02"
+  # gain (range 0.7 1.1 $ rand)
+  # room 1.2
+  # orbit 3
+  -- # silence
+  ;
+  d6
+  $ slow (cycleChoose [1.5,3,6])
+  $ (((1/8)*(irand 8))~>)
+  $ fast ("<16 8 12 6>"/30)
+  $ s "arpy*30" #up (myChoose [0,2,4,7,0,5,12,9,14])
+  # speed (wchoose [(0.25,0.7),(0.5,0.7),(1,0.8),(2,0.8),(8,0.005)])
+  # crush (range 6 10 $ slow 4 $ sine)
+  -- # silence
+  ;
+  d7 $ slow 2
+  $ stack
+  [
+  s "modal01" #gain 0.89 # up (myChoose [0,12,5,7,9,14])
+  ,
+  s "modal01" #gain 0.7 # up (myChoose [12,9,7,5,2,0,4])
+  ,
+  s "modal01" #gain 0.5 # up (myChoose [9,2,5,0,12,11,7])
+  ] #crush 6 #release 8 #orbit 3;
+}
+
+
+
+hush

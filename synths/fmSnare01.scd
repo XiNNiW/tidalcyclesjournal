@@ -28,7 +28,7 @@ SynthDef(\fmSnare01, {
 		springMod
 	).tanh;
 	env = EnvGen.kr(Env.linen(attack,decay,0.125,1,'lin'),gate, timeScale:sustain, doneAction:2);
-	OffsetOut.ar(out, DirtPan.ar((osc+noise), ~dirt.numChannels, pan, env*env*env*env));
+	OffsetOut.ar(out, DirtPan.ar((osc+noise), ~dirt.numChannels, pan,env*env*env*env));
 }).add
 );
 
