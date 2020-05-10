@@ -1,15 +1,27 @@
+hush
 
+setbpm 140
+
+-- let wave = slow 8 $ (tri*rand*(range -1.0 1.0 $ saw))
+-- in
 d1
 -- $ off 0.5 (>| s "opDrm01")
+-- $ sometimes (ghost)
+$ foldEvery [2,3] (inside 2 $ chunk 4 (iter 8. fast 2))
 $ whenmod 14 8 (inside 2 (whenmod 24 7 (chunk 4 (iter 8))))
-$ off 0.125 (slow 2.(ply "6").(# gain 0.5))
-$ off 0 ((0.125~>).(>| s "subCym01*8"))
+-- $ off 0.125 (slow 2.(sometimes rev).(sometimes $ ply "<6 3 2 0>").(# gain 0.5))
+$ off 0 ((0.125~>).(>| s "hh*8").(#speed 4))
 $ stack [
-  s "~ opDrm01"
-  ,
-  s "opDrm02(3 5, 8)" #octave 2 #legato 1.5
+  -- s "~ opDrm01" # note ((scale "minor" $ foldEvery [6] ((+ "<4 5 6>")) $ "[0, 2, 3, 8]" + "<0 0 2>" )) #orbit 0,
+  -- s "opDrm02(3 5, 8)" #octave 2 #legato 1.5 # note ((scale "minor" $ foldEvery [2,3,13] ( slow 3 .(+ "<2 3>" ). ("<0.25 0 1 0.25 0.75 0.125>" ~>)) $ "0 2 [3 1 2] 8 " )) #orbit 1,
+  slow 4 $ up ((scale "minor" $ foldEvery [6] ((+ "<4 5 6>")) $ "[0 2 3 8]" + "<0 0 2>" )) #s "[fm01,midi]" #midichan 1 #octave 4 #orbit 3 #room 0.3 #delay 0.5 # lock 1 #delaytime 0.333 #delayfb 0.5
+  ,(0.125 ~>) $ s "808*8" #n (run 8) #speed rand #orbit 2
 ] # lpf 3000
 
+d2 $ slow 4 $ up ((scale "minor" $ foldEvery [2,3,13] ( slow 3 .(+ "<2 3>" ). ("<0.25 0 1 0.25 0.75 0.125>" ~>)) $ "0 2 [3 1 2] 8 " )) #s "[pe-gtr:9,midi]" # gain 1.5 #orbit 4 #midichan 2
 
+d3 $ slow 4 $ up ((scale "minor" $ foldEvery [6] ((+ "<4 5 6>")) $ "[0, 2, 3, 8]" + "<0 0 2>" )-7) #s "[rhodes:9,midi]" # orbit 5 #midichan 2
+
+d1
 
 hush

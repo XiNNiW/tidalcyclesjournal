@@ -1,5 +1,12 @@
 hush
 
+cps 1
+
+hush
+
+let wave = (slow (range 1 4 $ fast 2 $ saw) $ saw)
+    swave = (range 0 1 $ wave)
+in
 d2
 $ slow 8
 -- $ outside 3 (substruct "1(6,8,<0>)")
@@ -23,31 +30,37 @@ $ cat [
   "[0 -1@3,3,5,7]"*"-1" + "7 5"
   ]
   )
-  # s "chBand01"
+  # s "[chBand01,midi,modal02]"
+  # midichan 0
+  # pF "brightness" (range 0.2 2 (slow 8 $(rand+wave)*saw))
+  # pF "feedback" (range 1 100 $ slow 32 $ wave)
+  # pF "harmonic" 0.75
   # octave 4
   # legato 4
+  # orbit 5
 
 d1
 -- $ slow 4
 -- $ palindrome
 -- $ ghost
 -- $ struct "t(<7 7 5 3>,8,<0 1>)"
--- $ inside 2 (every 2 (rev))
--- $ slow 4
--- $ stripe "<1 2 3 2>"
+-- $ foldEvery [2,3] (inside 2 $ chunk 4 (iter 8.rev))
+$ inside 2 (every 2 (rev))
+$ slow 4
+$ stripe "<1 2 3 2>"
 $ stack [
- ghost $ n "0(<5 2 3 1>,16,<0 2 4 1>)" # s "opDrm02" # legato 3 # octave 3
+ ghost $ n( scale "spanish" $ "<0>(<5 2 3 1>,16,<0 2 4 1>)" )# s "opDrm02" # legato 3 # octave 3 #orbit 0
  ,
- ghost $ n "12(<1 5 2 3>,16,<8 9>)" # s "fmSnare01" # legato 3
+ ghost $ n "12(<1 5 2 3>,16,<8 9>)" # s "fmSnare01" # legato 3 #orbit 1
  ,
- ghost $ n "12(<2 3 6 7>,16,<11>)" # s "subCym01" # legato "2@3 3 2@2" # gain 0.9 #octave 6
+ ghost $ n "12(<2 3 6 7>,16,<11>)" # s "subCym01" # legato "2@3 3 2@2" # gain 0.9 #octave 6 #orbit 3
  ]
 # legato 4
 
 let mix fx p = ( p + fx p)
     isoe a b c p = outside (fmap toTime b) ((rot c).(euclid a b)) $ p
 in
-d3 $ (note $ scale "spanish" $ isoe 3 8 2 $ whenmod 7 5 (mix (slow 3.(+ "<-1(5,8,2) 2 -3>"))) $ "0") # s "fm02" #octave 4 #legato "1 1.2 1.5 2"
+d3 $ (note $ scale "spanish" $ isoe 3 8 2 $ whenmod 7 5 (mix (slow 3.(+ "<-1(5,8,2) 2 -3>"))) $ "0") # s "fm02" #octave 4 #legato "1 1.2 1.5 2" #orbit 4 #pF "index" rand
 
 d3 $ (note $ scale "spanish" $ "0 . 2 3 . 4 . 5 -3 5 -5") # s "fm02"
 

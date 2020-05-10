@@ -88,11 +88,12 @@ do {
   ;
   d4
   $ slow 4
-  $ s "[chBand01,super808]"
+  $ s "[chBand01,super808,midi]" #midichan 1
   # note (scale "minor"$ chooseBy (range 0 1 $ wave) [4,2,6,3,7])
   # octave "[3]"
   -- # note (chooseBy (range 0 1 $ wave) [0,2,4,7,11,9,5])
   # pF "brightness" (range 1 5 $ wave*rand)
+  # pF "feedback" (range 0 1 $ slow 8 $ wave*rand)
   -- # pF "feedback" (range 10 1 $ wave)
   # delay 0.7
   # delaytime 0.5
@@ -107,16 +108,19 @@ do {
   -- d5
   -- $ whenmod 56 16 (const silence)
   -- $ fast (chooseBy wave [1,2,0.5])
-  -- $ s "fm02*8"
+  -- $ s "[fm02,midi]*8"
+  -- # midichan 2
   -- #legato 2
   -- #gain (range 0.6 0.3 $ slow 2 $ wave)
   -- #release (range 4 0.3 $ wave)
   -- #note (
-  --   scale "minor"$((flip mod 14).(* 2))$
+  --   scale "minor"$((flip mod 12).(* 2))$
   --   fast 8$
   --   chooseBy (range 0 1$wave+(slow 2 wave)) [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
   --   )
   -- #orbit 4;
 }
+
+d5 $ every 4 (inside 2 (chunk 4 (hurry 2))) $ slow 4 $ n (scale "minor" $ off "q" (+ "-5 5 5") "<0 [5 7]>") #s "[chBand01,midi]" #room 0.8 #sz 0.9 #gain 0.7 #octave "4" #pF "brightness" rand #midichan 2 #pF "feedback" rand
 
 hush

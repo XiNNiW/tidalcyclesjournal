@@ -1,0 +1,40 @@
+
+
+
+setbpm 128
+
+d2 $ every 4 (someCycles $ stut 4 (1/8) 0) $ note "<0 [0 7*3] 0 [0 [~ 0 7 -2]]>" #s "x_sub" #orbit 1
+
+d3 $ chop (chooseBy perlin [8, 16, 4, 12]) $ s "v_str" # orbit 3 # n (chooseBy perlin [0, 0, 1, 2, 4, 8, 9]) #room 0.2 #size 0.8 #delay 0.8 #delaytime 0.3333 #delayfeedback 0.6
+
+d3 $ chop (chooseBy perlin [8, 16, 4, 12]) $ s "v_str" # orbit 3 # n (chooseBy perlin [0, 3, 10,3, 4, 3, 8, 15, 9]) #room 0.2 #size 0.8 #delay 0.8 #delaytime 0.3333 #delayfeedback 0.6
+
+d4
+-- $ someCycles (chop (chooseBy perlin [8, 16, 4, 12]).(+| n 48).)
+$ slow 4 $ s "v_pad" #n (chooseBy perlin [0,4,5,6]) #note (chooseBy perlin [0,(-12)]) # room 0.2
+
+d1
+$ every 8 (spreadr const [
+  backrush 16 $ s "EFM*4",
+  ghost $ n (run 16) #s "EFM",
+  ghost $ n (run 4) #s "EFM(11,16,5)",
+  ghost $ n (run 4) #s "EFM(5,16,0)"
+  ])
+$ iter 8 $ iter 4
+$ stack [
+ n "2*8" # s "EFM",
+ n (run 16) # s "EFM"
+ ]
+
+d5 $ n "0*4" # s "EFM"
+
+
+hush
+
+ d1 $ n "0*4" # s "EFM"
+
+ d5 $ s "tapeloop:2"
+
+ d3 $ chop (chooseBy perlin [8, 16, 4, 12]) $ s "v_str" # orbit 3 # n (chooseBy perlin [0, 3, 10,3, 4, 3, 8, 15, 9]) #room 0.2 #size 0.8 #delay 0.8 #delaytime 0.3333 #delayfeedback 0.6
+
+ d2 $ every 4 (someCycles $ stut 4 (1/8) 0) $ note "<0 [0 7*3] 0 [0 [~ 0 7 -2]]>" #s "x_sub" #orbit 1

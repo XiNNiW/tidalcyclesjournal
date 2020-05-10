@@ -1,4 +1,6 @@
 
+hush
+
 setcps(122/60/4)
 
 d1 $ stack [
@@ -21,7 +23,7 @@ $ note
 #pF "brightness" 1.25
 #sustain 1
 #attack 1
-#gain 1.5
+#gain 1
 
 d3
 $ note
@@ -33,7 +35,7 @@ $ note
 # delayfeedback 0.5
 # delaytime 0.333
 # orbit 2
-#gain 1.5
+#gain 1
 
 hush
 

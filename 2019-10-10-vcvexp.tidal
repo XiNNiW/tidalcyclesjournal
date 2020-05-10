@@ -1,0 +1,23 @@
+
+
+d1 $ s "mod-bd"
+
+d2 $ note "[0 3 5 7]*2" #octave 3 # s "midi" # midichan 0
+
+d2 $ note "[0 3 5 7]*2" # octave 3 # s "fm02" -- # midichan 0
+
+hush
+
+riley :: Pattern Time -> [Pattern a] -> Pattern a
+riley [] _ = silence
+riley _ [] = silence
+riley r (p:ps)  = cat $ ( cat $ replicate r p) : (riley ((~> 53434) r) ps ) : []
+
+inC :: [[Int]] -> [Pattern a] ->  Pattern a
+inC [] _ = silence
+inC _ [] = silence
+inC (rs:rss) ps = stack $ (riley rs ps  ) : (inC rss ps ) : []
+
+d2 $ note (inC  [[3,5,3,4],[5,3],[12,4,5]] ["[0 3 5 7]*2", "~ 0*3 0 3", "7 7 7"]  ) # octave 5 # s "fm02"
+
+: inside

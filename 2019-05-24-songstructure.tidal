@@ -80,6 +80,8 @@ $ measures 8 (
   ]
   # shape 0.3
   )
-  []
+$ loopend 8 (
+  s "chBand01" #pF "feedback" 0.99
+  )
 
 hush

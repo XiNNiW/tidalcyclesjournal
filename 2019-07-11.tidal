@@ -1,6 +1,6 @@
 
 
-d1 $ note (0) #octave 3 #s "chBand01" #legato 1 #pF "brightness" (range 0 10 $rand) #pF "feedback" (range 0 101 $ rand)
+d1 $ note (1) #octave 3 #s "chBand01" #legato 1 #pF "brightness" (range 0 10 $rand) #pF "feedback" (range 0 101 $ rand)
 #pF "q" (range 0 1 $ rand) -- #pF "spread" (range 0 1 $ rand)
 
 

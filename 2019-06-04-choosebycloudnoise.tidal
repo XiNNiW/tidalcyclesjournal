@@ -18,12 +18,15 @@ hush
 
 :t map
 
+setbpm 98
+
 let
     -- morph choices = chooseBy (sig fromRational) choices
     morph choices = chooseBy perlin choices
     ns = [0,3,2,7,8]
 in
 d1
+$ (|* gain 0.8)
 $ whenmod 24 16 (slow ("1*2" |+ choose [1,2,3]))
 -- $ fast 2
 $ whenmod 8 7 (rev.ghost.slow 3)
@@ -44,7 +47,7 @@ $ stack [
   ,
   sometimes (stutWith (morph [1,2,3]) (morph [(1/8),(1/16)]) (|+ n 1)  )
   $ stack [
-    s "mod-bd:2*4" #shape (range 0.2 0.7 $ fast (range 1 2 $ rand ) saw)
+    s "mod-bd:2(3,8)" #shape (range 0.2 0.7 $ fast (range 1 2 $ rand ) saw)
     ,
     every 2 (inside 2 (every 2 (# room 1))) $ ghost $ s "~ dnb-sn:8" #orbit 1
   ]
@@ -71,4 +74,4 @@ x
 
 hush
 
- d3 $ every 4 ((0.25 <~) . (fast  8  . (# speed "<2*2   1.5*2   1*2   0.8*2 >"))) $ sound " [~ sd ]" # speed (range 1 0.7 $ saw)
+ d3 $ every 4 ((0.25 <~) . (fast  8  . (# speed "<2*2   1.5*2   1*2   0.8*2 >"))) $ sound " [~ sd ]" # speed (range 1 0.7 $ saw) #orbit 4

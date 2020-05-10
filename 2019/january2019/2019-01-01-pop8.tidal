@@ -16,6 +16,7 @@ $ stack [
 
 do
 
+-- chordProg::(Pattern String)
 chordProg = cat ["g'sevenSus2","~","ds'6by9","c'min7","g'sevenSus4","~","c'nineSus4","c'm13"]
 
 modeProg = cat ["g'minPent","g'minPent","g'minPent","g'minPent","g'minPent","f'majPent","f'majPent","f'majPent"]

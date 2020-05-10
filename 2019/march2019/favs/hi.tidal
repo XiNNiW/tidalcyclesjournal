@@ -16,7 +16,7 @@ $ ( note
   $ ("7 2 . -3 . 2 3 1 . 5 ") + ("<0 . -2 3 . 1 2 . -4 >")
 )
 # s "chBand01" # octave 5  #delay 0.76 #delaytime (5/3) # legato 2
-# pF "harmonic" 1.5 #pF "brightness" 0.05  #pF "feedback" 1.7 #pF "resonance" 100 #pF "spread" 0
+# pF "harmonic" 1.5 #pF "brightness" 0.05  #pF "feedback" 1.7 #pF "resonance" 100 #pF "spread" 1
 # room 0.4 # size 0.77 # gain 1
 
 

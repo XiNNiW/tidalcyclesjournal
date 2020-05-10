@@ -1,5 +1,5 @@
 
-bpm 133
+setbpm 125
 
 hush
 
@@ -89,10 +89,10 @@ $ whenmod 64 48 (const $ silence)
 $ whenmod 6 4 (inside 2 (every 2 ((1/8)~>)))
 $ fix (# nudge "[0.005 0.01]*8") (s "[subCym01,808:4]")
 $ whenmod 8 7 (inside 2 (whenmod 2 4 (chop 16)))
-$ whenmod 12 8 (sometimes $ const $ s "subCym01*4" #legato 8 #gain (range 0.7 1 $ saw))
+$ whenmod 12 8 (sometimes $ const $ s "subCym01*4" #orbit 3 #legato 8 #gain (range 0.7 1 $ saw))
 $ whenmod 48 16 (off 0.125 (const $ s "808:4*4" #orbit 2 #crush 4 #gain (fast 2 $range 0.88 1 $ saw)))
 $ off 0.75 (const $ slow 4 $ s "sn" #speed "-4" #unit "c")
-$ off 0.5 (const $ sometimes ghost $ s "~ <sn:4 [~ sn:4] sn:4>")
+$ off 0.5 (const $ sometimes ghost $ s "~ <sn:4 [~ sn:4] sn:4>" # orbit 1)
 $ (0.25 <~)
 -- $ whenmod 64 48 ((# room 0.15 ). (# delay 0.88) . (|* speed 0.88))
 $ every 2 (chunk 4 (every 3 $ rev.iter 8))

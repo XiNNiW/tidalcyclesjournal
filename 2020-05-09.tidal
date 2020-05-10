@@ -1,0 +1,68 @@
+
+hush
+
+setbpm 130
+
+d1 $ n ( scale "major" $ off "q" (+ "2 <2 3 4 5>")  $ "0 [0 5]" )
+    #s "modal02" #pF "muted" (slow 2 $ (/ 10)$ "<1 2 3> [1 3]") #pF "spread" tri
+    #delay 0.4 #delaytime (slow 2 tri) #lock 1
+    #room 0.1 #size (slow 8 $ saw * 2)
+
+d2
+$ foldEvery [2,3,9] (inside 2 . chunk 4 $ rev.hurry 2)
+$ stack [
+  s "<bd:<0 3 4> [~ bd:[0 2 4]]> sd",
+  s "808ht:0(3,8)",
+  s "808:5(<0 1 2 5>,8,<0 2 5>)" #delay 0.4 #delaytime (slow 2 tri) #lock 1,
+  s "808:4*<8 16>" #gain (range 0.4 0.6 $ (+ tri) $ (~> rand) $ tri)
+]
+
+d3 $ slow 4 $ n "0@7 -2" #s "modal02" #octave 3
+
+
+
+let measures n p = [(n, p)]
+    songLoop ms = seqPLoop $ structureSong 0 ms
+    structureSong st [] = []
+    structureSong st (p:ps) =  (st,(st+(fst p)),snd p) : (structureSong ((fst p)+st) ps )
+    mel m t = n ( scale "major" $ t $ m )
+        #s "modal02" #pF "muted" (slow 2 $ (/ 10)$ "<1 2 3> [1 3]") #pF "spread" tri
+        #delay 0.4 #delaytime (slow 2 tri) #lock 1
+        #room 0.1 #size (slow 8 $ saw * 2)
+    drums = foldEvery [2,3,9] (inside 2 . chunk 4 $ rev.hurry 2)
+        $ stack [
+          s "<bd:<0 3 4> [~ bd:[0 2 4]]> sd",
+          s "808ht:0(3,8)",
+          s "808:5(<0 1 2 5>,8,<0 2 5>)" #delay 0.4 #delaytime (slow 2 tri) #lock 1,
+          s "808:4*<8 16>" #gain (range 0.4 0.6 $ (+ tri) $ (~> rand) $ tri)
+        ]
+    bass = slow 4 $ n "0@7 -2" #s "modal02" #octave 3
+    m1 = "0 [0 5]"
+in
+do{
+  d1
+  $ songLoop
+  $  measures 8 (mel "0" id)
+  ++ measures 8 (mel m1 id)
+  ++ measures 8 (mel m1 (off "q" (+ "2 <2 3 4 5>")))
+  --
+  ++ measures 8 (stack [(mel m1 (off "q" (+ "2 <2 3 4 5>"))),s "<bd:<0 3 4> [~ bd:[0 2 4]]> sd"])
+  ++ measures 8 (stack [(mel m1 (off "a" (+ "-5").off "q" (+ "2 <2 3 4 5>"))),drums,bass])
+  --
+  ++ measures 8 (stack [bass,slow 2 $ drums])
+  --
+  ++ measures 8 (stack [mel m1 (off "q" (+ "2 <2 3 4 5>")),s "<bd:<0 3 4> [~ bd:[0 2 4]]> sd",bass])
+  ++ measures 8 (stack [(mel m1 (off "a" (+ "-5").off "q" (+ "2 <2 3 4 5>"))),drums,bass])
+  --
+  ++ measures 4 (mel m1 (+ "2 <2 3 4 5>"))
+  --
+  ++ measures 8 (rev $ mel m1 (off "q" (+ "2 <2 3 4 5>")))
+  ++ measures 8 (stack [(rev $ mel m1 (off "q" (+ "2 <2 3 4 5>"))),(slow 2 $ drums)])
+  --
+  ++ measures 8 (slow 2 $ drums)
+}
+
+
+hush
+
+cps 1

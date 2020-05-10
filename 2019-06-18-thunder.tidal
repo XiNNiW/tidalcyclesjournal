@@ -1,4 +1,4 @@
-d1
+d2
 $ slow 3
 $ stack [
   s "fbsin" #pF "feedback" 0.1,

@@ -81,7 +81,7 @@ d1 $ slowcat [
     (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
     (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
     ]
-    # shape ((/1.5)<$>triwave1)
+    # shape ((/1.5)<$>tri)
 
 d1 $spin 2 $ slowcat [
     (interlace (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]"))(sound "[jvbass:3 jvbass:2 jvbass:1 jvbass:2]")),
@@ -89,7 +89,7 @@ d1 $spin 2 $ slowcat [
     (sound ("[[bd:128 hh:3 [sn bd:128] hh:2] [cp [cp:1 [cp:3 cp:7 cp:9]]], [[hh]*4 [hh:0]*4], [bd:4 sn:5(2,8,1)]/2 ]")),
     (interlace (sound "[bd cp] [jvbass:4 jvbass] [hh] [jvbass jvbass:1]")(sound "[jvbass:3]"))
     ]
-  # shape ((/1.5)<$>triwave1)
+  # shape ((/1.5)<$>tri)
 
 d1 $ stack [
   sound "bd bd*2",

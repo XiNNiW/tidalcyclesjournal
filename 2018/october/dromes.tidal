@@ -24,7 +24,7 @@ let
   ryt2 = "[1 1 ~ 1 1]"
   drumPattern = (sound "[[~ 808:1] [808:3 808:1 [808:4 rm?] 808:4]] [[sn:9 [[. sn:7*2]/2 sn:5]]/2]")
   harmonicModulation1 pattern = (flip mod 14) $ ((*) $  "1 2 3 4") $ ((+) $ palindrome $ melody) pattern
-
+in
 do
 d9 $ midicmd "start" # s "midi"
 d3

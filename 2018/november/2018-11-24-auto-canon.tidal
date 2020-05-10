@@ -8,7 +8,9 @@ d9 $ midicmd "stop" # s "midi"
 
 d9 $ midicmd "start" # s "midi"
 
-let melody = slow 6 $ "0 2 [4 8 .] [3 4 3] 8 4 9"
+melody :: Pattern Int
+melody = slow 6 $ "0 2 [4 8 .] [3 4 3] 8 4 9"
+
 
 inversion = (* (-1))
 

@@ -1,5 +1,7 @@
 hush
 
+setbpm 120
+
 let measures n p ms = (n, p):ms
     loopend n p = measures n p []
     songLoop ms = seqPLoop $ structureSong 0 ms
@@ -43,11 +45,11 @@ $ (
     ]
   )
   []
-)
+) #room 0.5
 
-d1 $ (#n (run 16)) $ euclid (irand 11) 16 $ s "dub-bd"
+d2 $ (#n (run 16)) $ euclid (irand 11) 16 $ s "dub-bd"
 
-d1 $ (# n (run 16)) $ slow 2 $ e (irand 3) 16 (choose [0,2,3]) $ s "[mod-bd sd]" #hpf ( smooth $ "0 2 . 0 1" * 500)
+d3 $ (# n (run 16)) $ slow 2 $ e (irand 3) 16 (choose [0,2,3]) $ s "[mod-bd sd]" #hpf ( smooth $ "0 2 . 0 1" * 500)
 
 d1 $
 

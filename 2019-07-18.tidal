@@ -1,9 +1,13 @@
+hush
+
 let wave = (slow (range 1 4 $ fast 2 $ saw) $ saw)
     swave = (range 0 1 $ wave)
 in
 do {
+setbpm 86;
 d1
 -- $ whenmod 56 32 (iter 8.stut 3 0.125 0.5.slow 2)
+$ (|* gain (0.9))
 $ slow (chooseBy swave [1,1,0.5,2,3])
 $ stack [
   juxBy 0 (hurry 2) $
@@ -16,9 +20,10 @@ $ stack [
   n "5" #s "TRX"
   # orbit 1
   ,
-  inside 2 (whenmod 7 4 $ slow 2) $
+  inside 2 (whenmod 7 4 $ slow 3) $
   sometimes (stut 2 0.7 (3/16)) $
-  n "~ [~ 3] 6" #s "TRX"
+  (0.25 ~>) $
+  n "2*4" #s "TRX"
   #gain 0.9
   -- #speed wave
   # orbit 2
@@ -70,3 +75,5 @@ $ s "fm02"
 }
 
 hush
+
+d4 $ "mod-bd:6*6" # orbit 5
